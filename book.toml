@@ -1,0 +1,6 @@
+[book]
+authors = ["cnosdb"]
+language = "zh-CN"
+multilingual = false
+src = "src"
+title = "CnosDB"
