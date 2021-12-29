@@ -87,7 +87,7 @@ SELECT COUNT(DISTINCT( [ * | <field_key> | /<regular_expression>/ ] )) [...]
 
 `COUNT(/regular_expression/)`返回与正则表达式匹配的每个`field key`对应的`field value`的个数。
 
-`COUNT(*)`返回在`metric`中每个`field key`对应的`field value`的个数。
+`COUNT(*)`返回在`measurement`中每个`field key`对应的`field value`的个数。
 
 `COUNT()`支持所有数据类型的`field value`。cnosQL支持将[`DISTINCT()`](#distinct)函数嵌套在`COUNT()`函数里。
 
@@ -104,9 +104,9 @@ time                   count
 1970-01-01T00:00:00Z   15258
 ```
 
-该查询返回`metric``h2o_feet`中的`water_level`的非空field value的数量。
+该查询返回`measurement``h2o_feet`中的`water_level`的非空field value的数量。
 
-##### 计数metric中每个field key关联的field value的数量
+##### 计数measurement中每个field key关联的field value的数量
 
 ```sql
 > SELECT COUNT(*) FROM "h2o_feet"
@@ -117,7 +117,7 @@ time                   count_level description   count_water_level
 1970-01-01T00:00:00Z   15258                     15258
 ```
 
-该查询返回与1metric``h2o_feet`相关联的每个field key的非空field value的数量。`h2o_feet`有两个field keys：`level_description`和`water_level`
+该查询返回与1measurement``h2o_feet`相关联的每个field key的非空field value的数量。`h2o_feet`有两个field keys：`level_description`和`water_level`
 
 ##### 计算匹配一个正则表达式的每个field key关联的field value的数目
 
@@ -130,7 +130,7 @@ time                   count_water_level
 1970-01-01T00:00:00Z   15258
 ```
 
-该查询返回metric`h2o_feet`中包含`water`单词的每个field key的非空字段值的数量。
+该查询返回measurement`h2o_feet`中包含`water`单词的每个field key的非空字段值的数量。
 
 ##### 计数包括多个子句的field key的field value的数目
 
@@ -162,7 +162,7 @@ time                   count
 1970-01-01T00:00:00Z   4
 ```
 
-查询返回metric为`h2o_feet`field`为`level description 的唯一field value的数量。
+查询返回measurement为`h2o_feet`field`为`level description 的唯一field value的数量。
 
 ### `COUNT()`的常见问题
 
@@ -232,9 +232,9 @@ time                   distinct
 1970-01-01T00:00:00Z   at or greater than 9 feet
 ```
 
-该查询返回`h2o_feet` metric中`level description`filed 关键字中唯一`field values`的列表
+该查询返回`h2o_feet` measurement中`level description`filed 关键字中唯一`field values`的列表
 
-##### 列出一个metric中每个field key的不同的值
+##### 列出一个measurement中每个field key的不同的值
 
 ```sql
 > SELECT DISTINCT(*) FROM "h2o_feet"
@@ -280,17 +280,17 @@ time                   count
 1970-01-01T00:00:00Z   4
 ```
 
-查询返回`h2o_feet`这个metric中字段`level description`的不同值的数目。
+查询返回`h2o_feet`这个measurement中字段`level description`的不同值的数目。
 
 ### `DISTINCT()`的常见问题
 
 #### `DISTINCT()` 和 `INTO` 子句
 
-在`INTO`子句中使用`DISTINCT()`可能会导致cnosDB覆盖目标metric中的`points`。`DISTINCT()`通常返回多个具有相同时间戳的结果；cnosDB假设在相同series中并具有相同时间戳的`point`是重复`point`，并简单地用目标metric中最新的`point`覆盖重复`point`。
+在`INTO`子句中使用`DISTINCT()`可能会导致cnosDB覆盖目标measurement中的`points`。`DISTINCT()`通常返回多个具有相同时间戳的结果；cnosDB假设在相同series中并具有相同时间戳的`point`是重复`point`，并简单地用目标measurement中最新的`point`覆盖重复`point`。
 
 ##### 示例
 
-下面代码块中的第一个查询使用了`DISTINCT()`，并返回四个结果。请注意，每个结果都有相同的时间戳。第二个查询将`INTO`子句添加到查询中，并将查询结果写入metric `distincts`。最后一个查询选择metric `distincts`中所有数据。
+下面代码块中的第一个查询使用了`DISTINCT()`，并返回四个结果。请注意，每个结果都有相同的时间戳。第二个查询将`INTO`子句添加到查询中，并将查询结果写入measurement `distincts`。最后一个查询选择measurement `distincts`中所有数据。
 因为原来的四个结果是重复的(它们在相同的series，有相同的时间戳)，所以最后一个查询只返回一个`point`。当系统遇到重复数据`point`，它会用最近的`point`覆盖之前的`point`。
 
 ```sql
@@ -337,7 +337,7 @@ cnosDB计算field value曲线下的面积，并将这些结果转换为每个`un
 
 `INTEGRAL(/regular_expression/)`返回满足正则表达式的每个field key关联的值之下的面积。
 
-`INTEGRAL(*)`返回`metric`中每个`field key`关联的值之下的面积。
+`INTEGRAL(*)`返回`measurement`中每个`field key`关联的值之下的面积。
 
 `INTEGRAL()`不支持`fill()`，`INTEGRAL()`支持int64和float64两个数据类型。
 
@@ -385,7 +385,7 @@ time                 integral
 
 该查询返回`h2o_feet`中的字段`water_level`的曲线下的面积（以分钟为单位）。
 
-##### 计算metric中每个field key在指定时间单位的值得积分
+##### 计算measurement中每个field key在指定时间单位的值得积分
 
 ```sql
 > SELECT INTEGRAL(*,1m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
@@ -396,9 +396,9 @@ time                 integral_water_level
 1970-01-01T00:00:00Z 62.211
 ```
 
-查询返回metric`h2o_feet`中存储的每个数值字段相关的字段值的曲线下面积（以分钟为单位）。 `h2o_feet`的数值字段为`water_level`。
+查询返回measurement`h2o_feet`中存储的每个数值字段相关的字段值的曲线下面积（以分钟为单位）。 `h2o_feet`的数值字段为`water_level`。
 
-##### 计算metric中匹配正则表达式的field key在指定时间单位的值得积分
+##### 计算measurement中匹配正则表达式的field key在指定时间单位的值得积分
 
 ```sql
 > SELECT INTEGRAL(/water/,1m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
@@ -422,7 +422,7 @@ time                 integral
 2020-08-18T00:00:00Z 24.972
 ```
 
-该查询返回`metric` `h2o_feet`中`field key` `water_level`对应的field value曲线下的面积(以分钟为单位)，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并将查询结果按12分钟的时间间隔进行分组，同时，该查询将返回的`point`个数限制为1。
+该查询返回`measurement` `h2o_feet`中`field key` `water_level`对应的field value曲线下的面积(以分钟为单位)，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并将查询结果按12分钟的时间间隔进行分组，同时，该查询将返回的`point`个数限制为1。
 
 ### `MEAN()`
 
@@ -438,7 +438,7 @@ SELECT MEAN( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] FROM_c
 
 `MEAN(/regular_expression/)`返回与正则表达式匹配的每个`field key`对应的field value的平均值。
 
-`MEAN(*)`返回在`metric`中每个`field key`对应的`field value`的平均值。
+`MEAN(*)`返回在`measurement`中每个`field key`对应的`field value`的平均值。
 
 `MEAN()`支持数据类型为int64和float64的field value。
 
@@ -454,9 +454,9 @@ time                   mean
 ----                   ----
 1970-01-01T00:00:00Z   4.442107025822522
 ```
-该查询返回`metric` `h2o_feet`中`field key` `water_level`对应的`field value`的平均值。
+该查询返回`measurement` `h2o_feet`中`field key` `water_level`对应的`field value`的平均值。
 
-##### 计算metric中每个field key对应的field value的平均值
+##### 计算measurement中每个field key对应的field value的平均值
 
 ```sql
 > SELECT MEAN(*) FROM "h2o_feet"
@@ -466,7 +466,7 @@ time                   mean_water_level
 ----                   ----------------
 1970-01-01T00:00:00Z   4.442107025822522
 ```
-该查询返回`metric` `h2o_feet`中每个存储数值的`field key`对应的`field value`的平均值。`metric` `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回`measurement` `h2o_feet`中每个存储数值的`field key`对应的`field value`的平均值。`measurement` `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ##### 计算与正则表达式匹配的每个field key对应的field value的平均值
 
@@ -479,7 +479,7 @@ time                   mean_water_level
 1970-01-01T00:00:00Z   4.442107025822523
 ```
 
-该查询返回`metric` `h2o_feet`中每个存储数值并包含单词`water`的`field key`对应的`field value`的平均值。
+该查询返回`measurement` `h2o_feet`中每个存储数值并包含单词`water`的`field key`对应的`field value`的平均值。
 
 ##### 计算指定field key对应的field value的平均值并包含多个子句
 
@@ -498,7 +498,7 @@ time                   mean
 2020-08-18T00:48:00Z   7.046
 ```
 
-该查询返回`metric` `h2o_feet`中field key `water_level`对应的field value的平均值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:30:00Z`之间，并将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为7和1。
+该查询返回`measurement` `h2o_feet`中field key `water_level`对应的field value的平均值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:30:00Z`之间，并将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为7和1。
 
 ### MEDIAN()
 
@@ -516,7 +516,7 @@ SELECT MEDIAN( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] FROM
 
 `MEDIAN(/regular_expression/)`返回与正则表达式匹配的每个`field key`对应的`field value`的平均值。
 
-`MEDIAN(*)`返回在`metric`中每个`field key`对应的`field value`的平均值。
+`MEDIAN(*)`返回在`measurement`中每个`field key`对应的`field value`的平均值。
 
 `MEDIAN()` 支持数据类型为int64和float64的field value。
 
@@ -535,9 +535,9 @@ time                   median
 1970-01-01T00:00:00Z   4.124
 ```
 
-该查询返回`metric` `h2o_feet`中field key `water_level`对应的`field value`的平均数。
+该查询返回`measurement` `h2o_feet`中field key `water_level`对应的`field value`的平均数。
 
-##### 计算metric中每个field key对应的field value的平均数
+##### 计算measurement中每个field key对应的field value的平均数
 
 ```sql
 > SELECT MEDIAN(*) FROM "h2o_feet"
@@ -548,7 +548,7 @@ time                   median_water_level
 1970-01-01T00:00:00Z   4.124
 ```
 
-该查询返回`metric` `h2o_feet`中每个存储数值的`field key`对应的`field value`的平均数。`metric` `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回`measurement` `h2o_feet`中每个存储数值的`field key`对应的`field value`的平均数。`measurement` `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ##### 计算与正则表达式匹配的每个field key对应的field value的平均数
 
@@ -560,7 +560,7 @@ time                   median_water_level
 ----                   ------------------
 1970-01-01T00:00:00Z   4.124
 ```
-该查询返回metric `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的平均数。
+该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的平均数。
 
 ##### 计算指定field key对应的field value的平均数并包含多个子句
 
@@ -579,7 +579,7 @@ time                   median
 2020-08-18T00:48:00Z   700
 ```
 
-该查询返回`metric` `h2o_feet`中`field key` `water_level`对应的`field value`的平均数，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询用`700`填充没有数据的时间间隔，将返回的`point`个数和series个数分别限制为7和1，并将返回的`series`偏移一个（即第一个`series`的数据不返回）。
+该查询返回`measurement` `h2o_feet`中`field key` `water_level`对应的`field value`的平均数，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询用`700`填充没有数据的时间间隔，将返回的`point`个数和series个数分别限制为7和1，并将返回的`series`偏移一个（即第一个`series`的数据不返回）。
 
 ### MODE()
 
@@ -595,7 +595,7 @@ SELECT MODE( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] FROM_c
 
 `MODE(/regular_expression/)`返回与正则表达式匹配的每个`field key`对应的`field value`中出现频率最高的值。
 
-`MODE(*)`返回在`metric`中每个`field key`对应的`field value`中出现频率最高的值。
+`MODE(*)`返回在`measurement`中每个`field key`对应的`field value`中出现频率最高的值。
 
 `MODE()` 支持所有数据类型的`field value`。
 
@@ -614,9 +614,9 @@ time                   mode
 1970-01-01T00:00:00Z   between 3 and 6 feet
 ```
 
-该查询返回`metric` `h2o_feet`中每个`field key`对应的`field value`中出现频率最高的值。metric `h2o_feet`中有两个`field key`：`level description`和`water_level`。
+该查询返回`measurement` `h2o_feet`中每个`field key`对应的`field value`中出现频率最高的值。measurement `h2o_feet`中有两个`field key`：`level description`和`water_level`。
 
-##### 计算metric中每个field key对应的field value中出现频率最高的值
+##### 计算measurement中每个field key对应的field value中出现频率最高的值
 
 ```sql
 > SELECT MODE(*) FROM "h2o_feet"
@@ -627,7 +627,7 @@ time                   mode_level description   mode_water_level
 1970-01-01T00:00:00Z   between 3 and 6 feet     2.69
 ```
 
-该查询返回`metric` `h2o_feet`中每个`field key`对应的`field value`中出现频率最高的值。`metric` `h2o_feet`中有两个`field key`：`level description`和`water_level`。
+该查询返回`measurement` `h2o_feet`中每个`field key`对应的`field value`中出现频率最高的值。`measurement` `h2o_feet`中有两个`field key`：`level description`和`water_level`。
 
 ##### 计算与正则表达式匹配的每个field key对应的field value中出现频率最高的值
 
@@ -640,7 +640,7 @@ time                   mode_water_level
 1970-01-01T00:00:00Z   2.69
 ```
 
-该查询返回`metric` `h2o_feet`中每个包含单词`water`的`field key`对应的`field value`中出现频率最高的值。
+该查询返回`measurement` `h2o_feet`中每个包含单词`water`的`field key`对应的`field value`中出现频率最高的值。
 
 ##### 计算指定field key对应的field value中出现频率最高的值并包含多个子句
 
@@ -656,7 +656,7 @@ time                   mode
 2020-08-18T00:12:00Z   below 3 feet
 ```
 
-该查询返回`metric` `h2o_feet`中`field key` `water_level`对应的`field value`中出现频率最高的值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询将返回的`point`个数和`series`个数分别限制为3和1，并将返回的`series`偏移一个（即第一个`series`的数据不返回）。
+该查询返回`measurement` `h2o_feet`中`field key` `water_level`对应的`field value`中出现频率最高的值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询将返回的`point`个数和`series`个数分别限制为3和1，并将返回的`series`偏移一个（即第一个`series`的数据不返回）。
 
 ### SPREAD()
 
@@ -674,7 +674,7 @@ SELECT SPREAD( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] FROM
 
 `SPREAD(/regular_expression/)`返回与正则表达式匹配的每个`field key`对应的`field value`中最大值和最小值之差。
 
-`SPREAD(*)`返回在`metric`中每个`field key`对应的`field value`中最大值和最小值之差。
+`SPREAD(*)`返回在`measurement`中每个`field key`对应的`field value`中最大值和最小值之差。
 
 `SPREAD()`支持数据类型为int64和float64的`field value`。
 
@@ -691,9 +691,9 @@ time                   spread
 1970-01-01T00:00:00Z   10.574
 ```
 
-该查询返回`metric` `h2o_feet`中`field key` `water_level`对应的`field value`中最大值和最小值之差。
+该查询返回`measurement` `h2o_feet`中`field key` `water_level`对应的`field value`中最大值和最小值之差。
 
-##### 计算metric中每个field key对应的field value中最大值和最小值之差
+##### 计算measurement中每个field key对应的field value中最大值和最小值之差
 
 ```sql
 > SELECT SPREAD(*) FROM "h2o_feet"
@@ -704,7 +704,7 @@ time                   spread_water_level
 1970-01-01T00:00:00Z   10.574
 ```
 
-该查询返回`metric` `h2o_feet`中每个存储数值的`field key`对应的`field value`中最大值和最小值之差。`metric` `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回`measurement` `h2o_feet`中每个存储数值的`field key`对应的`field value`中最大值和最小值之差。`measurement` `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ##### 计算与正则表达式匹配的每个field key对应的field value中最大值和最小值之差
 
@@ -717,7 +717,7 @@ time                   spread_water_level
 1970-01-01T00:00:00Z   10.574
 ```
 
-该查询返回`metric` `h2o_feet`中每个存储数值并包含单词`water`的`field key`对应的`field value`中最大值和最小值之差。
+该查询返回`measurement` `h2o_feet`中每个存储数值并包含单词`water`的`field key`对应的`field value`中最大值和最小值之差。
 
 ##### 计算指定field key对应的field value中最大值和最小值之差并包含多个子句
 
@@ -733,7 +733,7 @@ time                   spread
 2020-08-18T00:12:00Z   0.09799999999999986
 ```
 
-该查询返回`metric` `h2o_feet`中field key `water_level`对应的field value中最大值和最小值之差，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询用`18`填充没有数据的时间间隔，将返回的`point`个数和`series`个数分别限制为3和1，并将返回的`series`偏移一个（即第一个`series`的数据不返回）
+该查询返回`measurement` `h2o_feet`中field key `water_level`对应的field value中最大值和最小值之差，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询用`18`填充没有数据的时间间隔，将返回的`point`个数和`series`个数分别限制为3和1，并将返回的`series`偏移一个（即第一个`series`的数据不返回）
 
 ### STDDEV()
 
@@ -749,7 +749,7 @@ SELECT STDDEV( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] FROM
 
 `STDDEV(/regular_expression/)`返回与正则表达式匹配的每个`field key`对应的`field value`的标准差。
 
-`STDDEV(*)`返回在metric中每个field key对应的field value的标准差。
+`STDDEV(*)`返回在measurement中每个field key对应的field value的标准差。
 
 `STDDEV()`支持数据类型为int64和float64的field value。
 
@@ -766,9 +766,9 @@ time                   stddev
 1970-01-01T00:00:00Z   2.279144584196141
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的标准差。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的标准差。
 
-##### 计算metric中每个field key对应的field value的标准差
+##### 计算measurement中每个field key对应的field value的标准差
 
 ```sql
 > SELECT STDDEV(*) FROM "h2o_feet"
@@ -779,7 +779,7 @@ time                   stddev_water_level
 1970-01-01T00:00:00Z   2.279144584196141
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的标准差。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的标准差。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ##### 计算与正则表达式匹配的每个field key对应的field value的标准差
 
@@ -792,7 +792,7 @@ time                   stddev_water_level
 1970-01-01T00:00:00Z   2.279144584196141
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的标准差。
+该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的标准差。
 
 ##### 计算指定field key对应的field value的标准差并包含多个子句
 
@@ -807,7 +807,7 @@ time                   stddev
 2020-08-18T00:00:00Z   0.03676955262170051
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的标准差，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`18000`填充没有数据的时间间隔，将返回的`point`个数和series个数分别限制为2和1，并将返回的series偏移一个（即第一个series的数据不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的标准差，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`18000`填充没有数据的时间间隔，将返回的`point`个数和series个数分别限制为2和1，并将返回的series偏移一个（即第一个series的数据不返回）。
 
 ### SUM()
 
@@ -825,7 +825,7 @@ SELECT SUM( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] FROM_cl
 
 `SUM(/regular_expression/)`返回与正则表达式匹配的每个field key对应的field value的总和。
 
-`SUM(*)`返回在metric中每个field key对应的field value的总和。
+`SUM(*)`返回在measurement中每个field key对应的field value的总和。
 
 `SUM()`支持数据类型为int64和float64的field value。
 
@@ -842,9 +842,9 @@ time                   sum
 1970-01-01T00:00:00Z   67777.66900000004
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的总和。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的总和。
 
-##### 计算metric中每个field key对应的field value的总和
+##### 计算measurement中每个field key对应的field value的总和
 
 ```sql
 > SELECT SUM(*) FROM "h2o_feet"
@@ -855,7 +855,7 @@ time                   sum_water_level
 1970-01-01T00:00:00Z   67777.66900000004
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的总和。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的总和。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ##### 计算与正则表达式匹配的每个field key对应的field value的总和
 
@@ -868,7 +868,7 @@ time                   sum_water_level
 1970-01-01T00:00:00Z   67777.66900000004
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的总和。
+该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的总和。
 
 ##### 计算指定field key对应的field value的总和并包含多个子句
 
@@ -885,7 +885,7 @@ time                   sum
 2020-08-18T00:24:00Z   15.135
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的总和，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`18000`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的总和，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`18000`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
 
 ## 选择函数
 
@@ -928,7 +928,7 @@ time                   bottom
 2020-08-30T15:18:00Z   -0.594
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的最小的三个值。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的最小的三个值。
 
 ##### 选择两个tag对应的field key的最小值
 
@@ -1032,7 +1032,7 @@ time                   bottom   location
 
 ###### 示例
 
-下面代码块中的第一个查询返回tag key `location`的两个tag value对应的field key `water_level`的最小值，并且，它这些结果写入metric `bottom_water_levels`中。第二个查询展示了cnosDB将tag `location`保留为metric `bottom_water_levels`中的tag。
+下面代码块中的第一个查询返回tag key `location`的两个tag value对应的field key `water_level`的最小值，并且，它这些结果写入measurement `bottom_water_levels`中。第二个查询展示了cnosDB将tag `location`保留为measurement `bottom_water_levels`中的tag。
 
 ```sql
 > SELECT BOTTOM("water_level","location",2) INTO "bottom_water_levels" FROM "h2o_feet"
@@ -1066,7 +1066,7 @@ SELECT FIRST(<field_key>)[,<tag_key(s)>|<field_key(s)>] [INTO_clause] FROM_claus
 
 `FIRST(/regular_expression/)`返回与正则表达式匹配的每个field key对应的具有最早时间戳的field value。
 
-`FIRST(*)`返回在metric中每个field key对应的具有最早时间戳的field value。
+`FIRST(*)`返回在measurement中每个field key对应的具有最早时间戳的field value。
 
 `FIRST(field_key),tag_key(s),field_key(s)`返回括号中的field key对应的具有最早时间戳的field value，以及相关的tag或field。
 
@@ -1085,9 +1085,9 @@ time                   first
 2020-08-18T00:00:00Z   between 6 and 9 feet
 ```
 
-该查询返回metric `h2o_feet`中field key `level description`对应的具有最早时间戳的field value。
+该查询返回measurement `h2o_feet`中field key `level description`对应的具有最早时间戳的field value。
 
-##### 选择metric中每个field key对应的具有最早时间戳的field value
+##### 选择measurement中每个field key对应的具有最早时间戳的field value
 
 ```sql
 > SELECT FIRST(*) FROM "h2o_feet"
@@ -1098,7 +1098,7 @@ time                   first_level description   first_water_level
 1970-01-01T00:00:00Z   between 6 and 9 feet      8.12
 ```
 
-该查询返回metric `h2o_feet`中每个field key对应的具有最早时间戳的field value。metric `h2o_feet`中有两个field key：`level description`和`water_level`。
+该查询返回measurement `h2o_feet`中每个field key对应的具有最早时间戳的field value。measurement `h2o_feet`中有两个field key：`level description`和`water_level`。
 
 ##### 选择与正则表达式匹配的每个field key对应的具有最早时间戳的field value
 
@@ -1111,7 +1111,7 @@ time                   first_level description   first_water_level
 1970-01-01T00:00:00Z   between 6 and 9 feet      8.12
 ```
 
-该查询返回metric `h2o_feet`中每个包含单词`level`的field key对应的具有最早时间戳的field value。
+该查询返回measurement `h2o_feet`中每个包含单词`level`的field key对应的具有最早时间戳的field value。
 
 ##### 选择指定field key对应的具有最早时间戳的field value以及相关的tag和field
 
@@ -1124,7 +1124,7 @@ time                  first                 location      water_level
 2020-08-18T00:00:00Z  between 6 and 9 feet  coyote_creek  8.12
 ```
 
-该查询返回metric `h2o_feet`中field key `level description`对应的具有最早时间戳的field value，以及相关的tag key `location`和field key `water_level`的值。
+该查询返回measurement `h2o_feet`中field key `level description`对应的具有最早时间戳的field value，以及相关的tag key `location`和field key `water_level`的值。
 
 ##### 选择指定field key对应的具有最早时间戳的field value并包含多个子句
 
@@ -1141,7 +1141,7 @@ time                   first
 2020-08-18T00:24:00Z   7.635
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的具有最早时间戳的field value，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的具有最早时间戳的field value，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
 
 请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:48:00Z`和`2020-08-18T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:24:00Z`和`2020-08-18T00:36:00Z`之间。
 
@@ -1159,7 +1159,7 @@ SELECT LAST(<field_key>)[,<tag_key(s)>|<field_keys(s)>] [INTO_clause] FROM_claus
 
 `LAST(/regular_expression/)`返回与正则表达式匹配的每个field key对应的具有最新时间戳的field value。
 
-`LAST(*)`返回在metric中每个field key对应的具有最新时间戳的field value。
+`LAST(*)`返回在measurement中每个field key对应的具有最新时间戳的field value。
 
 `LAST(field_key),tag_key(s),field_key(s)`返回括号中的field key对应的具有最新时间戳的field value，以及相关的tag或field。
 
@@ -1178,9 +1178,9 @@ time                   last
 2020-09-18T21:42:00Z   between 3 and 6 feet
 ```
 
-该查询返回metric `h2o_feet`中field key `level description`对应的具有最新时间戳的field value。
+该查询返回measurement `h2o_feet`中field key `level description`对应的具有最新时间戳的field value。
 
-##### 选择metric中每个field key对应的具有最新时间戳的field value
+##### 选择measurement中每个field key对应的具有最新时间戳的field value
 
 ```sql
 > SELECT LAST(*) FROM "h2o_feet"
@@ -1191,7 +1191,7 @@ time                   last_level description   last_water_level
 1970-01-01T00:00:00Z   between 3 and 6 feet      4.938
 ```
 
-该查询返回metric `h2o_feet`中每个field key对应的具有最新时间戳的field value。metric `h2o_feet`中有两个field key：`level description`和`water_level`。
+该查询返回measurement `h2o_feet`中每个field key对应的具有最新时间戳的field value。measurement `h2o_feet`中有两个field key：`level description`和`water_level`。
 
 ##### 选择与正则表达式匹配的每个field key对应的具有最新时间戳的field value
 
@@ -1204,7 +1204,7 @@ time                   last_level description   last_water_level
 1970-01-01T00:00:00Z   between 3 and 6 feet      4.938
 ```
 
-该查询返回metric `h2o_feet`中每个包含单词`level`的field key对应的具有最新时间戳的field value。
+该查询返回measurement `h2o_feet`中每个包含单词`level`的field key对应的具有最新时间戳的field value。
 
 ##### 选择指定field key对应的具有最新时间戳的field value以及相关的tag和field
 
@@ -1217,7 +1217,7 @@ time                  last                  location      water_level
 2020-09-18T21:42:00Z  between 3 and 6 feet  santa_monica  4.938
 ```
 
-该查询返回metric `h2o_feet`中field key `level description`对应的具有最新时间戳的field value，以及相关的tag key `location`和field key `water_level`的值。
+该查询返回measurement `h2o_feet`中field key `level description`对应的具有最新时间戳的field value，以及相关的tag key `location`和field key `water_level`的值。
 
 ##### 选择指定field key对应的具有最新时间戳的field value并包含多个子句
 
@@ -1234,7 +1234,7 @@ time                   last
 2020-08-18T00:24:00Z   7.5
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的具有最新时间戳的field value，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的具有最新时间戳的field value，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
 
 请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:48:00Z`和`2020-08-18T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:24:00Z`和`2020-08-18T00:36:00Z`之间。
 
@@ -1252,7 +1252,7 @@ SELECT MAX(<field_key>)[,<tag_key(s)>|<field__key(s)>] [INTO_clause] FROM_clause
 
 `MAX(/regular_expression/)`返回与正则表达式匹配的每个field key对应的field value的最大值。
 
-`MAX(*)`返回在metric中每个field key对应的field value的最大值。
+`MAX(*)`返回在measurement中每个field key对应的field value的最大值。
 
 `MAX(field_key),tag_key(s),field_key(s)`返回括号中的field key对应的field value的最大值，以及相关的tag或field。
 
@@ -1271,9 +1271,9 @@ time                   max
 2020-08-29T07:24:00Z   9.964
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的最大值。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的最大值。
 
-##### 选择metric中每个field key对应的field value的最大值
+##### 选择measurement中每个field key对应的field value的最大值
 
 ```sql
 > SELECT MAX(*) FROM "h2o_feet"
@@ -1284,7 +1284,7 @@ time                   max_water_level
 2020-08-29T07:24:00Z   9.964
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的最大值。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的最大值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ##### 选择与正则表达式匹配的每个field key对应的field value的最大值
 
@@ -1297,7 +1297,7 @@ time                   max_water_level
 2020-08-29T07:24:00Z   9.964
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的最大值。
+该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的最大值。
 
 ##### 选择指定field key对应的field value的最大值以及相关的tag和field
 
@@ -1310,7 +1310,7 @@ time                  max    location      level description
 2020-08-29T07:24:00Z  9.964  coyote_creek  at or greater than 9 feet
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的最大值，以及相关的tag key `location`和field key `level description`的值。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的最大值，以及相关的tag key `location`和field key `level description`的值。
 
 ##### 选择指定field key对应的field value的最大值并包含多个子句
 
@@ -1327,7 +1327,7 @@ time                   max
 2020-08-18T00:24:00Z   7.635
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的最大值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的最大值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
 
 请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:48:00Z`和`2020-08-18T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:24:00Z`和`2020-08-18T00:36:00Z`之间。
 
@@ -1345,7 +1345,7 @@ SELECT MIN(<field_key>)[,<tag_key(s)>|<field_key(s)>] [INTO_clause] FROM_clause 
 
 `MIN(/regular_expression/)`返回与正则表达式匹配的每个field key对应的field value的最小值。
 
-`MIN(*)`返回在metric中每个field key对应的field value的最小值。
+`MIN(*)`返回在measurement中每个field key对应的field value的最小值。
 
 `MIN(field_key),tag_key(s),field_key(s)`返回括号中的field key对应的field value的最小值，以及相关的tag和/或field。
 
@@ -1364,9 +1364,9 @@ time                   min
 2020-08-29T14:30:00Z   -0.61
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的最小值。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的最小值。
 
-##### 选择metric中每个field key对应的field value的最小值
+##### 选择measurement中每个field key对应的field value的最小值
 
 ```sql
 > SELECT MIN(*) FROM "h2o_feet"
@@ -1377,7 +1377,7 @@ time                   min_water_level
 2020-08-29T14:30:00Z   -0.61
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的最小值。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的最小值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ##### 选择与正则表达式匹配的每个field key对应的field value的最小值
 
@@ -1390,7 +1390,7 @@ time                   min_water_level
 2020-08-29T14:30:00Z   -0.61
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的最小值。
+该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的最小值。
 
 ##### 选择指定field key对应的field value的最小值以及相关的tag和field
 
@@ -1403,7 +1403,7 @@ time                  min    location      level description
 2020-08-29T14:30:00Z  -0.61  coyote_creek  below 3 feet
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的最小值，以及相关的tag key `location`和field key `level description`的值。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的最小值，以及相关的tag key `location`和field key `level description`的值。
 
 ##### 选择指定field key对应的field value的最小值并包含多个子句
 
@@ -1420,7 +1420,7 @@ time                   min
 2020-08-18T00:24:00Z   7.5
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的最小值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的最小值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
 
 请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:48:00Z`和`2020-08-18T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:24:00Z`和`2020-08-18T00:36:00Z`之间。
 
@@ -1438,7 +1438,7 @@ SELECT PERCENTILE(<field_key>, <N>)[,<tag_key(s)>|<field_key(s)>] [INTO_clause] 
 
 `PERCENTILE(/regular_expression/,N)`返回与正则表达式匹配的每个field key对应的第N个百分位数的field value。
 
-`PERCENTILE(*,N)`返回在metric中每个field key对应的第N个百分位数的field value。
+`PERCENTILE(*,N)`返回在measurement中每个field key对应的第N个百分位数的field value。
 
 `PERCENTILE(field_key,N),tag_key(s),field_key(s)`返回括号中的field key对应的第N个百分位数的field value，以及相关的tag和/或field。
 
@@ -1459,9 +1459,9 @@ time                   percentile
 2020-08-31T03:42:00Z   1.122
 ```
 
-该查询返回的field value大于metric `h2o_feet`中field key `water_level`对应的所有field value中的百分之五。
+该查询返回的field value大于measurement `h2o_feet`中field key `water_level`对应的所有field value中的百分之五。
 
-##### 选择metric中每个field key对应的第五个百分位数的field value
+##### 选择measurement中每个field key对应的第五个百分位数的field value
 
 ```sql
 > SELECT PERCENTILE(*,5) FROM "h2o_feet"
@@ -1472,7 +1472,7 @@ time                   percentile_water_level
 2020-08-31T03:42:00Z   1.122
 ```
 
-该查询返回的field value大于metric `h2o_feet`中每个存储数值的field key对应的所有field value中的百分之五。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回的field value大于measurement `h2o_feet`中每个存储数值的field key对应的所有field value中的百分之五。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ##### 选择与正则表达式匹配的每个field key对应的第五个百分位数的field value
 
@@ -1485,7 +1485,7 @@ time                   percentile_water_level
 2020-08-31T03:42:00Z   1.122
 ```
 
-该查询返回的field value大于metric `h2o_feet`中每个存储数值并包含单词`water`的field key对应的所有field value中的百分之五。
+该查询返回的field value大于measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的所有field value中的百分之五。
 
 ##### 选择指定field key对应的第五个百分位数的field value以及相关的tag和field
 
@@ -1498,7 +1498,7 @@ time                  percentile  location      level description
 2020-08-31T03:42:00Z  1.122       coyote_creek  below 3 feet
 ```
 
-该查询返回的field value大于metric `h2o_feet`中field key `water_level`对应的所有field value中的百分之五，以及相关的tag key `location`和field key `level description`的值。
+该查询返回的field value大于measurement `h2o_feet`中field key `water_level`对应的所有field value中的百分之五，以及相关的tag key `location`和field key `level description`的值。
 
 ##### 选择指定field key对应的第20个百分位数的field value并包含多个子句
 
@@ -1512,7 +1512,7 @@ time                   percentile
 2020-08-18T00:00:00Z   2.064
 ```
 
-该查询返回的field value大于metric `h2o_feet`中field key `water_level`对应的所有field value中的百分之二十，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按24分钟的时间间隔进行分组，同时，该查询用`15`填充没有数据的时间间隔，并将返回的`point`个数限制为2。
+该查询返回的field value大于measurement `h2o_feet`中field key `water_level`对应的所有field value中的百分之二十，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按24分钟的时间间隔进行分组，同时，该查询用`15`填充没有数据的时间间隔，并将返回的`point`个数限制为2。
 
 请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每24分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:36:00Z`和`2020-08-18T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:00:00Z`和`2020-08-18T00:24:00Z`之间。
 
@@ -1538,7 +1538,7 @@ SELECT SAMPLE(<field_key>, <N>)[,<tag_key(s)>|<field_key(s)>] [INTO_clause] FROM
 
 `SAMPLE(/regular_expression/,N)`返回与正则表达式匹配的每个field key对应的N个随机选择的field value。
 
-`SAMPLE(*,N)`返回在metric中每个field key对应的N个随机选择的field value。
+`SAMPLE(*,N)`返回在measurement中每个field key对应的N个随机选择的field value。
 
 `SAMPLE(field_key,N),tag_key(s),field_key(s)`返回括号中的field key对应的N个随机选择的field value，以及相关的tag和/或field。
 
@@ -1560,9 +1560,9 @@ time                   sample
 2020-09-18T10:00:00Z   6.939
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的两个随机选择的`point`。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的两个随机选择的`point`。
 
-##### 选择metric中每个field key对应的field value的随机样本
+##### 选择measurement中每个field key对应的field value的随机样本
 
 ```sql
 > SELECT SAMPLE(*,2) FROM "h2o_feet"
@@ -1576,7 +1576,7 @@ time                   sample_level description   sample_water_level
 2020-09-08T21:54:00Z                              3.412
 ```
 
-该查询返回metric `h2o_feet`中每个field key对应的两个随机选择的`point`。metric `h2o_feet`中有两个field key：`level description`和`water_level`。
+该查询返回measurement `h2o_feet`中每个field key对应的两个随机选择的`point`。measurement `h2o_feet`中有两个field key：`level description`和`water_level`。
 
 ##### 选择与正则表达式匹配的每个field key对应的field value的随机样本
 
@@ -1592,7 +1592,7 @@ time                   sample_level description   sample_water_level
 2020-09-13T19:18:00Z   between 3 and 6 feet
 ```
 
-该查询返回metric `h2o_feet`中每个包含单词`level`的field key对应的两个随机选择的`point`。
+该查询返回measurement `h2o_feet`中每个包含单词`level`的field key对应的两个随机选择的`point`。
 
 ##### 选择指定field key对应的field value的随机样本以及相关的tag和field
 
@@ -1606,7 +1606,7 @@ time                  sample  location      level description
 2020-09-08T15:48:00Z  6.391   coyote_creek  between 6 and 9 feet
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的两个随机选择的`point`，以及相关的tag key `location`和field key `level description`的值。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的两个随机选择的`point`，以及相关的tag key `location`和field key `level description`的值。
 
 ##### 选择指定field key对应field value的随机样本并包含多个子句
 
@@ -1620,7 +1620,7 @@ time                   sample
 2020-08-18T00:30:00Z   2.051
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的一个随机选择的`point`，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并将查询结果按18分钟的时间间隔进行分组。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的一个随机选择的`point`，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并将查询结果按18分钟的时间间隔进行分组。
 
 请注意，`GROUP BY time()`子句不会覆盖`point`的原始时间戳。请查看下面章节获得更详细的说明。
 
@@ -1686,7 +1686,7 @@ time                   top
 2020-08-29T07:30:00Z   9.954
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的最大的三个值。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的最大的三个值。
 
 ##### 选择两个tag对应的field key的最大值
 
@@ -1791,7 +1791,7 @@ time                  top    location
 
 ###### 示例
 
-下面代码块中的第一个查询返回tag key `location`的两个tag value对应的field key `water_level`的最大值，并且，它这些结果写入metric `top_water_levels`中。第二个查询展示了cnosDB将tag `location`保留为metric `top_water_levels`中的tag。
+下面代码块中的第一个查询返回tag key `location`的两个tag value对应的field key `water_level`的最大值，并且，它这些结果写入measurement `top_water_levels`中。第二个查询展示了cnosDB将tag `location`保留为measurement `top_water_levels`中的tag。
 
 ```sql
 > SELECT TOP("water_level","location",2) INTO "top_water_levels" FROM "h2o_feet"
@@ -1823,7 +1823,7 @@ SELECT ABS( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROU
 
 `ABS(field_key)`返回field key对应的field value的绝对值。
 
-`ABS(*)`返回在metric中每个field key对应的field value的绝对值。
+`ABS(*)`返回在measurement中每个field key对应的field value的绝对值。
 
 `ABS()`支持数据类型为int64和float64的field value。
 
@@ -1863,9 +1863,9 @@ time                 abs
 1529841900000000000  0.891164752631417
 ```
 
-该查询返回metric `data`中field key `a`对应的field value的绝对值。
+该查询返回measurement `data`中field key `a`对应的field value的绝对值。
 
-###### 计算metric中每个field key对应的field value的绝对值
+###### 计算measurement中每个field key对应的field value的绝对值
 
 ```sql
 > SELECT ABS(*) FROM "data" WHERE time >= '2020-06-24T12:00:00Z' AND time <= '2020-06-24T12:05:00Z'
@@ -1881,7 +1881,7 @@ time                 abs_a              abs_b
 1529841900000000000  0.891164752631417  0.741147445214238
 ```
 
-该查询返回metric `data`中每个存储数值的field key对应的field value的绝对值。metric `data`中有两个数值类型的field：`a`和`b`。
+该查询返回measurement `data`中每个存储数值的field key对应的field value的绝对值。measurement `data`中有两个数值类型的field：`a`和`b`。
 
 ###### 计算指定field key对应的field value的绝对值并包含多个子句
 
@@ -1897,7 +1897,7 @@ time                 abs
 1529841600000000000  1.33909108671076
 ```
 
-该查询返回metric `data`中field key `a`对应的field value的绝对值，它涵盖的时间范围在`2020-06-24T12:00:00Z`和`2020-06-24T12:05:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
+该查询返回measurement `data`中field key `a`对应的field value的绝对值，它涵盖的时间范围在`2020-06-24T12:00:00Z`和`2020-06-24T12:05:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -1970,7 +1970,7 @@ SELECT ACOS( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GRO
 
 `ACOS(field_key)`返回field key对应的field value的反余弦。
 
-`ACOS(*)`返回在metric中每个field key对应的field value的反余弦。
+`ACOS(*)`返回在measurement中每个field key对应的field value的反余弦。
 
 `ACOS()`支持数据类型为int64和float64的field value，并且field value必须在-1和1之间。
 
@@ -2016,9 +2016,9 @@ time                  acos
 2020-05-09T00:00:00Z  1.410105673842986
 ```
 
-该查询返回metric `park_occupancy`中field key `of_capacity`对应的field value的反余弦。
+该查询返回measurement `park_occupancy`中field key `of_capacity`对应的field value的反余弦。
 
-###### 计算metric中每个field key对应的field value的反余弦
+###### 计算measurement中每个field key对应的field value的反余弦
 
 ```sql
 > SELECT ACOS(*) FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z'
@@ -2037,7 +2037,7 @@ time                  acos_of_capacity
 2020-05-09T00:00:00Z  1.410105673842986
 ```
 
-该查询返回metric `park_occupancy`中每个存储数值的field key对应的field value的反余弦。metric `park_occupancy`中只有一个数值类型的field：`of_capacity`。
+该查询返回measurement `park_occupancy`中每个存储数值的field key对应的field value的反余弦。measurement `park_occupancy`中只有一个数值类型的field：`of_capacity`。
 
 ###### 计算指定field key对应的field value的反余弦并包含多个子句
 
@@ -2053,7 +2053,7 @@ time                  acos
 2020-05-04T00:00:00Z  1.3489818562981022
 ```
 
-该查询返回metric `park_occupancy`中field key `of_capacity`对应的field value的反余弦，它涵盖的时间范围在`2020-05-01T00:00:00Z`和`2020-05-09T00:00:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
+该查询返回measurement `park_occupancy`中field key `of_capacity`对应的field value的反余弦，它涵盖的时间范围在`2020-05-01T00:00:00Z`和`2020-05-09T00:00:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -2122,7 +2122,7 @@ SELECT ASIN( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GRO
 
 `ASIN(field_key)`返回field key对应的field value的反正弦。
 
-`ASIN(*)`返回在metric中每个field key对应的field value的反正弦。
+`ASIN(*)`返回在measurement中每个field key对应的field value的反正弦。
 
 `ASIN()`支持数据类型为int64和float64的field value，并且field value必须在-1和1之间。
 
@@ -2168,9 +2168,9 @@ time                  asin
 2020-05-09T00:00:00Z  0.1606906529519106
 ```
 
-该查询返回metric `park_occupancy`中field key `of_capacity`对应的field value的反正弦。
+该查询返回measurement `park_occupancy`中field key `of_capacity`对应的field value的反正弦。
 
-###### 计算metric中每个field key对应的field value的反正弦
+###### 计算measurement中每个field key对应的field value的反正弦
 
 ```sql
 > SELECT ASIN(*) FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z'
@@ -2189,7 +2189,7 @@ time                  asin_of_capacity
 2020-05-09T00:00:00Z  0.1606906529519106
 ```
 
-该查询返回metric `park_occupancy`中每个存储数值的field key对应的field value的反正弦。metric `park_occupancy`中只有一个数值类型的field：`of_capacity`。
+该查询返回measurement `park_occupancy`中每个存储数值的field key对应的field value的反正弦。measurement `park_occupancy`中只有一个数值类型的field：`of_capacity`。
 
 ###### 计算指定field key对应的field value的反正弦并包含多个子句
 
@@ -2205,7 +2205,7 @@ time                  asin
 2020-05-04T00:00:00Z  0.22181447049679442
 ```
 
-该查询返回metric `park_occupancy`中field key `of_capacity`对应的field value的反正弦，它涵盖的时间范围在`2020-05-01T00:00:00Z`和`2020-05-09T00:00:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
+该查询返回measurement `park_occupancy`中field key `of_capacity`对应的field value的反正弦，它涵盖的时间范围在`2020-05-01T00:00:00Z`和`2020-05-09T00:00:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -2274,7 +2274,7 @@ SELECT ATAN( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GRO
 
 `ATAN(field_key)`返回field key对应的field value的反正切。
 
-`ATAN(*)`返回在metric中每个field key对应的field value的反正切。
+`ATAN(*)`返回在measurement中每个field key对应的field value的反正切。
 
 `ATAN()`支持数据类型为int64和float64的field value，并且field value必须在-1和1之间。
 
@@ -2320,9 +2320,9 @@ time                  atan
 2020-05-09T00:00:00Z  0.1586552621864014
 ```
 
-该查询返回metric `park_occupancy`中field key `of_capacity`对应的field value的反正切。
+该查询返回measurement `park_occupancy`中field key `of_capacity`对应的field value的反正切。
 
-###### 计算metric中每个field key对应的field value的反正切
+###### 计算measurement中每个field key对应的field value的反正切
 
 ```sql
 > SELECT ATAN(*) FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z'
@@ -2341,7 +2341,7 @@ time                  atan_of_capacity
 2020-05-09T00:00:00Z  0.1586552621864014
 ```
 
-该查询返回metric `park_occupancy`中每个存储数值的field key对应的field value的反正切。metric `park_occupancy`中只有一个数值类型的field：`of_capacity`。
+该查询返回measurement `park_occupancy`中每个存储数值的field key对应的field value的反正切。measurement `park_occupancy`中只有一个数值类型的field：`of_capacity`。
 
 ###### 计算指定field key对应的field value的反正切并包含多个子句
 
@@ -2357,7 +2357,7 @@ time                  atan
 2020-05-04T00:00:00Z  0.2165503049760893
 ```
 
-该查询返回metric `park_occupancy`中field key `of_capacity`对应的field value的反正切，它涵盖的时间范围在`2020-05-01T00:00:00Z`和`2020-05-09T00:00:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
+该查询返回measurement `park_occupancy`中field key `of_capacity`对应的field value的反正切，它涵盖的时间范围在`2020-05-01T00:00:00Z`和`2020-05-09T00:00:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -2426,7 +2426,7 @@ SELECT ATAN2( [ * | <field_key> | num ], [ <field_key> | num ] ) [INTO_clause] F
 
 `ATAN2(field_key_y, field_key_x)`返回field key “field_key_y”对应的field value除以field key “field_key_x”对应的field value的反正切。
 
-`ATAN2(*, field_key_x)<br />`返回在metric中每个field key对应的field value除以field key “field_key_x”对应的field value的反正切。
+`ATAN2(*, field_key_x)<br />`返回在measurement中每个field key对应的field value除以field key “field_key_x”对应的field value的反正切。
 
 `ATAN2()`支持数据类型为int64和float64的field value。
 
@@ -2474,9 +2474,9 @@ time                  atan2
 2020-05-16T12:10:00Z  0.1937028631495223
 ```
 
-该查询返回field key `altitude_ft`对应的field value除以field key `distance_ft`对应的field value的反正切。这两个field key都在metric `flight_data`中。
+该查询返回field key `altitude_ft`对应的field value除以field key `distance_ft`对应的field value的反正切。这两个field key都在measurement `flight_data`中。
 
-###### 计算metric中每个field key除以field_key_x的反正切
+###### 计算measurement中每个field key除以field_key_x的反正切
 
 ```sql
 > SELECT ATAN2(*, "distance_ft") FROM "flight_data" WHERE time >= '2020-05-16T12:01:00Z' AND time <= '2020-05-16T12:10:00Z'
@@ -2496,7 +2496,7 @@ time                  atan2_altitude_ft     atan2_distance_ft
 2020-05-16T12:10:00Z  0.19370286314952234   0.7853981633974483
 ```
 
-该查询返回metric `flight_data`中每个存储数值的field key对应的field value除以field key `distance_ft`对应的field value的反正切。metric `flight_data`中有两个数值类型的field：`altitude_ft`和`distance_ft`。
+该查询返回measurement `flight_data`中每个存储数值的field key对应的field value除以field key `distance_ft`对应的field value的反正切。measurement `flight_data`中有两个数值类型的field：`altitude_ft`和`distance_ft`。
 
 ###### 计算field value的反正切并包含多个子句
 
@@ -2585,7 +2585,7 @@ SELECT CEIL( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GRO
 
 `CEIL(field_key)`返回field key对应的大于field value的最小整数。
 
-`CEIL(*)`返回在metric中每个field key对应的大于field value的最小整数。
+`CEIL(*)`返回在measurement中每个field key对应的大于field value的最小整数。
 
 `CEIL()`支持数据类型为int64和float64的field value。
 
@@ -2625,9 +2625,9 @@ time                  ceil
 2020-08-18T00:30:00Z  3
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的大于field value的最小整数。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的大于field value的最小整数。
 
-###### 计算metric中每个field key对应的大于field value的最小整数
+###### 计算measurement中每个field key对应的大于field value的最小整数
 
 ```sql
 > SELECT CEIL(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -2643,7 +2643,7 @@ time                  ceil_water_level
 2020-08-18T00:30:00Z  3
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的大于field value的最小整数。metric `h2o_feet`只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的大于field value的最小整数。measurement `h2o_feet`只有一个数值类型的field：`water_level`。
 
 ###### 计算指定field key对应的大于field value的最小整数并包含多个子句
 
@@ -2726,7 +2726,7 @@ SELECT COS( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROU
 
 `COS(field_key)`返回field key对应的field value的余弦值。
 
-`COS(*)`返回在metric中每个field key对应的field value的余弦值。
+`COS(*)`返回在measurement中每个field key对应的field value的余弦值。
 
 `COS()`支持数据类型为int64和float64的field value。
 
@@ -2766,9 +2766,9 @@ time                  cos
 2020-08-18T00:30:00Z  -0.4619598230611262
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的余弦值。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的余弦值。
 
-###### 计算metric中每个field key对应的field value的余弦值
+###### 计算measurement中每个field key对应的field value的余弦值
 
 ```sql
 > SELECT COS(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -2784,7 +2784,7 @@ time                  cos_water_level
 2020-08-18T00:30:00Z  -0.4619598230611262
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的余弦值。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的余弦值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ###### 计算指定field key对应的field value的余弦值并包含多个子句
 
@@ -2800,7 +2800,7 @@ time                  cos
 2020-08-18T00:00:00Z  -0.47345017433543124
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的余弦值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的余弦值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -2869,7 +2869,7 @@ SELECT CUMULATIVE_SUM( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clau
 
 `CUMULATIVE_SUM(/regular_expression/)`返回与正则表达式匹配的每个field key对应的field value的累积总和。
 
-`CUMULATIVE_SUM(*)`返回在metric中每个field key对应的field value的累积总和。
+`CUMULATIVE_SUM(*)`返回在measurement中每个field key对应的field value的累积总和。
 
 `CUMULATIVE_SUM()`支持数据类型为int64和float64的field value。
 
@@ -2909,9 +2909,9 @@ time                   cumulative_sum
 2020-08-18T00:30:00Z   12.426
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的累积总和。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的累积总和。
 
-###### 计算metric中每个field key对应的field value的累积总和
+###### 计算measurement中每个field key对应的field value的累积总和
 
 ```sql
 > SELECT CUMULATIVE_SUM(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -2927,7 +2927,7 @@ time                   cumulative_sum_water_level
 2020-08-18T00:30:00Z   12.426
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的累积总和。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的累积总和。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ###### 计算与正则表达式匹配的每个field key对应的field value的累积总和
 
@@ -2945,7 +2945,7 @@ time                   cumulative_sum_water_level
 2020-08-18T00:30:00Z   12.426
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的累积总和。
+该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的累积总和。
 
 ###### 计算指定field key对应的field value的累积总和并包含多个子句
 
@@ -2961,7 +2961,7 @@ time                  cumulative_sum
 2020-08-18T00:00:00Z  12.426
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的累积总和，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的累积总和，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -3032,7 +3032,7 @@ cnosDB计算field value之间的差值，并将这些结果转换为每个`unit`
 
 `DERIVATIVE(/regular_expression/)`返回与正则表达式匹配的每个field key对应的field value的变化率。
 
-`DERIVATIVE(*)`返回在metric中每个field key对应的field value的变化率。
+`DERIVATIVE(*)`返回在measurement中每个field key对应的field value的变化率。
 
 `DERIVATIVE()`支持数据类型为int64和float64的field value。
 
@@ -3071,7 +3071,7 @@ time                   derivative
 2020-08-18T00:30:00Z   2.777777777777842e-05
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的每秒变化率。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的每秒变化率。
 
 第一个结果(`0.00014444444444444457`)是原始数据中前两个field value在一秒内的变化率。cnosDB计算两个field value之间的差值，并将该值标准化为一秒的变化率：
 
@@ -3098,7 +3098,7 @@ time			derivative
 2020-08-18T00:30:00Z	0.010000000000000231
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的每六分钟的变化率。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的每六分钟的变化率。
 
 第一个结果(`0.052000000000000046`)是原始数据中前两个field value在六分钟内的变化率。cnosDB计算两个field value之间的差值，并将该值标准化为六分钟的变化率：
 
@@ -3110,7 +3110,7 @@ time			derivative
 second field value - first field value
 ```
 
-###### 计算metric中每个field key对应的field value的导数并指定`unit`
+###### 计算measurement中每个field key对应的field value的导数并指定`unit`
 
 ```sql
 > SELECT DERIVATIVE(*,3m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
@@ -3126,7 +3126,7 @@ time                   derivative_water_level
 2020-08-18T00:30:00Z   0.0050000000000001155
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的每三分钟的变化率。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的每三分钟的变化率。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 第一个结果(`0.026000000000000023`)是原始数据中前两个field value在三分钟内的变化率。cnosDB计算两个field value之间的差值，并将该值标准化为三分钟的变化率：
 
@@ -3153,7 +3153,7 @@ time                   derivative_water_level
 2020-08-18T00:30:00Z   0.0033333333333334103
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的每两分钟的变化率。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的每两分钟的变化率。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 第一个结果(`0.01733333333333335`)是原始数据中前两个field value在两分钟内的变化率。cnosDB计算两个field value之间的差值，并将该值标准化为两分钟的变化率：
 
@@ -3176,7 +3176,7 @@ time                   derivative
 2020-08-18T00:12:00Z   -0.0002722222222222218
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的每秒变化率，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为1，并将返回的`point`偏移两个(即前两个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的每秒变化率，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为1，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
 唯一的结果(`-0.0002722222222222218`)是原始数据中前两个field value在一秒内的变化率。cnosDB计算两个field value之间的差值，并将该值标准化为一秒的变化率：
 
@@ -3301,7 +3301,7 @@ SELECT DIFFERENCE( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] 
 
 `DIFFERENCE(/regular_expression/)`返回与正则表达式匹配的每个field key对应的field value的差值。
 
-`DIFFERENCE(*)`返回在metric中每个field key对应的field value的差值。
+`DIFFERENCE(*)`返回在measurement中每个field key对应的field value的差值。
 
 `DIFFERENCE()`支持数据类型为int64和float64的field value。
 
@@ -3340,9 +3340,9 @@ time                   difference
 2020-08-18T00:30:00Z   0.010000000000000231
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value之间的差值。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value之间的差值。
 
-###### 计算metric中每个field key对应的field value的差值
+###### 计算measurement中每个field key对应的field value的差值
 
 ```sql
 > SELECT DIFFERENCE(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -3357,7 +3357,7 @@ time                   difference_water_level
 2020-08-18T00:30:00Z   0.010000000000000231
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value之间的差值。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value之间的差值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ###### 计算与正则表达式匹配的每个field key对应的field value的差值
 
@@ -3374,7 +3374,7 @@ time                   difference_water_level
 2020-08-18T00:30:00Z   0.010000000000000231
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value之间的差值。
+该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value之间的差值。
 
 ###### 计算指定field key对应的field value的差值并包含多个子句
 
@@ -3388,7 +3388,7 @@ time                   difference
 2020-08-18T00:06:00Z   0.08800000000000008
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value之间的差值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为2，并将返回的`point`偏移两个（即前两个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value之间的差值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为2，并将返回的`point`偏移两个（即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -3457,7 +3457,7 @@ cnosDB计算时间戳之间的差值。参数`unit`的值是一个整数，后�
 
 `ELAPSED(/regular_expression/)`返回与正则表达式匹配的每个field key对应的时间戳之间的差值。
 
-`ELAPSED(*)`返回在metric中每个field key对应的时间戳之间的差值。
+`ELAPSED(*)`返回在measurement中每个field key对应的时间戳之间的差值。
 
 `ELAPSED()`支持所有数据类型的field value。
 
@@ -3488,7 +3488,7 @@ time                   elapsed
 2020-08-18T00:12:00Z   360000000000
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的时间戳之间的差值(以纳秒为单位)。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的时间戳之间的差值(以纳秒为单位)。
 
 ##### 计算指定field key对应的field value之间的时间间隔并指定`unit`
 
@@ -3502,7 +3502,7 @@ time                   elapsed
 2020-08-18T00:12:00Z   6
 ```
 
-该查询返回metric `h2o_feet`中每个field key对应的时间戳之间的差值(以分钟为单位)。metric `h2o_feet`中有两个field key：`level description`和`water_level`。
+该查询返回measurement `h2o_feet`中每个field key对应的时间戳之间的差值(以分钟为单位)。measurement `h2o_feet`中有两个field key：`level description`和`water_level`。
 
 ##### 计算与正则表达式匹配的每个field key对应的field value之间的时间间隔并指定`unit`
 
@@ -3516,7 +3516,7 @@ time                   elapsed_level description   elapsed_water_level
 2020-08-18T00:12:00Z   6                           6
 ```
 
-该查询返回metric `h2o_feet`中每个包含单词`level`的field key对应的时间戳之间的差值(以秒为单位)。
+该查询返回measurement `h2o_feet`中每个包含单词`level`的field key对应的时间戳之间的差值(以秒为单位)。
 
 ##### 计算与正则表达式匹配的每个field key对应的field value之间的时间间隔并指定`unit`
 
@@ -3530,7 +3530,7 @@ time                   elapsed_level description   elapsed_water_level
 2020-08-18T00:12:00Z   360                         360
 ```
 
-该查询返回metric `h2o_feet`中每个包含单词`level`的field key对应的时间戳之间的差值(以秒为单位)。
+该查询返回measurement `h2o_feet`中每个包含单词`level`的field key对应的时间戳之间的差值(以秒为单位)。
 
 ##### 计算指定field key对应的field value之间的时间间隔并包含多个子句
 
@@ -3543,7 +3543,7 @@ time                   elapsed
 2020-08-18T00:00:00Z   -360000
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的时间戳之间的差值(以毫秒为单位)，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:12:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为1，并将返回的`point`偏移一个（即前一个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的时间戳之间的差值(以毫秒为单位)，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:12:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为1，并将返回的`point`偏移一个（即前一个`point`不返回）。
 
 请注意，查询结果是负数；因为`ORDER BY time DESC`子句按递减的顺序对时间戳进行排序，所以`ELAPSED()`以相反的顺序计算时间戳的差值。
 
@@ -3555,7 +3555,7 @@ I如果`unit`的值大于时间戳之间的差值，那么cnosDB将会返回`0`�
 
 ##### 示例
 
-metric `h2o_feet`中每六分钟有一个`point`。如果查询将`unit`设置为一小时，cnosDB将会返回`0`：
+measurement `h2o_feet`中每六分钟有一个`point`。如果查询将`unit`设置为一小时，cnosDB将会返回`0`：
 
 ```sql
 > SELECT ELAPSED("water_level",1h) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:12:00Z'
@@ -3609,7 +3609,7 @@ SELECT EXP( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROU
 
 `EXP(field_key)`返回field key对应的field value的指数。
 
-`EXP(*)`返回在metric中每个field key对应的field value的指数。
+`EXP(*)`返回在measurement中每个field key对应的field value的指数。
 
 `EXP()`支持数据类型为int64和float64的field value。
 
@@ -3649,9 +3649,9 @@ time                  exp
 2020-08-18T00:30:00Z  7.775672892658607
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的指数。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的指数。
 
-###### 计算metric中每个field key对应的field value的指数
+###### 计算measurement中每个field key对应的field value的指数
 
 ```sql
 > SELECT EXP(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -3667,7 +3667,7 @@ time                  exp_water_level
 2020-08-18T00:30:00Z  7.775672892658607
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的指数。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的指数。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ###### 计算指定field key对应的field value的指数并包含多个子句
 
@@ -3683,7 +3683,7 @@ time                  exp
 2020-08-18T00:00:00Z  7.877416541092307
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的指数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回)。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的指数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回)。
 
 #### 高级语法
 
@@ -3750,7 +3750,7 @@ SELECT FLOOR( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GR
 
 `FLOOR(field_key)`返回field key对应的小于field value的最大整数。
 
-`FLOOR(*)`返回在metric中每个field key对应的小于field value的最大整数。
+`FLOOR(*)`返回在measurement中每个field key对应的小于field value的最大整数。
 
 `FLOOR()`支持数据类型为int64和float64的field value。
 
@@ -3790,9 +3790,9 @@ time                  floor
 2020-08-18T00:30:00Z  2
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的小于field value的最大整数。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的小于field value的最大整数。
 
-###### 计算metric中每个field key对应的小于field value的最大整数
+###### 计算measurement中每个field key对应的小于field value的最大整数
 
 ```sql
 > SELECT FLOOR(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -3808,7 +3808,7 @@ time                  floor_water_level
 2020-08-18T00:30:00Z  2
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的小于field value的最大整数。metric `h2o_feet`只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的小于field value的最大整数。measurement `h2o_feet`只有一个数值类型的field：`water_level`。
 
 ###### 计算指定field key对应的小于field value的最大整数并包含多个子句
 
@@ -3891,7 +3891,7 @@ SELECT LN( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP
 
 `LN(field_key)`返回field key对应的field value的自然对数。
 
-`LN(*)`返回在metric中每个field key对应的field value的自然对数。
+`LN(*)`返回在measurement中每个field key对应的field value的自然对数。
 
 `LN()`支持数据类型为int64和float64的field value。
 
@@ -3931,9 +3931,9 @@ time                  ln
 2020-08-18T00:30:00Z  0.7183274790902436
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的自然对数。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的自然对数。
 
-###### 计算metric中每个field key对应的field value的自然对数
+###### 计算measurement中每个field key对应的field value的自然对数
 
 ```sql
 > SELECT LN(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -3949,7 +3949,7 @@ time                  ln_water_level
 2020-08-18T00:30:00Z  0.7183274790902436
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的自然对数。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的自然对数。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ###### 计算指定field key对应的field value的自然对数并包含多个子句
 
@@ -3965,7 +3965,7 @@ time                  ln
 2020-08-18T00:00:00Z  0.7246458476193163
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的自然对数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的自然对数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -4034,7 +4034,7 @@ SELECT LOG( [ * | <field_key> ], <b> ) [INTO_clause] FROM_clause [WHERE_clause] 
 
 `LOG(field_key, b)`返回field key对应的field value的以`b`为底数的对数。
 
-`LOG(*, b)`返回在metric中每个field key对应的field value的以`b`为底数的对数。
+`LOG(*, b)`返回在measurement中每个field key对应的field value的以`b`为底数的对数。
 
 `LOG()`支持数据类型为int64和float64的field value。
 
@@ -4074,9 +4074,9 @@ time                  log
 2020-08-18T00:30:00Z  0.5181637459088826
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的以4为底数的对数。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的以4为底数的对数。
 
-###### 计算metric中每个field key对应的field value的以4为底数的对数
+###### 计算measurement中每个field key对应的field value的以4为底数的对数
 ```sql
 > SELECT LOG(*, 4) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
 
@@ -4091,7 +4091,7 @@ time                  log_water_level
 2020-08-18T00:30:00Z  0.5181637459088826
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的以4为底数的对数。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的以4为底数的对数。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ###### 计算指定field key对应的field value的以4为底数的对数并包含多个子句
 
@@ -4107,7 +4107,7 @@ time                  log
 2020-08-18T00:00:00Z  0.5227214853805835
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的以4为底数的对数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的以4为底数的对数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -4174,7 +4174,7 @@ SELECT LOG2( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GRO
 
 `LOG2(field_key)`返回field key对应的field value的以2为底数的对数。
 
-`LOG2(*)`返回在metric中每个field key对应的field value的以2为底数的对数。
+`LOG2(*)`返回在measurement中每个field key对应的field value的以2为底数的对数。
 
 `LOG2()`支持数据类型为int64和float64的field value。
 
@@ -4214,9 +4214,9 @@ time                  log2
 2020-08-18T00:30:00Z  1.0363274918177652
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的以2为底数的对数。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的以2为底数的对数。
 
-###### 计算metric中每个field key对应的field value的以2为底数的对数
+###### 计算measurement中每个field key对应的field value的以2为底数的对数
 
 ```sql
 > SELECT LOG2(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -4232,7 +4232,7 @@ time                  log2_water_level
 2020-08-18T00:30:00Z  1.0363274918177652
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的以2为底数的对数。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的以2为底数的对数。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ###### 计算指定field key对应的field value的以2为底数的对数并包含多个子句
 
@@ -4248,7 +4248,7 @@ time                  log2
 2020-08-18T00:00:00Z  1.045442970761167
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的以2为底数的对数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的以2为底数的对数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -4315,7 +4315,7 @@ SELECT LOG10( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GR
 
 `LOG10(field_key)`返回field key对应的field value的以10为底数的对数。
 
-`LOG10(*)`返回在metric中每个field key对应的field value的以10为底数的对数。
+`LOG10(*)`返回在measurement中每个field key对应的field value的以10为底数的对数。
 
 `LOG10()`支持数据类型为int64和float64的field value。
 
@@ -4355,9 +4355,9 @@ time                  log10
 2020-08-18T00:30:00Z  0.3119656603683663
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的以10为底数的对数。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的以10为底数的对数。
 
-###### 计算metric中每个field key对应的field value的以10为底数的对数
+###### 计算measurement中每个field key对应的field value的以10为底数的对数
 
 ```sql
 > SELECT LOG10(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -4373,7 +4373,7 @@ time                  log10_water_level
 2020-08-18T00:30:00Z  0.3119656603683663
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的以10为底数的对数。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的以10为底数的对数。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ###### 计算指定field key对应的field value的以10为底数的对数并包含多个子句
 
@@ -4389,7 +4389,7 @@ time                  log10
 2020-08-18T00:00:00Z  0.3147096929551737
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的以10为底数的对数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的以10为底数的对数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -4460,7 +4460,7 @@ SELECT MOVING_AVERAGE( [ * | <field_key> | /<regular_expression>/ ] , <N> ) [INT
 
 `MOVING_AVERAGE(/regular_expression/,N)`返回与正则表达式匹配的每个field key对应的N个field value的滚动平均值。
 
-`MOVING_AVERAGE(*,N)`返回在metric中每个field key对应的N个field value的滚动平均值。
+`MOVING_AVERAGE(*,N)`返回在measurement中每个field key对应的N个field value的滚动平均值。
 
 `MOVING_AVERAGE()`支持数据类型为int64和float64的field value。
 
@@ -4500,9 +4500,9 @@ time                   moving_average
 2020-08-18T00:30:00Z   2.0460000000000003
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的窗口大小为两个field value的滚动平均值。第一个结果(`2.09`)是原始数据中前两个field value的平均值：(2.064 + 2.116) / 2。第二个结果(`2.072`)是原始数据中第二和第三个field value的平均值：(2.116 + 2.028) / 2。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的窗口大小为两个field value的滚动平均值。第一个结果(`2.09`)是原始数据中前两个field value的平均值：(2.064 + 2.116) / 2。第二个结果(`2.072`)是原始数据中第二和第三个field value的平均值：(2.116 + 2.028) / 2。
 
-###### 计算metric中每个field key对应的field value的滚动平均值
+###### 计算measurement中每个field key对应的field value的滚动平均值
 
 ```sql
 > SELECT MOVING_AVERAGE(*,3) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
@@ -4516,7 +4516,7 @@ time                   moving_average_water_level
 2020-08-18T00:30:00Z   2.0726666666666667
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的窗口大小为三个field value的滚动平均值。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的窗口大小为三个field value的滚动平均值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ###### 计算与正则表达式匹配的每个field key对应的field value的滚动平均值
 
@@ -4531,7 +4531,7 @@ time                    moving_average_water_level
 2020-08-18T00:30:00Z    2.0615
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值并包含单词`level`的field key对应的窗口大小为四个field value的滚动平均值。
+该查询返回measurement `h2o_feet`中每个存储数值并包含单词`level`的field key对应的窗口大小为四个field value的滚动平均值。
 
 ###### 计算指定field key对应的field value的滚动平均值并包含多个子句
 
@@ -4545,7 +4545,7 @@ time                   moving_average
 2020-08-18T00:00:00Z   2.09
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的窗口大小为两个field value的滚动平均值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为2，并将返回的`point`偏移三个(即前三个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的窗口大小为两个field value的滚动平均值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为2，并将返回的`point`偏移三个(即前三个`point`不返回）。
 
 #### 高级语法
 
@@ -4615,7 +4615,7 @@ cnosDB计算field value之间的差值，并将这些结果转换为每个`unit`
 
 `NON_NEGATIVE_DERIVATIVE(/regular_expression/)`返回与正则表达式匹配的每个field key对应的field value的非负变化率。
 
-`NON_NEGATIVE_DERIVATIVE(*)`返回在metric中每个field key对应的field value的非负变化率。
+`NON_NEGATIVE_DERIVATIVE(*)`返回在measurement中每个field key对应的field value的非负变化率。
 
 `NON_NEGATIVE_DERIVATIVE()`支持数据类型为int64和float64的field value。
 
@@ -4665,7 +4665,7 @@ SELECT NON_NEGATIVE_DIFFERENCE( [ * | <field_key> | /<regular_expression>/ ] ) [
 
 `NON_NEGATIVE_DIFFERENCE(/regular_expression/)`返回与正则表达式匹配的每个field key对应的field value的非负差值。
 
-`NON_NEGATIVE_DIFFERENCE(*)`返回在metric中每个field key对应的field value的非负差值。
+`NON_NEGATIVE_DIFFERENCE(*)`返回在measurement中每个field key对应的field value的非负差值。
 
 `NON_NEGATIVE_DIFFERENCE()`支持数据类型为int64和float64的field value。
 
@@ -4712,7 +4712,7 @@ SELECT POW( [ * | <field_key> ], <x> ) [INTO_clause] FROM_clause [WHERE_clause] 
 
 `POW(field_key, x)`返回field key对应的field value的`x`次方。
 
-`POW(*, x)`返回在metric中每个field key对应的field value的`x`次方。
+`POW(*, x)`返回在measurement中每个field key对应的field value的`x`次方。
 
 `POW()`支持数据类型为int64和float64的field value。
 
@@ -4752,9 +4752,9 @@ time                  pow
 2020-08-18T00:30:00Z  17.69549197320101
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的4次方。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的4次方。
 
-###### 计算metric中每个field key对应的field value的4次方
+###### 计算measurement中每个field key对应的field value的4次方
 
 ```sql
 > SELECT POW(*, 4) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -4770,7 +4770,7 @@ time                  pow_water_level
 2020-08-18T00:30:00Z  17.69549197320101
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的4次方。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的4次方。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ###### 计算指定field key对应的field value的4次方并包含多个子句
 
@@ -4786,7 +4786,7 @@ time                  pow
 2020-08-18T00:00:00Z  18.148417929216
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的4次方，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的4次方，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -4853,7 +4853,7 @@ SELECT ROUND( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GR
 
 `ROUND(field_key)`返回field key对应的field value四舍五入后的整数。
 
-`ROUND(*)`返回在metric中每个field key对应的field value四舍五入后的整数。
+`ROUND(*)`返回在measurement中每个field key对应的field value四舍五入后的整数。
 
 `ROUND()`支持数据类型为int64和float64的field value。
 
@@ -4893,9 +4893,9 @@ time                  round
 2020-08-18T00:30:00Z  2
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value四舍五入后的整数。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value四舍五入后的整数。
 
-###### 计算metric中每个field key对应的field value四舍五入后的整数
+###### 计算measurement中每个field key对应的field value四舍五入后的整数
 
 ```sql
 > SELECT ROUND(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -4925,7 +4925,7 @@ time                  round
 2020-08-18T00:00:00Z  2
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value四舍五入后的整数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value四舍五入后的整数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -4992,7 +4992,7 @@ SELECT SIN( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROU
 
 `SIN(field_key)`返回field key对应的field value的正弦值。
 
-`SIN(*)`返回在metric中每个field key对应的field value的正弦值。
+`SIN(*)`返回在measurement中每个field key对应的field value的正弦值。
 
 `SIN()`支持数据类型为int64和float64的field value。
 
@@ -5032,9 +5032,9 @@ time                  sin
 2020-08-18T00:30:00Z  0.8869008523376968
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的正弦值。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的正弦值。
 
-###### 计算metric中每个field key对应的field value的正弦值
+###### 计算measurement中每个field key对应的field value的正弦值
 
 ```sql
 > SELECT SIN(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -5050,7 +5050,7 @@ time                  sin_water_level
 2020-08-18T00:30:00Z  0.8869008523376968
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的正弦值。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的正弦值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ###### 计算指定field key对应的field value的正弦值并包含多个子句
 
@@ -5066,7 +5066,7 @@ time                  sin
 2020-08-18T00:00:00Z  0.8808206017241819
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的正弦值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的正弦值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -5134,7 +5134,7 @@ SELECT SQRT( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GRO
 
 `SQRT(field_key)`返回field key对应的field value的平方根。
 
-`SQRT(*)`返回在metric中每个field key对应的field value的平方根。
+`SQRT(*)`返回在measurement中每个field key对应的field value的平方根。
 
 `SQRT()`支持数据类型为int64和float64的field value。
 
@@ -5174,9 +5174,9 @@ time                  sqrt
 2020-08-18T00:30:00Z  1.4321312788986909
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的平方根。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的平方根。
 
-###### 计算metric中每个field key对应的field value的平方根
+###### 计算measurement中每个field key对应的field value的平方根
 
 ```sql
 > SELECT SQRT(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -5192,7 +5192,7 @@ time                  sqrt_water_level
 2020-08-18T00:30:00Z  1.4321312788986909
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的平方根。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的平方根。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ###### 计算指定field key对应的field value的平方根并包含多个子句
 
@@ -5208,7 +5208,7 @@ time                  sqrt
 2020-08-18T00:00:00Z  1.4366627996854378
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的平方根，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的平方根，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -5275,7 +5275,7 @@ SELECT TAN( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROU
 
 `TAN(field_key)`返回field key对应的field value的正切值。
 
-`TAN(*)`返回在metric中每个field key对应的field value的正切值。
+`TAN(*)`返回在measurement中每个field key对应的field value的正切值。
 
 `TAN()`支持数据类型为int64和float64的field value。
 
@@ -5315,9 +5315,9 @@ time                  tan
 2020-08-18T00:30:00Z  -1.9198657720074992
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的正切值。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的正切值。
 
-###### 计算metric中每个field key对应的field value的正切值
+###### 计算measurement中每个field key对应的field value的正切值
 
 ```sql
 > SELECT TAN(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
@@ -5333,7 +5333,7 @@ time                  tan_water_level
 2020-08-18T00:30:00Z  -1.9198657720074992
 ```
 
-该查询返回metric `h2o_feet`中每个存储数值的field key对应的field value的正切值。metric `h2o_feet`中只有一个数值类型的field：`water_level`。
+该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的正切值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
 
 ###### 计算指定field key对应的field value的正切值并包含多个子句
 
@@ -5349,7 +5349,7 @@ time                  tan
 2020-08-18T00:00:00Z  -1.8604293534384375
 ```
 
-该查询返回metric `h2o_feet`中field key `water_level`对应的field value的正切值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的正切值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
 #### 高级语法
 
@@ -5577,7 +5577,7 @@ CHANDE_MOMENTUM_OSCILLATOR([ * | <field_key> | /regular_expression/ ], <period>[
 
 `CHANDE_MOMENTUM_OSCILLATOR(/regular_expression/, 2)`返回使用CMO算法处理与正则表达式匹配的每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
 
-`CHANDE_MOMENTUM_OSCILLATOR(*, 2)`返回使用CMO算法处理metric中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
+`CHANDE_MOMENTUM_OSCILLATOR(*, 2)`返回使用CMO算法处理measurement中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
 
 `CHANDE_MOMENTUM_OSCILLATOR()` 支持数据类型为int64和float64的field value。
 
@@ -5609,7 +5609,7 @@ EXPONENTIAL_MOVING_AVERAGE([ * | <field_key> | /regular_expression/ ], <period>[
 
 `EXPONENTIAL_MOVING_AVERAGE(/regular_expression/, 2)`返回使用EMA算法处理与正则表达式匹配的每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
 
-`EXPONENTIAL_MOVING_AVERAGE(*, 2)`返回使用EMA算法处理metric中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
+`EXPONENTIAL_MOVING_AVERAGE(*, 2)`返回使用EMA算法处理measurement中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
 
 `EXPONENTIAL_MOVING_AVERAGE()` 支持数据类型为int64和float64的field value。
 
@@ -5641,7 +5641,7 @@ DOUBLE_EXPONENTIAL_MOVING_AVERAGE([ * | <field_key> | /regular_expression/ ], <p
 
 `DOUBLE_EXPONENTIAL_MOVING_AVERAGE(/regular_expression/, 2)`返回使用DEMA算法处理与正则表达式匹配的每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
 
-`DOUBLE_EXPONENTIAL_MOVING_AVERAGE(*, 2)`返回使用DEMA算法处理metric中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
+`DOUBLE_EXPONENTIAL_MOVING_AVERAGE(*, 2)`返回使用DEMA算法处理measurement中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
 
 `DOUBLE_EXPONENTIAL_MOVING_AVERAGE()`支持数据类型为int64和float64的field value。
 
@@ -5676,7 +5676,7 @@ KAUFMANS_EFFICIENCY_RATIO([ * | <field_key> | /regular_expression/ ], <period>[,
 
 `KAUFMANS_EFFICIENCY_RATIO(/regular_expression/, 2)`返回使用效率指数算法处理与正则表达式匹配的每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period。
 
-`KAUFMANS_EFFICIENCY_RATIO(*, 2)`返回使用效率指数算法处理metric中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period。
+`KAUFMANS_EFFICIENCY_RATIO(*, 2)`返回使用效率指数算法处理measurement中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period。
 
 `KAUFMANS_EFFICIENCY_RATIO()`支持数据类型为int64和float64的field value。
 
@@ -5706,7 +5706,7 @@ KAUFMANS_ADAPTIVE_MOVING_AVERAGE([ * | <field_key> | /regular_expression/ ], <pe
 
 `KAUFMANS_ADAPTIVE_MOVING_AVERAGE(/regular_expression/, 2)`返回使用KAMA算法处理与正则表达式匹配的每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period。
 
-`KAUFMANS_ADAPTIVE_MOVING_AVERAGE(*, 2)`返回使用KAMA算法处理metric中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period。
+`KAUFMANS_ADAPTIVE_MOVING_AVERAGE(*, 2)`返回使用KAMA算法处理measurement中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period。
 
 `KAUFMANS_ADAPTIVE_MOVING_AVERAGE()`支持数据类型为int64和float64的field value。
 
@@ -5738,7 +5738,7 @@ TRIPLE_EXPONENTIAL_MOVING_AVERAGE([ * | <field_key> | /regular_expression/ ], <p
 
 `TRIPLE_EXPONENTIAL_MOVING_AVERAGE(/regular_expression/, 2)`返回使用TEMA算法处理与正则表达式匹配的每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
 
-`TRIPLE_EXPONENTIAL_MOVING_AVERAGE(*, 2)`返回使用TEMA算法处理metric中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
+`TRIPLE_EXPONENTIAL_MOVING_AVERAGE(*, 2)`返回使用TEMA算法处理measurement中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
 
 `TRIPLE_EXPONENTIAL_MOVING_AVERAGE()`支持数据类型为int64和float64的field value。
 
@@ -5774,13 +5774,13 @@ TRIPLE_EXPONENTIAL_DERIVATIVE([ * | <field_key> | /regular_expression/ ], <perio
 
 `TRIPLE_EXPONENTIAL_DERIVATIVE(/regular_expression/, 2)`返回使用三重指数导数算法处理与正则表达式匹配的每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
 
-`TRIPLE_EXPONENTIAL_DERIVATIVE(*, 2)`返回使用三重指数导数算法处理metric中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
+`TRIPLE_EXPONENTIAL_DERIVATIVE(*, 2)`返回使用三重指数导数算法处理measurement中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
 
 `TRIPLE_EXPONENTIAL_DERIVATIVE()`支持数据类型为int64和float64的field value。
 
 ### RELATIVE_STRENGTH_INDEX()
 
-相对强弱指数 (Relative Strength Index，RSI)是一个动量指标，用于比较在指定时间段内最近数据增大和减小的幅度，以便metric数据变动的速度和变化。
+相对强弱指数 (Relative Strength Index，RSI)是一个动量指标，用于比较在指定时间段内最近数据增大和减小的幅度，以便measurement数据变动的速度和变化。
 
 <sup style="line-height:0; font-size:.7rem; font-style:italic; font-weight:normal;"><a href="https://www.investopedia.com/terms/r/rsi.asp" target="\_blank">Source</a>
 
@@ -5806,7 +5806,7 @@ RELATIVE_STRENGTH_INDEX([ * | <field_key> | /regular_expression/ ], <period>[, <
 
 `RELATIVE_STRENGTH_INDEX(/regular_expression/, 2)`返回使用RSI算法处理与正则表达式匹配的每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
 
-`RELATIVE_STRENGTH_INDEX(*, 2)`返回使用RSI算法处理metric中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
+`RELATIVE_STRENGTH_INDEX(*, 2)`返回使用RSI算法处理measurement中每个field key对应的field value后的结果，该算法中，period设为2，使用默认的hold period和warmup type。
 
 `RELATIVE_STRENGTH_INDEX()`支持数据类型为int64和float64的field value。
 
@@ -6098,9 +6098,9 @@ time                  max_water_level
 2020-08-29T07:24:00Z  9.964
 ```
 
-第一个查询返回cnosDB的空时间戳(epoch 0: `1970-01-01T00:00:00Z`)作为查询结果中的时间戳。因为`FIRST(*)`返回两个时间戳（对应metric `h2o_feet`中的每个field key），所以系统使用空时间戳覆盖这两个时间戳。
+第一个查询返回cnosDB的空时间戳(epoch 0: `1970-01-01T00:00:00Z`)作为查询结果中的时间戳。因为`FIRST(*)`返回两个时间戳（对应measurement `h2o_feet`中的每个field key），所以系统使用空时间戳覆盖这两个时间戳。
 
-第二个查询返回原始数据中具有最大值的`point`的时间戳。因为`MAX(*)`只返回一个时间戳(metric `h2o_feet`中只有一个数值类型的field)，所以系统不会覆盖原始时间戳。
+第二个查询返回原始数据中具有最大值的`point`的时间戳。因为`MAX(*)`只返回一个时间戳(measurement `h2o_feet`中只有一个数值类型的field)，所以系统不会覆盖原始时间戳。
 
 ###### 使用多个selector函数，并且没有指定时间范围
 

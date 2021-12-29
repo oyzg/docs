@@ -20,7 +20,7 @@ END
 CQ查询必须包含一个函数，一个`INTO`子句和一个`GROUP BY time()`子句：
 
 ```sql
-SELECT <function[s]> INTO <destination_metric> FROM <metric> [WHERE <stuff>] GROUP BY time(<interval>)[,<tag_key[s]>]
+SELECT <function[s]> INTO <destination_measurement> FROM <measurement> [WHERE <stuff>] GROUP BY time(<interval>)[,<tag_key[s]>]
 ```
 
 > 在`WHERE`子句中，不需要指定时间范围，CQ查询会为语句自动匹配时间范围
@@ -46,7 +46,7 @@ time                   passengers   complaints
 
 **自动采样数据**
 
-使用CQ自动从单个字段下采样数据，并将结果写入到同一个数据库的另一个`metric`中：
+使用CQ自动从单个字段下采样数据，并将结果写入到同一个数据库的另一个`measurement`中：
 
 ```sql
 CREATE CONTINUOUS QUERY "cq_basic" ON "transportation"
@@ -91,7 +91,7 @@ time                   mean
 ```sql
 CREATE CONTINUOUS QUERY "cq_basic_br" ON "transportation"
 BEGIN
-  SELECT mean(*) INTO "downsampled_transportation"."autogen".:METRIC FROM /.*/ GROUP BY time(30m),*
+  SELECT mean(*) INTO "downsampled_transportation"."autogen".:MEASUREMENT FROM /.*/ GROUP BY time(30m),*
 END
 ```
 
@@ -235,7 +235,7 @@ time                   mean
 
 **配置CQ的时间范围并填充空值**
 
-使用`FOR`间隔和`fill()`来更改不含数据的时间间隔值。请注意，至少有一个数据点必须在`fill()`运行的`FOR`间隔内。 如果没有数据落在`FOR`间隔内，则CQ不会将任何数据写入目标`metric`。
+使用`FOR`间隔和`fill()`来更改不含数据的时间间隔值。请注意，至少有一个数据点必须在`fill()`运行的`FOR`间隔内。 如果没有数据落在`FOR`间隔内，则CQ不会将任何数据写入目标`measurement`。
 
 ```sql
 CREATE CONTINUOUS QUERY "cq_advanced_for_fill" ON "transportation"
