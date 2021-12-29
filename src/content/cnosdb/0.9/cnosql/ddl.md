@@ -6,12 +6,12 @@ CnosQL提供了一整套DDL（数据定义语言）
 | :--------------------------------------: | :--------------------------------------: | :-------------------------------------: |
 |      [CRAETE DATABASE](#创建数据库)      |      [SHOW DATABASES](#显示数据库)       |      [DROP DATABASE](#删除数据库)       |
 |        [SHOW SERIES](#显示series)        |    [DROP SERIES](#使用drop删除series)    |     [DELETE](#使用delete删除series)     |
-|  [SHOW METRICS](#显示metric)   |   [DROP METRIC](#删除metric)   |      [SHOW TAG KEYS](#显示tag-key)      |
+|  [SHOW MEASUREMENTS](#显示measurement)   |   [DROP MEASUREMENT](#删除measurement)   |      [SHOW TAG KEYS](#显示tag-key)      |
 |    [SHOW TAG VALUES](#显示tag-value)     |    [SHOW FIELD KEYS](#显示field-key)     |        [按时间过滤](#按时间过滤)        |
 |         [DROP SHARD](#删除分片)          |                                          |                                         |
 |                                          |    [**保留策略管理**](#保留策略管理)     |                                         |
-| [CRAETE TTL](#创建保留策略) | [SHOW TTLS](#显示保留策略) | [ALTER TTL](#修改保留策略) |
-|  [DROP TTL](#删除保留策略)  |                                          |                                         |
+| [CRAETE RETENTION POLICY](#创建保留策略) | [SHOW RETENTION POLICIES](#显示保留策略) | [ALTER RETENTION POLICY](#修改保留策略) |
+|  [DROP RETENTION POLICY](#删除保留策略)  |                                          |                                         |
 
 ## 数据库管理
 
@@ -20,7 +20,7 @@ CnosQL提供了一整套DDL（数据定义语言）
 **语法**
 
 ```sql
-CREATE DATABASE <database_name> [WITH [DURATION <duration>] [REPLICATION <n>] [SHARD DURATION <duration>] [NAME <ttl-name>]]
+CREATE DATABASE <database_name> [WITH [DURATION <duration>] [REPLICATION <n>] [SHARD DURATION <duration>] [NAME <rp-name>]]
 ```
 
 **语法描述**
@@ -96,7 +96,7 @@ SHOW SERIES [ON <database_name>] [FROM_clause] [WHERE <tag_key> <operator> [ '<t
 
 `[ON <database_name>]`指定数据库名称
 
-`FROM`子句指定`metric`
+`FROM`子句指定`measurement`
 
 `WHERE`子句支持比较`tag`，`field`比较是无效的
 
@@ -113,7 +113,7 @@ SHOW SERIES ON "cnos" WHERE time > now() - 1m LIMIT 10
 **语法**
 
 ```sql
-DROP SERIES FROM <metric_name[,metric_name]> WHERE <tag_key>='<tag_value>'
+DROP SERIES FROM <measurement_name[,measurement_name]> WHERE <tag_key>='<tag_value>'
 ```
 
 **语法描述**
@@ -122,13 +122,13 @@ DROP SERIES FROM <metric_name[,metric_name]> WHERE <tag_key>='<tag_value>'
 
 **示例**
 
-从一个`metric`中删除所有`series`
+从一个`measurement`中删除所有`series`
 
 ```sql
 > DROP SERIES FROM "cpu"
 ```
 
-从一个`metric`中删除具有特定条件的`series`
+从一个`measurement`中删除具有特定条件的`series`
 
 ```sql
 DROP SERIES FROM "cpu" WHERE "region" = 'Shanghai'
@@ -139,7 +139,7 @@ DROP SERIES FROM "cpu" WHERE "region" = 'Shanghai'
 **语法**
 
 ```sql
-DELETE FROM <metric_name> WHERE [<tag_key>='<tag_value>'] | [<time interval>]
+DELETE FROM <measurement_name> WHERE [<tag_key>='<tag_value>'] | [<time interval>]
 ```
 
 **语法描述**
@@ -154,19 +154,19 @@ DELETE FROM <metric_name> WHERE [<tag_key>='<tag_value>'] | [<time interval>]
 > DELETE WHERE time < '2021-01-01'
 ```
 
-### 显示`metric`
+### 显示`measurement`
 
 **语法**
 
 ```sql
-SHOW METRICS [ON <database_name>] [WITH METRIC <operator> ['<metric_name>' | <regular_expression>]] [WHERE <tag_key> <operator> ['<tag_value>' | <regular_expression>]] [LIMIT_clause] [OFFSET_clause]
+SHOW MEASUREMENTS [ON <database_name>] [WITH MEASUREMENT <operator> ['<measurement_name>' | <regular_expression>]] [WHERE <tag_key> <operator> ['<tag_value>' | <regular_expression>]] [LIMIT_clause] [OFFSET_clause]
 ```
 
-`SHOW METRICS`后面都是可选项
+`SHOW MEASUREMENTS`后面都是可选项
 
 `[ON <database_name>]`指定数据库名称
 
-`FROM`子句指定`metric`
+`FROM`子句指定`measurement`
 
 `WHERE`子句支持比较`tag`，`field`比较是无效的
 
@@ -175,25 +175,25 @@ SHOW METRICS [ON <database_name>] [WITH METRIC <operator> ['<metric_name>' | <re
 > 该查询返回数据库`cnos`下`tag key`host下的`tag value`的值中包含一个整数
 
 ```sql
-SHOW METRICS ON "cnos" WITH METRIC =~ /h2o.*/ WHERE "host"  =~ /\d/
+SHOW MEASUREMENTS ON "cnos" WITH MEASUREMENT =~ /h2o.*/ WHERE "host"  =~ /\d/
 ```
 
-### 删除`metric`
+### 删除`measurement`
 
 **语法**
 
 ```sql
-DROP METRIC <metric_name>
+DROP MEASUREMENT <measurement_name>
 ```
 
 **语法描述**
 
-`DROP METRIC`会删除指定`metric`下所有的数据
+`DROP MEASUREMENT`会删除指定`measurement`下所有的数据
 
 **示例**
 
 ```sql
-DROP METRIC "cpu"
+DROP MEASUREMENT "cpu"
 ```
 
 ### 显示`tag key`
@@ -210,7 +210,7 @@ SHOW TAG KEYS [ON <database_name>] [FROM_clause] [WHERE <tag_key> <operator> ['<
 
 `[ON <database_name>]`指定数据库名称
 
-`FROM`子句指定`metric`
+`FROM`子句指定`measurement`
 
 `WHERE`子句支持比较`tag`，`field`比较是无效的
 
@@ -232,7 +232,7 @@ SHOW TAG VALUES [ON <database_name>][FROM_clause] WITH KEY [ [<operator> "<tag_k
 
 `[ON <database_name>]`指定数据库名称
 
-`FROM`子句指定`metric`
+`FROM`子句指定`measurement`
 
 `WHERE`子句支持比较`tag`，`field`比较是无效的
 
@@ -247,7 +247,7 @@ SHOW TAG VALUES ON "cnos" WITH KEY IN ("region","host") WHERE "host" =~ /./ LIMI
 **语法**
 
 ```sql
-SHOW FIELD KEYS [ON <database_name>] [FROM <metric_name>]
+SHOW FIELD KEYS [ON <database_name>] [FROM <measurement_name>]
 ```
 
 **语法描述**
@@ -262,7 +262,7 @@ SHOW FIELD KEYS ON "cnos" FROM "cpu"
 
 ### 按时间过滤
 
-> 可以在`SHOW TAG KEYS`、`SHOW TAG VALUES` `SHOW SERIES` `SHOW METRICS` `SHOW FIELD KEYS`上使用
+> 可以在`SHOW TAG KEYS`、`SHOW TAG VALUES` `SHOW SERIES` `SHOW MEASUREMENTS` `SHOW FIELD KEYS`上使用
 
 **示例**
 
@@ -294,7 +294,7 @@ DROP SHARD <shard_id_number>
 **语法**
 
 ```sql
-CREATE TTL <ttl_name> ON <database_name> DURATION <duration> REPLICATION <n> [SHARD DURATION <duration>] [DEFAULT]
+CREATE RETENTION POLICY <rp_name> ON <database_name> DURATION <duration> REPLICATION <n> [SHARD DURATION <duration>] [DEFAULT]
 ```
 
 **描述**
@@ -314,14 +314,14 @@ CREATE TTL <ttl_name> ON <database_name> DURATION <duration> REPLICATION <n> [SH
 > 该语句创建了一个名为`1d_events`的保留策略，并且副本数为1
 
 ```sql
-> CREATE TTL "1d_events" ON "cnos" DURATION 1d REPLICATION 1
+> CREATE RETENTION POLICY "1d_events" ON "cnos" DURATION 1d REPLICATION 1
 >
 ```
 
 创建默认保留策略
 
 ```sql
-> CREATE TTL "1d_events" ON "cnos" DURATION 23h60m REPLICATION 1 DEFAULT
+> CREATE RETENTION POLICY "1d_events" ON "cnos" DURATION 23h60m REPLICATION 1 DEFAULT
 >
 ```
 
@@ -330,13 +330,13 @@ CREATE TTL <ttl_name> ON <database_name> DURATION <duration> REPLICATION <n> [SH
 **语法**
 
 ```sql
-SHOW TTLS [ON <database_name>]
+SHOW RETENTION POLICIES [ON <database_name>]
 ```
 
 **示例**
 
 ```sql
-> SHOW TTLS ON "cnos"
+> SHOW RETENTION POLICIES ON "cnos"
 
 name      duration   shardGroupDuration   replicaN   default
 ----      --------   ------------------   --------   -------
@@ -348,13 +348,13 @@ autogen   0s         168h0m0s             1          true
 **语法**
 
 ```sql
-ALTER TTL <ttl_name> ON <database_name> DURATION <duration> REPLICATION <n> SHARD DURATION <duration> DEFAULT
+ALTER RETENTION POLICY <rp_name> ON <database_name> DURATION <duration> REPLICATION <n> SHARD DURATION <duration> DEFAULT
 ```
 
 **示例**
 
 ```sql
-ALTER TTL "1d_events" ON "cnos" DURATION 7 SHARD DURATION 1d DEFAULT
+ALTER RETENTION POLICY "1d_events" ON "cnos" DURATION 7 SHARD DURATION 1d DEFAULT
 ```
 
 ### 删除保留策略
@@ -362,12 +362,12 @@ ALTER TTL "1d_events" ON "cnos" DURATION 7 SHARD DURATION 1d DEFAULT
 **语法**
 
 ```sql
-DROP TTL <ttl_name> ON <database_name>
+DROP RETENTION POLICY <rp_name> ON <database_name>
 ```
 
 **示例**
 
 ```sql
-> DROP TTL "1d_events" ON "cnos"
+> DROP RETENTION POLICY "1d_events" ON "cnos"
 >
 ```

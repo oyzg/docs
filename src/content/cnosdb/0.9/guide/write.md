@@ -12,9 +12,9 @@ curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE m
 
 cnosdb API是将数据写入cnosdb的主要方法
 
-- 如果使用cnosdb 1.0.0 API写入数据，需要发送`POST`送到`/write`接口，将数据写入到`mydb`数据库，那么数据应该包含以下部分：
+- 如果使用cnosdb 0.9 API写入数据，需要发送`POST`送到`/write`接口，将数据写入到`mydb`数据库，那么数据应该包含以下部分：
 
-  > `metric`与`tag`之间使用`,`分隔
+  > `measurement`与`tag`之间使用`,`分隔
   >
   > `tag`组合可以有多个，`tag`之间使用`,`分隔
   >
@@ -24,7 +24,7 @@ cnosdb API是将数据写入cnosdb的主要方法
   >
   > `field`与时间戳使用空格分隔
   
-  - `metric` : `cpu_load_short`
+  - `measurement` : `cpu_load_short`
   - `tag key`=`tag value` : `host=server01,region=us-west`
   - `field key=field value`: `value=0.64` 
   - `timestamp` : `1434055562000000000`
@@ -77,7 +77,7 @@ curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary @cpu_data.txt
 ### No Schame设计
 
 CnosDB是`schemaless` 数据库.
-可以随时添加新的`metric`, `tag`, 和`field`
+可以随时添加新的`measurement`, `tag`, 和`field`
 
 ### HTTP 响应摘要
 
@@ -103,7 +103,7 @@ X-cnosdb-Version: 1.4.x
 Date: Wed, 01 Mar 2017 19:38:01 GMT
 Content-Length: 150
 
-{"error":"field type conflict: input field \"booleanonly\" on metric \"tobeornottobe\" is type float, already exists as type boolean dropped=1"}
+{"error":"field type conflict: input field \"booleanonly\" on measurement \"tobeornottobe\" is type float, already exists as type boolean dropped=1"}
 ```
 
 ##### 将`Point`写入不存在的数据库
