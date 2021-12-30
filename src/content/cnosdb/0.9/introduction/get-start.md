@@ -14,4 +14,6 @@
 
 连续查询请[参考这里](../cnosql/countine_query.md)
 
+使用Kubernetes部署CnosDB请[点击这里](../other/kubernetes-deployment.md)
+
 
