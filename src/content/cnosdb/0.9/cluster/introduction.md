@@ -12,11 +12,8 @@ CnosDB由两组软件组成，`data`节点和`meta`节点，集群内的通讯�
 
 ## 安装
 
+> 配置文件的`hostname`需要其他的`meta node`和`data node`节点都能够访问\
 > 配置文件可以通过`cnosdb-meta config > config_path`获得
-
-## 启动集群模式
-
-更改配置文件中的参数`cluster`为`true`
 
 ### 启动`meta`节点
 
@@ -26,7 +23,7 @@ CnosDB由两组软件组成，`data`节点和`meta`节点，集群内的通讯�
 
 ### 将`meta`加入到集群
 
-> 添加完后会提示：Added meta node x atcnosdb-meta-0x:8091
+> 添加完后会提示：Added meta node x at cnosdb-meta-0x:8091
 
 ```
 cnosdb-ctl --bind cnosdb-meta-01:8091 add-meta cnosdb-meta-01:8091
