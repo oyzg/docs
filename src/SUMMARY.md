@@ -20,3 +20,4 @@
 - [CnosDB分布式](./content/cnosdb/0.9/cluster/introduction.md)
 - [其他](./content/cnosdb/0.9/other/index.md)
   - [使用Kubernetes部署CnosDB](./content/cnosdb/0.9/other/kubernetes-deployment.md)
+  - [使用Kubernetes部署CnosDB集群](./content/cnosdb/0.9/other/kubernetes-StatefulSet.md)
