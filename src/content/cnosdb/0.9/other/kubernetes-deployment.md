@@ -9,7 +9,7 @@ kubectl create namespace $NAMESPACE
 
 ## 创建配置文件
 ```shell
-wget -O cnosdb.conf https://cnosdatabase.github.io/content/cnosdb/0.9/other/cnosdb.sample.toml
+wget -O cnosdb.conf https://cnosdb.github.io/content/cnosdb/0.9/other/cnosdb.sample.toml
 kubectl create configmap cnosdb-config --from-file cnosdb.conf -n $NAMESPACE
 ```
 
