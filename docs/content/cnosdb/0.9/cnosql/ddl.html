@@ -1,0 +1,441 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>DDL - CnosDB</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../../../../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../../../../favicon.png">
+        
+        <link rel="stylesheet" href="../../../../css/variables.css">
+        <link rel="stylesheet" href="../../../../css/general.css">
+        <link rel="stylesheet" href="../../../../css/chrome.css">
+        
+        <link rel="stylesheet" href="../../../../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../../../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../../../../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../../../highlight.css">
+        <link rel="stylesheet" href="../../../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/about.html"><strong aria-hidden="true">1.</strong> 关于本项目</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/introduction/index.html"><strong aria-hidden="true">2.</strong> 介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/introduction/download.html"><strong aria-hidden="true">2.1.</strong> 下载</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/introduction/install.html"><strong aria-hidden="true">2.2.</strong> 安装</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/introduction/get-start.html"><strong aria-hidden="true">2.3.</strong> 快速开始</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/concept/index.html"><strong aria-hidden="true">3.</strong> 概念</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/guide/index.html"><strong aria-hidden="true">4.</strong> 指南</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/guide/cnosdb.html"><strong aria-hidden="true">4.1.</strong> cnosdb</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/guide/cnosdb-cli.html"><strong aria-hidden="true">4.2.</strong> cnosdb-cli</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/guide/write.html"><strong aria-hidden="true">4.3.</strong> HTTP写入</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/guide/query.html"><strong aria-hidden="true">4.4.</strong> HTTP查询</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/cnosql/index.html"><strong aria-hidden="true">5.</strong> CnosQL</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/cnosql/ddl.html" class="active"><strong aria-hidden="true">5.1.</strong> DDL</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/cnosql/dml.html"><strong aria-hidden="true">5.2.</strong> DML</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/cnosql/function.html"><strong aria-hidden="true">5.3.</strong> 函数</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/cnosql/countine_query.html"><strong aria-hidden="true">5.4.</strong> 连续查询</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/cluster/introduction.html"><strong aria-hidden="true">6.</strong> CnosDB分布式</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/other/index.html"><strong aria-hidden="true">7.</strong> 其他</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/other/kubernetes-deployment.html"><strong aria-hidden="true">7.1.</strong> 使用Kubernetes部署CnosDB</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/0.9/other/kubernetes-StatefulSet.html"><strong aria-hidden="true">7.2.</strong> 使用Kubernetes部署CnosDB集群</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">CnosDB</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../../../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#ddl" id="ddl">DDL</a></h1>
+<p>CnosQL提供了一整套DDL（数据定义语言）</p>
+<table><thead><tr><th align="center"></th><th align="center"><a href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86">数据库管理</a></th><th align="center"></th></tr></thead><tbody>
+<tr><td align="center"><a href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93">CRAETE DATABASE</a></td><td align="center"><a href="#%E6%98%BE%E7%A4%BA%E6%95%B0%E6%8D%AE%E5%BA%93">SHOW DATABASES</a></td><td align="center"><a href="#%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E5%BA%93">DROP DATABASE</a></td></tr>
+<tr><td align="center"><a href="#%E6%98%BE%E7%A4%BAseries">SHOW SERIES</a></td><td align="center"><a href="#%E4%BD%BF%E7%94%A8drop%E5%88%A0%E9%99%A4series">DROP SERIES</a></td><td align="center"><a href="#%E4%BD%BF%E7%94%A8delete%E5%88%A0%E9%99%A4series">DELETE</a></td></tr>
+<tr><td align="center"><a href="#%E6%98%BE%E7%A4%BAmeasurement">SHOW MEASUREMENTS</a></td><td align="center"><a href="#%E5%88%A0%E9%99%A4measurement">DROP MEASUREMENT</a></td><td align="center"><a href="#%E6%98%BE%E7%A4%BAtag-key">SHOW TAG KEYS</a></td></tr>
+<tr><td align="center"><a href="#%E6%98%BE%E7%A4%BAtag-value">SHOW TAG VALUES</a></td><td align="center"><a href="#%E6%98%BE%E7%A4%BAfield-key">SHOW FIELD KEYS</a></td><td align="center"><a href="#%E6%8C%89%E6%97%B6%E9%97%B4%E8%BF%87%E6%BB%A4">按时间过滤</a></td></tr>
+<tr><td align="center"><a href="#%E5%88%A0%E9%99%A4%E5%88%86%E7%89%87">DROP SHARD</a></td><td align="center"></td><td align="center"></td></tr>
+<tr><td align="center"></td><td align="center"><a href="#%E4%BF%9D%E7%95%99%E7%AD%96%E7%95%A5%E7%AE%A1%E7%90%86"><strong>保留策略管理</strong></a></td><td align="center"></td></tr>
+<tr><td align="center"><a href="#%E5%88%9B%E5%BB%BA%E4%BF%9D%E7%95%99%E7%AD%96%E7%95%A5">CRAETE RETENTION POLICY</a></td><td align="center"><a href="#%E6%98%BE%E7%A4%BA%E4%BF%9D%E7%95%99%E7%AD%96%E7%95%A5">SHOW RETENTION POLICIES</a></td><td align="center"><a href="#%E4%BF%AE%E6%94%B9%E4%BF%9D%E7%95%99%E7%AD%96%E7%95%A5">ALTER RETENTION POLICY</a></td></tr>
+<tr><td align="center"><a href="#%E5%88%A0%E9%99%A4%E4%BF%9D%E7%95%99%E7%AD%96%E7%95%A5">DROP RETENTION POLICY</a></td><td align="center"></td><td align="center"></td></tr>
+</tbody></table>
+<h2><a class="header" href="#数据库管理" id="数据库管理">数据库管理</a></h2>
+<h3><a class="header" href="#创建数据库" id="创建数据库">创建数据库</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">CREATE DATABASE &lt;database_name&gt; [WITH [DURATION &lt;duration&gt;] [REPLICATION &lt;n&gt;] [SHARD DURATION &lt;duration&gt;] [NAME &lt;rp-name&gt;]]
+</code></pre>
+<p><strong>语法描述</strong></p>
+<p><code>CREATE DATABASE</code>需要一个数据库名称，其他都为可选项。如果未在<code>WITH</code>后面指定保留策略，则会创建一个默认的保留策略，名称为<code>autogen。</code></p>
+<p><code>DURATION</code>保留策略的总窗口时长。</p>
+<p><code>REPLICATION</code>副本数量，默认为<code>1</code>并且只能为<code>1</code>。</p>
+<p><code>SHARD DURATION</code>分片的窗口时长。</p>
+<p><code>NAME</code>指定保留策略名称。</p>
+<p><code>CREATE DATABASE</code>成功执行后不会返回任何结果。</p>
+<p><strong>示例</strong></p>
+<p>创建数据库</p>
+<blockquote>
+<p>创建一个名为<code>cnos</code>的数据库，CnosDB还会在其下创建一个名为<code>autogen</code>的保留策略。</p>
+</blockquote>
+<pre><code class="language-sql">&gt; CREATE DATABASE &quot;cnos&quot;
+&gt;
+</code></pre>
+<p>创建数据库并指定保留策略</p>
+<blockquote>
+<p>创建一个名为<code>cnos</code>的数据库，并指定保留策略为<code>1d_events</code>，它的生命周期为总保留时长为一天，副本数为1，每个分片的的窗口长度为一小时。</p>
+</blockquote>
+<pre><code class="language-sql">&gt; CREATE DATABASE &quot;cnos&quot; WITH DURATION 1d REPLICATION 1 SHARD DURATION 1h NAME &quot;1d_events&quot;
+</code></pre>
+<h3><a class="header" href="#显示数据库" id="显示数据库">显示数据库</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">SHOW DATABASES
+</code></pre>
+<h3><a class="header" href="#删除数据库" id="删除数据库">删除数据库</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">DROP DATABASE &lt;database_name&gt;
+</code></pre>
+<p><strong>语法描述</strong></p>
+<p><code>DROP DATABASE</code>会删除数据库下所有数据。</p>
+<p><strong>示例</strong></p>
+<pre><code class="language-sql">DROP DATABASE &quot;cnos&quot;
+</code></pre>
+<h3><a class="header" href="#显示series" id="显示series">显示<code>SERIES</code></a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">SHOW SERIES [ON &lt;database_name&gt;] [FROM_clause] [WHERE &lt;tag_key&gt; &lt;operator&gt; [ '&lt;tag_value&gt;' | &lt;regular_expression&gt;]] [LIMIT_clause] [OFFSET_clause]
+</code></pre>
+<p><strong>语法描述</strong></p>
+<p><code>SHOW SERIES</code>后面都是可选项</p>
+<p><code>[ON &lt;database_name&gt;]</code>指定数据库名称</p>
+<p><code>FROM</code>子句指定<code>measurement</code></p>
+<p><code>WHERE</code>子句支持比较<code>tag</code>，<code>field</code>比较是无效的</p>
+<p><strong>示例</strong></p>
+<pre><code class="language-sql">SHOW SERIES ON &quot;cnos&quot; WHERE time &gt; now() - 1m LIMIT 10
+</code></pre>
+<h3><a class="header" href="#使用drop删除series" id="使用drop删除series">使用<code>DROP</code>删除<code>series</code></a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">DROP SERIES FROM &lt;measurement_name[,measurement_name]&gt; WHERE &lt;tag_key&gt;='&lt;tag_value&gt;'
+</code></pre>
+<p><strong>语法描述</strong></p>
+<p><code>DROP SERIES</code>会删除数据库中符合条件的所有数据以及数据所对应的索引</p>
+<p><strong>示例</strong></p>
+<p>从一个<code>measurement</code>中删除所有<code>series</code></p>
+<pre><code class="language-sql">&gt; DROP SERIES FROM &quot;cpu&quot;
+</code></pre>
+<p>从一个<code>measurement</code>中删除具有特定条件的<code>series</code></p>
+<pre><code class="language-sql">DROP SERIES FROM &quot;cpu&quot; WHERE &quot;region&quot; = 'Shanghai'
+</code></pre>
+<h3><a class="header" href="#使用delete删除series" id="使用delete删除series">使用<code>DELETE</code>删除<code>series</code></a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">DELETE FROM &lt;measurement_name&gt; WHERE [&lt;tag_key&gt;='&lt;tag_value&gt;'] | [&lt;time interval&gt;]
+</code></pre>
+<p><strong>语法描述</strong></p>
+<p><code>DROP SERIES</code>会删除数据库中符合条件的所有数据，但是不会删除索引，并且支持时间过滤</p>
+<p><strong>示例</strong></p>
+<blockquote>
+<p>删除2020-01-01之前产生的的所有数据</p>
+</blockquote>
+<pre><code class="language-sql">&gt; DELETE WHERE time &lt; '2021-01-01'
+</code></pre>
+<h3><a class="header" href="#显示measurement" id="显示measurement">显示<code>measurement</code></a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">SHOW MEASUREMENTS [ON &lt;database_name&gt;] [WITH MEASUREMENT &lt;operator&gt; ['&lt;measurement_name&gt;' | &lt;regular_expression&gt;]] [WHERE &lt;tag_key&gt; &lt;operator&gt; ['&lt;tag_value&gt;' | &lt;regular_expression&gt;]] [LIMIT_clause] [OFFSET_clause]
+</code></pre>
+<p><code>SHOW MEASUREMENTS</code>后面都是可选项</p>
+<p><code>[ON &lt;database_name&gt;]</code>指定数据库名称</p>
+<p><code>FROM</code>子句指定<code>measurement</code></p>
+<p><code>WHERE</code>子句支持比较<code>tag</code>，<code>field</code>比较是无效的</p>
+<p><strong>示例</strong></p>
+<blockquote>
+<p>该查询返回数据库<code>cnos</code>下<code>tag key</code>host下的<code>tag value</code>的值中包含一个整数</p>
+</blockquote>
+<pre><code class="language-sql">SHOW MEASUREMENTS ON &quot;cnos&quot; WITH MEASUREMENT =~ /h2o.*/ WHERE &quot;host&quot;  =~ /\d/
+</code></pre>
+<h3><a class="header" href="#删除measurement" id="删除measurement">删除<code>measurement</code></a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">DROP MEASUREMENT &lt;measurement_name&gt;
+</code></pre>
+<p><strong>语法描述</strong></p>
+<p><code>DROP MEASUREMENT</code>会删除指定<code>measurement</code>下所有的数据</p>
+<p><strong>示例</strong></p>
+<pre><code class="language-sql">DROP MEASUREMENT &quot;cpu&quot;
+</code></pre>
+<h3><a class="header" href="#显示tag-key" id="显示tag-key">显示<code>tag key</code></a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">SHOW TAG KEYS [ON &lt;database_name&gt;] [FROM_clause] [WHERE &lt;tag_key&gt; &lt;operator&gt; ['&lt;tag_value&gt;' | &lt;regular_expression&gt;]] [LIMIT_clause] [OFFSET_clause]
+</code></pre>
+<p><strong>语法描述</strong></p>
+<p><code>SHOW tag keys</code>后面都是可选项</p>
+<p><code>[ON &lt;database_name&gt;]</code>指定数据库名称</p>
+<p><code>FROM</code>子句指定<code>measurement</code></p>
+<p><code>WHERE</code>子句支持比较<code>tag</code>，<code>field</code>比较是无效的</p>
+<p><strong>示例</strong></p>
+<pre><code class="language-sql">SHOW TAG KEYS ON &quot;cnos&quot; FROM &quot;cpu&quot; LIMIT 1 OFFSET 1
+</code></pre>
+<h3><a class="header" href="#显示tag-value" id="显示tag-value">显示<code>tag value</code></a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">SHOW TAG VALUES [ON &lt;database_name&gt;][FROM_clause] WITH KEY [ [&lt;operator&gt; &quot;&lt;tag_key&gt;&quot; | &lt;regular_expression&gt;] | [IN (&quot;&lt;tag_key1&gt;&quot;,&quot;&lt;tag_key2&quot;)]] [WHERE &lt;tag_key&gt; &lt;operator&gt; ['&lt;tag_value&gt;' | &lt;regular_expression&gt;]] [LIMIT_clause] [OFFSET_clause]
+</code></pre>
+<p><strong>语法描述</strong></p>
+<p><code>[ON &lt;database_name&gt;]</code>指定数据库名称</p>
+<p><code>FROM</code>子句指定<code>measurement</code></p>
+<p><code>WHERE</code>子句支持比较<code>tag</code>，<code>field</code>比较是无效的</p>
+<p><strong>示例</strong></p>
+<pre><code class="language-sql">SHOW TAG VALUES ON &quot;cnos&quot; WITH KEY IN (&quot;region&quot;,&quot;host&quot;) WHERE &quot;host&quot; =~ /./ LIMIT 3
+</code></pre>
+<h3><a class="header" href="#显示field-key" id="显示field-key">显示<code>field key</code></a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">SHOW FIELD KEYS [ON &lt;database_name&gt;] [FROM &lt;measurement_name&gt;]
+</code></pre>
+<p><strong>语法描述</strong></p>
+<p><code>FROM</code>子句为可选项</p>
+<p><strong>示例</strong></p>
+<pre><code class="language-sql">SHOW FIELD KEYS ON &quot;cnos&quot; FROM &quot;cpu&quot;
+</code></pre>
+<h3><a class="header" href="#按时间过滤" id="按时间过滤">按时间过滤</a></h3>
+<blockquote>
+<p>可以在<code>SHOW TAG KEYS</code>、<code>SHOW TAG VALUES</code> <code>SHOW SERIES</code> <code>SHOW MEASUREMENTS</code> <code>SHOW FIELD KEYS</code>上使用</p>
+</blockquote>
+<p><strong>示例</strong></p>
+<pre><code class="language-sql">SHOW TAG KEYS ON cnos where time &gt; now() -1h and time &lt; now()
+</code></pre>
+<h3><a class="header" href="#删除分片" id="删除分片">删除分片</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">DROP SHARD &lt;shard_id_number&gt;
+</code></pre>
+<p><strong>语法描述</strong></p>
+<p><code>DROP SHARD</code>会在磁盘上删除有关分片的所有数据以及元数据</p>
+<pre><code class="language-sql">&gt; DROP SHARD 1
+&gt;
+</code></pre>
+<h2><a class="header" href="#保留策略管理" id="保留策略管理">保留策略管理</a></h2>
+<h3><a class="header" href="#创建保留策略" id="创建保留策略">创建保留策略</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">CREATE RETENTION POLICY &lt;rp_name&gt; ON &lt;database_name&gt; DURATION &lt;duration&gt; REPLICATION &lt;n&gt; [SHARD DURATION &lt;duration&gt;] [DEFAULT]
+</code></pre>
+<p><strong>描述</strong></p>
+<p><code>DURATION</code>保留策略的总窗口时长。</p>
+<p><code>REPLICATION</code>副本数量，默认为<code>1</code>并且只能为<code>1</code>。</p>
+<p><code>SHARD DURATION</code>分片的窗口时长。</p>
+<p><code>DEFAULT</code>可选项，指定其是否为默认保留策略</p>
+<p><strong>示例</strong></p>
+<p>创建保留策略</p>
+<blockquote>
+<p>该语句创建了一个名为<code>1d_events</code>的保留策略，并且副本数为1</p>
+</blockquote>
+<pre><code class="language-sql">&gt; CREATE RETENTION POLICY &quot;1d_events&quot; ON &quot;cnos&quot; DURATION 1d REPLICATION 1
+&gt;
+</code></pre>
+<p>创建默认保留策略</p>
+<pre><code class="language-sql">&gt; CREATE RETENTION POLICY &quot;1d_events&quot; ON &quot;cnos&quot; DURATION 23h60m REPLICATION 1 DEFAULT
+&gt;
+</code></pre>
+<h3><a class="header" href="#显示保留策略" id="显示保留策略">显示保留策略</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">SHOW RETENTION POLICIES [ON &lt;database_name&gt;]
+</code></pre>
+<p><strong>示例</strong></p>
+<pre><code class="language-sql">&gt; SHOW RETENTION POLICIES ON &quot;cnos&quot;
+
+name      duration   shardGroupDuration   replicaN   default
+----      --------   ------------------   --------   -------
+autogen   0s         168h0m0s             1          true
+</code></pre>
+<h3><a class="header" href="#修改保留策略" id="修改保留策略">修改保留策略</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">ALTER RETENTION POLICY &lt;rp_name&gt; ON &lt;database_name&gt; DURATION &lt;duration&gt; REPLICATION &lt;n&gt; SHARD DURATION &lt;duration&gt; DEFAULT
+</code></pre>
+<p><strong>示例</strong></p>
+<pre><code class="language-sql">ALTER RETENTION POLICY &quot;1d_events&quot; ON &quot;cnos&quot; DURATION 7 SHARD DURATION 1d DEFAULT
+</code></pre>
+<h3><a class="header" href="#删除保留策略" id="删除保留策略">删除保留策略</a></h3>
+<p><strong>语法</strong></p>
+<pre><code class="language-sql">DROP RETENTION POLICY &lt;rp_name&gt; ON &lt;database_name&gt;
+</code></pre>
+<p><strong>示例</strong></p>
+<pre><code class="language-sql">&gt; DROP RETENTION POLICY &quot;1d_events&quot; ON &quot;cnos&quot;
+&gt;
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../../../../content/cnosdb/0.9/cnosql/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../../../../content/cnosdb/0.9/cnosql/dml.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../../../../content/cnosdb/0.9/cnosql/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../../../../content/cnosdb/0.9/cnosql/dml.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../../../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../../../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
