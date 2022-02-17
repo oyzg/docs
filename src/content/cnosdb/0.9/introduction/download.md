@@ -1,3 +1,3 @@
 # 下载
 
-请访问下载页面：[https://github.com/cnosdatabase/cnosdb/releases](https://github.com/cnosdatabase/cnosdb/releases)
+请访问下载页面：[https://github.com/cnosdb/cnosdb/releases](https://github.com/cnosdb/cnosdb/releases)
