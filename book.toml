@@ -4,3 +4,5 @@ language = "zh-CN"
 multilingual = false
 src = "src"
 title = "CnosDB"
+[build]
+build-dir = "docs"
