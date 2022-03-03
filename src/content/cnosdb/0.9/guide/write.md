@@ -69,7 +69,7 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
 写入数据cpu_data.txt到mydb与数据库
 
 ```bash
-curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary @cpu_data.txt`
+curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary @cpu_data.txt
 ```
 
 > 注意：如果您的数据文件具有超过5000个Points，则可能有必要将该文件拆分为多个文件，以便将数据批量写入cnosdb，默认情况下，HTTP请求在五秒后超时，超时后，cnosdb仍然将尝试写入这些点，但是不会确认它们已经成功写入
