@@ -137,19 +137,170 @@
                         <h1 id="cnosdb_inspect"><a class="header" href="#cnosdb_inspect">cnosdb_inspect</a></h1>
 <h2 id="cnosdb_inspect-工具"><a class="header" href="#cnosdb_inspect-工具">cnosdb_inspect 工具</a></h2>
 <blockquote>
-<p>TODO 介绍</p>
+<p>CnosDB Inspect 是一个 CnosDB 磁盘实用程序，可用于：</p>
+<p>1.查看有关磁盘分片的详细信息。</p>
+<p>2.将数据从分片导出到可以插入回数据库的InfluxDB 线路协议。</p>
+<p>3.将 TSM 索引分片转换为 TSI 索引分片。</p>
 </blockquote>
 <p><strong>语法</strong></p>
-<pre><code class="language-shell">
+<pre><code>cnosdb_inspect [ [ command ] [ options ] ]
 </code></pre>
 <ul>
-<li><a href="#buildtsi">deletetsm</a>:</li>
+<li><a href="#deletetsm">deletetsm</a></li>
 <li><a href="#dumptsm">dumptsm</a></li>
 <li><a href="#dumptsmwal">dumptsmwal</a></li>
 <li><a href="#report-disk">report-disk</a></li>
 <li><a href="#verify">verify</a></li>
 <li><a href="#verify-seriesfile">verify-seriesfile</a></li>
+<li><a href="#export">export</a></li>
 </ul>
+<h1 id="deletetsm"><a class="header" href="#deletetsm"><code>deletetsm</code></a></h1>
+<h2 id="cnosdb_inspect-deletetsm"><a class="header" href="#cnosdb_inspect-deletetsm"><code>cnosdb_inspect deletetsm</code></a></h2>
+<p>批量从原始 <code>TSM</code> 文件中删除<code>measurement</code>数据</p>
+<h3 id="警告"><a class="header" href="#警告"><code>警告</code></a></h3>
+<p>仅当您的<code>CnosDB</code>离线（<code>CnosDB</code>服务未运行） 时才使用<code>deletetsm</code>。</p>
+<h3 id="语法"><a class="header" href="#语法"><code>语法</code></a></h3>
+<pre><code>cnosdb_inspect deletetsm --measurement &lt;measurement_name&gt; [ arguments ] &lt;path&gt;
+</code></pre>
+<p><code>&lt;path&gt;</code></p>
+<p>文件的路径<code>.tsm</code>，默认位于<code>data</code>目录中。</p>
+<p>指定路径时，通配符 (<code>*</code>) 可以替换一个或多个字符。</p>
+<h3 id="选项"><a class="header" href="#选项"><code>选项</code></a></h3>
+<p>可选参数在括号中</p>
+<p><code>--measurement</code></p>
+<p>要从 TSM 文件中删除的<code>measurement</code>的名称。</p>
+<p><code>[ --sanitize]</code></p>
+<p>标记以删除包含不可打印的 <code>Unicode </code>字符的所有键。</p>
+<p><code>[--v]</code></p>
+<p>标记以启用详细日志记录。</p>
+<h3 id="例子"><a class="header" href="#例子"><code>例子</code></a></h3>
+<p>从单个<code>shard</code>中删除一个<code>measurement</code></p>
+<pre><code>./cnosdb_inspect deletetsm --sanitize /cnosdb/data/location/autogen/1384/*.tsm
+</code></pre>
+<p>从数据库中的所有<code>shard</code>中删除<code>measurement</code></p>
+<pre><code>./cnosdb_inspect deletetsm --sanitize /cnosdb/data/location/autogen/*/*.tsm
+</code></pre>
+<h1 id="dumptsm"><a class="header" href="#dumptsm"><code>dumptsm</code></a></h1>
+<h2 id="cnosdb_inspect-dumptsm"><a class="header" href="#cnosdb_inspect-dumptsm"><code>cnosdb_inspect dumptsm</code></a></h2>
+<p>转储<code>tsm1</code>文件的底层细节，包括<code>TSM</code>文件和<code>WAL</code>文件</p>
+<h3 id="语法-1"><a class="header" href="#语法-1"><code>语法</code></a></h3>
+<p><code>cnosdb_inspect dumptsm [ options ] &lt;path&gt;</code></p>
+<p><code>&lt;path&gt;</code></p>
+<p>文件的路径<code>.tsm</code>，默认位于<code>data</code>目录中。</p>
+<h3 id="选项-1"><a class="header" href="#选项-1"><code>选项</code></a></h3>
+<p>可选参数在括号中</p>
+<p><code>[ --index ]</code></p>
+<p>用于转储原始索引数据的标志。默认值为<code>false</code>。</p>
+<p><code>[ --blocks ]</code></p>
+<p>转储原始块数据的标志。默认值为<code>false</code>。</p>
+<p><code>[ --all ]</code></p>
+<p>标志转储所有数据。注意：这可能会打印很多信息。默认值为<code>false</code>。</p>
+<p><code>[ --filter-key &lt;key_name&gt; ]</code></p>
+<p>仅显示与此键子字符串匹配的索引数据和块数据。默认值为<code>&quot;&quot;</code>。</p>
+<h1 id="dumptsmwal"><a class="header" href="#dumptsmwal"><code>dumptsmwal</code></a></h1>
+<h2 id="cnosdb_inspect-dumptsmwal"><a class="header" href="#cnosdb_inspect-dumptsmwal"><code>cnosdb_inspect dumptsmwal</code></a></h2>
+<p>仅转储一个或多个 WAL ( <code>.wal</code>) 文件中的所有条目，并排除 TSM ( <code>.tsm</code>) 文件</p>
+<h3 id="语法-2"><a class="header" href="#语法-2"><code>语法</code></a></h3>
+<pre><code>influx_inspect dumptsmwal [ options ] &lt;wal_dir&gt;
+</code></pre>
+<h3 id="选项-2"><a class="header" href="#选项-2"><code>选项</code></a></h3>
+<p>可选参数在括号中</p>
+<p><code>[ --show-duplicates]</code></p>
+<p>标记以显示具有重复或无序<code>timestamp</code>的<code>key</code>。如果用户使用客户端设置的<code>timestamp</code>写入点，则可以写入具有相同<code>timestamp</code>（或具有时间降序<code>timestamp</code>）的多个点。</p>
+<h1 id="report-disk"><a class="header" href="#report-disk"><code>report-disk</code></a></h1>
+<h2 id="cnosdb_inspect-report-disk"><a class="header" href="#cnosdb_inspect-report-disk"><code>cnosdb_inspect report-disk</code></a></h2>
+<p>显示所有<code>shard</code>的系列元数据。默认位置是<code>$HOME/.cnosdb</code>。</p>
+<h3 id="语法-3"><a class="header" href="#语法-3"><code>语法</code></a></h3>
+<p><code>cnosdb_inspect report-disk [ options ]</code></p>
+<h3 id="选项-3"><a class="header" href="#选项-3"><code>选项</code></a></h3>
+<p>可选参数在括号中</p>
+<p><code>[ --pattern &quot;&lt;regular expression/wildcard&gt;&quot;]</code></p>
+<p>匹配包含文件的正则表达式或通配符模式。默认值为<code>&quot;&quot;</code>。</p>
+<p><code>[ --detailed]</code></p>
+<p>报告详细基数估计的标志。默认值为<code>false</code>。</p>
+<p><code>[ --exact]</code></p>
+<p>报告确切基数而不是估计值的标志。默认值为<code>false</code>。注意：这会占用大量内存。</p>
+<h1 id="verify"><a class="header" href="#verify"><code>verify</code></a></h1>
+<h2 id="cnosdb_inspect-verify"><a class="header" href="#cnosdb_inspect-verify"><code>cnosdb_inspect verify</code></a></h2>
+<p>验证 <code>TSM</code>文件的完整性。</p>
+<h3 id="语法-4"><a class="header" href="#语法-4"><code>语法</code></a></h3>
+<p><code>cnosdb_inspect verify [ options ]</code></p>
+<h3 id="选项-4"><a class="header" href="#选项-4"><code>选项</code></a></h3>
+<p>可选参数在括号中</p>
+<p><code>--dir &lt;storage_root&gt;</code>
+存储根目录的路径。默认值为&quot;<code>/root/.cnosdb</code>&quot;.</p>
+<h1 id="verify-seriesfile"><a class="header" href="#verify-seriesfile"><code>verify-seriesfile</code></a></h1>
+<h2 id="cnosdb_inspect-verify-seriesfile"><a class="header" href="#cnosdb_inspect-verify-seriesfile"><code>cnosdb_inspect verify-seriesfile</code></a></h2>
+<p>验证 <code>series</code>文件的完整性。</p>
+<h3 id="语法-5"><a class="header" href="#语法-5"><code>语法</code></a></h3>
+<p><code>cnosdb_inspect verify-series [ options ]</code></p>
+<h3 id="选项-5"><a class="header" href="#选项-5"><code>选项</code></a></h3>
+<p>可选参数在括号中</p>
+<p><code>[ --c &lt;number&gt;]</code></p>
+<p>指定要为此命令运行的并发工作人员的数量。默认值等于 GOMAXPROCS 的值。如果性能受到不利影响，您可以设置一个较低的值。</p>
+<p><code>[ --dir &lt;path&gt;]</code></p>
+<p>指定根数据路径。默认为<code>~/.cnosdb/data</code>.</p>
+<p><code>[ --db &lt;db_name&gt;]</code></p>
+<p>将验证系列文件限制为数据目录中的指定数据库。</p>
+<p><code>[ --series-file &lt;path&gt;]</code></p>
+<p>特定系列文件的路径；覆盖-<code>db</code>和<code>-dir</code>.</p>
+<p><code>[ --v]</code></p>
+<p>启用详细日志记录。</p>
+<h1 id="export"><a class="header" href="#export"><code>export</code></a></h1>
+<h2 id="cnosdb_inspect-export"><a class="header" href="#cnosdb_inspect-export"><code>cnosdb_inspect export</code></a></h2>
+<p>以 <code>CnosDB</code> 线路协议数据格式导出所有 <code>TSM</code> 文件。为所有 <code>WAL</code> 文件写入数据<code>_internal/monitor</code>。可以使用<code>cnosdb</code>命令导入此输出文件。</p>
+<h3 id="语法-6"><a class="header" href="#语法-6"><code>语法</code></a></h3>
+<p><code>cnosdb_inspect export [ options ]</code></p>
+<h3 id="选项-6"><a class="header" href="#选项-6"><code>选项</code></a></h3>
+<p>可选参数在括号中</p>
+<p><code>[ --compress]</code></p>
+<p>使用 gzip 压缩来压缩输出的标志。默认值为<code>false</code>。</p>
+<p><code>[ --database &lt;db_name&gt;]</code></p>
+<p>要导出的数据库的名称。默认值为<code>&quot;&quot;</code>.</p>
+<p><code>--datadir &lt;data_dir&gt;</code></p>
+<p>目录的路径<code>data</code>。默认值为&quot;<code>$HOME/.influxdb/data</code>&quot;。</p>
+<p><code>[ --end &lt;timestamp&gt;]</code></p>
+<p>时间范围结束的时间戳。必须是<code>RFC3339</code>格式。</p>
+<p><code>RFC3339</code>需要非常具体的格式。例如，要指示没有时区偏移 (UTC+0)，您必须在秒后包含 Z 或 +00:00。有效<code>RFC3339</code>格式的示例包括：</p>
+<h4 id="无偏移"><a class="header" href="#无偏移"><code>无偏移</code></a></h4>
+<blockquote>
+<p>YYYY-MM-DDTHH:MM:SS+00:00</p>
+<p>YYYY-MM-DDTHH:MM:SSZ</p>
+<p>YYYY-MM-DDTHH:MM:SS.nnnnnnZ (fractional seconds (.nnnnnn) are optional)</p>
+</blockquote>
+<h4 id="带偏移"><a class="header" href="#带偏移"><code>带偏移</code></a></h4>
+<blockquote>
+<p>YYYY-MM-DDTHH:MM:SS-08:00</p>
+<p>YYYY-MM-DDTHH:MM:SS+07:00</p>
+</blockquote>
+<p><code>[ --out &lt;export_dir&gt;]</code>
+导出文件的位置。默认值为&quot;<code>$HOME/.cnosdb/export</code>&quot;。</p>
+<p><code>[ --retention &lt;rp_name&gt; ]</code>
+要导出的保留策略的名称。默认值为<code>&quot;&quot;</code>。</p>
+<p><code>[ --start &lt;timestamp&gt;]</code>
+时间范围开始的时间戳。时间戳字符串必须采用<code>RFC3339 </code>格式。</p>
+<p><code>[ --waldir &lt;wal_dir&gt;]</code>
+<code>WAL</code>目录的路径。默认值为&quot;<code>$HOME/.cnosdb/wal</code>&quot;。</p>
+<h3 id="例子-1"><a class="header" href="#例子-1"><code>例子</code></a></h3>
+<p>导出所有数据库并压缩输出</p>
+<p><code>cnosdb_inspect export --compress</code></p>
+<p>从特定数据库和保留策略中导出数据</p>
+<p><code>cnosdb_inspect export --database mydb -retention autogen</code></p>
+<p>输出文件</p>
+<pre><code class="language-#DDL">CREATE DATABASE MY_DB_NAME
+
+CREATE RETENTION POLICY autogen ON MY_DB_NAME DURATION inf REPLICATION 1
+
+# DML
+
+# CONTEXT-DATABASE:MY_DB_NAME
+
+# CONTEXT-RETENTION-POLICY:autogen
+
+randset value=97.9296104805 1439856000000000000
+
+randset value=25.3849066842 1439856100000000000
+</code></pre>
 
                     </main>
 
