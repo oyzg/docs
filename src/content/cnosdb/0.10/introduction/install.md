@@ -18,8 +18,8 @@
 
 1. 下载
    ```shell
-   wget https://github.com/cnosdb/cnosdb/releases/download/v0.10.2/cnosdb_0.10.2_amd64.deb
-   sudo dpkg -i cnosdb_0.10.2_amd64.deb
+   wget https://github.com/cnosdb/cnosdb/releases/download/v0.10.3/cnosdb_0.10.3_amd64.deb
+   sudo dpkg -i cnosdb_0.10.3_amd64.deb
    ```
 
 2. 启动
@@ -31,8 +31,8 @@
 
 1. 下载
    ```shell
-   wget https://github.com/cnosdb/cnosdb/releases/download/v0.10.2/cnosdb-0.10.2.x86_64.rpm
-   sudo yum localinstall cnosdb-0.10.2.x86_64.rpm
+   wget https://github.com/cnosdb/cnosdb/releases/download/v0.10.3/cnosdb-0.10.3.x86_64.rpm
+   sudo yum localinstall cnosdb-0.10.3.x86_64.rpm
    ```
 2. 启动
    ```shell
