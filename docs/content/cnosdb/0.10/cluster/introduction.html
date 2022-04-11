@@ -195,7 +195,50 @@ Meta Nodes:
 2      cnosdb-meta-02:8091
 3      cnosdb-meta-03:8091
 </code></pre>
+<h2>Distributed-sandbox</h2>
+<p>可以使用<code>Distributed-sandbox</code>工具快速生产分布式集群</p>
+<h2>要求</h2>
+<p>本地上要有<code>Docker</code></p>
+<h2>快速开始</h2>
+<h3>克隆项目</h3>
+<pre><code>git clone https://github.com/IvanGao01/distributed-sandbox.git
+</code></pre>
+<h3>运行</h3>
+<pre><code>docker-compose up -d
+chmod 777 cluster.sh
+./cluster.sh
+</code></pre>
+<p>运行成功后可看到如下结果</p>
+<pre><code>Joining meta nodes to cluster...
+Added meta node 1 at cnosdb-meta-01:8091
+Added meta node 2 at cnosdb-meta-02:8091
+Added meta node 3 at cnosdb-meta-03:8091
+Data Nodes:
+==========
+4      cnosdb-data-01:8088
+5      cnosdb-data-02:8088
 
+Meta Nodes:
+==========
+1      cnosdb-meta-01:8091
+2      cnosdb-meta-02:8091
+3      cnosdb-meta-03:8091
+
+Joining data nodes to cluster...
+EOF
+EOF
+Cluster successfully created
+Data Nodes:
+==========
+4      cnosdb-data-01:8088
+5      cnosdb-data-02:8088
+
+Meta Nodes:
+==========
+1      cnosdb-meta-01:8091
+2      cnosdb-meta-02:8091
+3      cnosdb-meta-03:8091
+</code></pre>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
