@@ -534,7 +534,7 @@ Content-Length: 45
 <blockquote>
 <p>CnosDB Inspect 是一个 CnosDB 磁盘实用程序，可用于：</p>
 <p>1.查看有关磁盘分片的详细信息。</p>
-<p>2.将数据从分片导出到可以插入回数据库的InfluxDB 线路协议。</p>
+<p>2.将数据从分片导出到可以插入回数据库的CnosDB 线路协议。</p>
 <p>3.将 TSM 索引分片转换为 TSI 索引分片。</p>
 </blockquote>
 <p><strong>语法</strong></p>
@@ -543,17 +543,21 @@ Content-Length: 45
 <ul>
 <li><a href="content/cnosdb/0.10/guide/cnosdb_inspect.html#deletetsm">deletetsm</a></li>
 <li><a href="content/cnosdb/0.10/guide/cnosdb_inspect.html#dumptsm">dumptsm</a></li>
+<li><a href="content/cnosdb/0.10/guide/cnosdb_inspect.html#dumptsi">dumptsi</a></li>
+<li><a href="content/cnosdb/0.10/guide/cnosdb_inspect.html#buildtsi">buildtsi</a></li>
 <li><a href="content/cnosdb/0.10/guide/cnosdb_inspect.html#dumptsmwal">dumptsmwal</a></li>
 <li><a href="content/cnosdb/0.10/guide/cnosdb_inspect.html#report-disk">report-disk</a></li>
+<li><a href="content/cnosdb/0.10/guide/cnosdb_inspect.html#report">report</a></li>
+<li><a href="content/cnosdb/0.10/guide/cnosdb_inspect.html#reporttsi">reporttsi</a></li>
 <li><a href="content/cnosdb/0.10/guide/cnosdb_inspect.html#verify">verify</a></li>
 <li><a href="content/cnosdb/0.10/guide/cnosdb_inspect.html#verify-seriesfile">verify-seriesfile</a></li>
+<li><a href="content/cnosdb/0.10/guide/cnosdb_inspect.html#verify-tombstone">verify-tombstone</a></li>
 <li><a href="content/cnosdb/0.10/guide/cnosdb_inspect.html#export">export</a></li>
 </ul>
 <h1 id="deletetsm"><a class="header" href="#deletetsm"><code>deletetsm</code></a></h1>
 <h2 id="cnosdb_inspect-deletetsm"><a class="header" href="#cnosdb_inspect-deletetsm"><code>cnosdb_inspect deletetsm</code></a></h2>
 <p>批量从原始 <code>TSM</code> 文件中删除<code>measurement</code>数据</p>
-<h3 id="警告"><a class="header" href="#警告"><code>警告</code></a></h3>
-<p>仅当您的<code>CnosDB</code>离线（<code>CnosDB</code>服务未运行） 时才使用<code>deletetsm</code>。</p>
+<h4 id="注意仅当您的cnosdb离线cnosdb服务未运行-时才使用deletetsm"><a class="header" href="#注意仅当您的cnosdb离线cnosdb服务未运行-时才使用deletetsm">注意：仅当您的<code>CnosDB</code>离线（<code>CnosDB</code>服务未运行） 时才使用<code>deletetsm</code>。</a></h4>
 <h3 id="语法"><a class="header" href="#语法"><code>语法</code></a></h3>
 <pre><code>cnosdb_inspect deletetsm --measurement &lt;measurement_name&gt; [ arguments ] &lt;path&gt;
 </code></pre>
@@ -592,22 +596,105 @@ Content-Length: 45
 <p>标志转储所有数据。注意：这可能会打印很多信息。默认值为<code>false</code>。</p>
 <p><code>[ --filter-key &lt;key_name&gt; ]</code></p>
 <p>仅显示与此键子字符串匹配的索引数据和块数据。默认值为<code>&quot;&quot;</code>。</p>
+<h1 id="dumptsi"><a class="header" href="#dumptsi"><code>dumptsi</code></a></h1>
+<h2 id="cnosdb_inspect-dumptsi"><a class="header" href="#cnosdb_inspect-dumptsi"><code>cnosdb_inspect dumptsi</code></a></h2>
+<p>转储有关<code>TSI</code>文件的底层信息，包括<code>.tsl</code>日志文件和<code>.tsi</code>文件</p>
+<h3 id="语法-2"><a class="header" href="#语法-2"><code>语法</code></a></h3>
+<p><code>cnosdb_inspect dumptsi [ options ] &lt;index_path&gt;</code></p>
+<p>若未指定任何选项，则会为每个文件提供汇总信息。</p>
+<h3 id="选项-2"><a class="header" href="#选项-2"><code>选项</code></a></h3>
+<p>可选参数在括号中</p>
+<p><code>--series-file &lt;series_path&gt;</code></p>
+<p><code>_series</code>数据库目录下的目录路径<code>data</code>。必须要有。</p>
+<p><code>[ --series]</code></p>
+<p>转储原始系列数据。</p>
+<p><code>[ --measurements]</code></p>
+<p>转储原始测量数据。
+<code> [ --tag-keys]</code></p>
+<p>转储原始标签键。</p>
+<p><code>[ --tag-values]</code></p>
+<p>转储原始标签值。</p>
+<p><code>[ --tag-value-series]</code></p>
+<p>为每个标签值转储原始系列。</p>
+<p><code>[ --measurement-filter &lt;regular_expression&gt;]</code></p>
+<p>通过测量正则表达式过滤数据。</p>
+<p><code>[ --tag-key-filter &lt;regular_expression&gt;]</code></p>
+<p>按标签键正则表达式过滤数据。</p>
+<p><code>[ --tag-value-filter &lt;regular_expresssion&gt;]</code></p>
+<p>按标签值正则表达式过滤数据。</p>
+<h3 id="例子-2"><a class="header" href="#例子-2"><code>例子</code></a></h3>
+<p>指定_series和index目录的路径</p>
+<p><code>cnsodb_inspect dumptsi --series-file /path/to/db/_series /path/to/index</code></p>
+<p>指定_series目录和index文件的路径</p>
+<p><code>cnosdb_inspect dumptsi --series-file /path/to/db/_series /path/to/index/file0</code></p>
+<p>指定_series目录和多个index文件的路径</p>
+<pre><code>cnosdb_inspect dumptsi --series-file /path/to/db/_series /path/to/index/file0 /path/to/index/file1 ...
+</code></pre>
+<h1 id="buildtsi"><a class="header" href="#buildtsi"><code>buildtsi</code></a></h1>
+<h2 id="cnosdb_inspect-buildtsi"><a class="header" href="#cnosdb_inspect-buildtsi"><code>cnosdb_inspect buildtsi</code></a></h2>
+<p>构建基于 TSI（时间序列索引）磁盘的分片索引文件和关联的序列文件。索引被写入一个临时位置直到完成，然后移动到一个永久位置。如果发生错误，则此操作将回退到原始内存索引。</p>
+<h4 id="注意-仅适用于离线转换-启用-tsi-后新分片使用-tsi-索引现有分片继续作为基于-tsm-的分片直到离线转换"><a class="header" href="#注意-仅适用于离线转换-启用-tsi-后新分片使用-tsi-索引现有分片继续作为基于-tsm-的分片直到离线转换">注意： 仅适用于离线转换。 启用 TSI 后，新分片使用 TSI 索引。现有分片继续作为基于 TSM 的分片，直到离线转换。</a></h4>
+<h3 id="语法-3"><a class="header" href="#语法-3"><code>语法</code></a></h3>
+<pre><code>cnosdb_inspect buildtsi [ options ] -datadir &lt;data_dir&gt; -waldir &lt;wal_dir&gt; [ options ]
+</code></pre>
+<p>####注意：将buildtsi命令与您要运行数据库的用户帐户一起使用，或者在运行命令后确保权限匹配。</p>
+<h3 id="选项-3"><a class="header" href="#选项-3"><code>选项</code></a></h3>
+<p>可选参数在括号中</p>
+<p><code>[ --batch-size ]</code></p>
+<p>写入索引的批次大小。默认值为<code>10000</code>。设置此值会对性能和堆大小产生不利影响。</p>
+<p><code>[ --compact-series-file]</code></p>
+<p>压缩现有<code>series</code>文件，包括离线<code>series</code>。迭代每个<code>segment</code>中的<code>series</code>并将<code>Index</code>中的<code>non-tombstoned series</code>重写到旁边的新 <code>.tmp </code>文件。转换所有<code>segment</code>后，临时文件将覆盖原始段。</p>
+<p><code>[ --concurrency ]</code></p>
+<p>专用于分片索引的工作人员数量。默认值为<code>GOMAXPROCS</code>。</p>
+<p><code>[ --database &lt;db_name&gt; ]</code></p>
+<p>数据库的名称。</p>
+<p><code>--datadir &lt;data_dir&gt;</code></p>
+<p><code>data</code>的文件路径。</p>
+<p><code>[ --max-cache-size ]</code></p>
+<p>开始拒绝写入之前缓存的最大大小。此值覆盖的配置设置 <code>[data] cache-max-memory-size</code>。默认值为<code>1073741824</code>。</p>
+<p><code>[ --max-log-file-size ]</code></p>
+<p>日志文件的最大大小。默认值为<code>1048576</code>。</p>
+<p><code>[ --retention &lt;rp_name&gt; ]</code></p>
+<p>保留策略的名称。</p>
+<p><code>[ --shard &lt;shard_ID&gt; ]</code></p>
+<p>分片的标识符。</p>
+<p><code>[ --v ]</code></p>
+<p>以详细模式启用输出的标志。
+<code> --waldir &lt;wal_dir&gt;</code></p>
+<p><code>WAL</code>（预写日志）文件的目录。</p>
+<h3 id="例子-3"><a class="header" href="#例子-3"><code>例子</code></a></h3>
+<p>转换节点上的所有<code>shard</code></p>
+<p><code>cnosdb_inspect buildtsi --datadir ~/.cnosdb/data --waldir ~/.cnosdb/wal</code></p>
+<p>转换数据库的所有<code>shard</code></p>
+<p><code>cnosdb_inspect buildtsi --database mydb --datadir ~/.cnosdb/data --waldir ~/.cnosdb/wal</code></p>
+<p>转换特定<code>shard</code></p>
+<pre><code>cnodb_inspect buildtsi --database stress -shard 1 --datadir ~/.cnosdb/data --waldir ~/.cnosdb/wal
+</code></pre>
 <h1 id="dumptsmwal"><a class="header" href="#dumptsmwal"><code>dumptsmwal</code></a></h1>
 <h2 id="cnosdb_inspect-dumptsmwal"><a class="header" href="#cnosdb_inspect-dumptsmwal"><code>cnosdb_inspect dumptsmwal</code></a></h2>
 <p>仅转储一个或多个 WAL ( <code>.wal</code>) 文件中的所有条目，并排除 TSM ( <code>.tsm</code>) 文件</p>
-<h3 id="语法-2"><a class="header" href="#语法-2"><code>语法</code></a></h3>
-<pre><code>influx_inspect dumptsmwal [ options ] &lt;wal_dir&gt;
+<h3 id="语法-4"><a class="header" href="#语法-4"><code>语法</code></a></h3>
+<pre><code>cnosdb_inspect dumptsmwal [ options ] &lt;wal_dir&gt;
 </code></pre>
-<h3 id="选项-2"><a class="header" href="#选项-2"><code>选项</code></a></h3>
+<h3 id="选项-4"><a class="header" href="#选项-4"><code>选项</code></a></h3>
 <p>可选参数在括号中</p>
 <p><code>[ --show-duplicates]</code></p>
 <p>标记以显示具有重复或无序<code>timestamp</code>的<code>key</code>。如果用户使用客户端设置的<code>timestamp</code>写入点，则可以写入具有相同<code>timestamp</code>（或具有时间降序<code>timestamp</code>）的多个点。</p>
 <h1 id="report-disk"><a class="header" href="#report-disk"><code>report-disk</code></a></h1>
-<h2 id="cnosdb_inspect-report-disk"><a class="header" href="#cnosdb_inspect-report-disk"><code>cnosdb_inspect report-disk</code></a></h2>
-<p>显示所有<code>shard</code>的系列元数据。默认位置是<code>$HOME/.cnosdb</code>。</p>
-<h3 id="语法-3"><a class="header" href="#语法-3"><code>语法</code></a></h3>
+<h2 id="cnosdb_inspect-report"><a class="header" href="#cnosdb_inspect-report"><code>cnosdb_inspect report</code></a></h2>
+<p>使用<code>report-disk</code>命令查看指定目录下的<code>TSM</code>文件的<code>shards</code>和<code>measurements</code>的磁盘使用情况。</p>
+<h3 id="语法-5"><a class="header" href="#语法-5"><code>语法</code></a></h3>
 <p><code>cnosdb_inspect report-disk [ options ]</code></p>
-<h3 id="选项-3"><a class="header" href="#选项-3"><code>选项</code></a></h3>
+<h3 id="选项-5"><a class="header" href="#选项-5"><code>选项</code></a></h3>
+<p>可选参数在括号中</p>
+<p><code>[ --detailed]</code></p>
+<p>包括<code>flag</code>来报告<code>measurements</code>的磁盘使用情况。</p>
+<h1 id="report"><a class="header" href="#report"><code>report</code></a></h1>
+<h2 id="cnosdb_inspect-report-1"><a class="header" href="#cnosdb_inspect-report-1"><code>cnosdb_inspect report</code></a></h2>
+<p>显示所有<code>shard</code>的系列元数据。默认位置是<code>$HOME/.cnosdb</code>。</p>
+<h3 id="语法-6"><a class="header" href="#语法-6"><code>语法</code></a></h3>
+<p><code>cnosdb_inspect report [ options ]</code></p>
+<h3 id="选项-6"><a class="header" href="#选项-6"><code>选项</code></a></h3>
 <p>可选参数在括号中</p>
 <p><code>[ --pattern &quot;&lt;regular expression/wildcard&gt;&quot;]</code></p>
 <p>匹配包含文件的正则表达式或通配符模式。默认值为<code>&quot;&quot;</code>。</p>
@@ -615,21 +702,38 @@ Content-Length: 45
 <p>报告详细基数估计的标志。默认值为<code>false</code>。</p>
 <p><code>[ --exact]</code></p>
 <p>报告确切基数而不是估计值的标志。默认值为<code>false</code>。注意：这会占用大量内存。</p>
+<h1 id="reporttsi"><a class="header" href="#reporttsi"><code>reporttsi</code></a></h1>
+<h2 id="cnosdb_inspect-reporttsi"><a class="header" href="#cnosdb_inspect-reporttsi"><code>cnosdb_inspect reporttsi</code></a></h2>
+<blockquote>
+<p>计算数据库中的总精确<code>series</code>基数。</p>
+<p>通过<code>measurements</code>分割<code>series</code>，并发出这些<code>series</code>值。</p>
+<p>为数据库中的每个<code>shard</code>发出总的精确基数。</p>
+<p>每个<code>shard</code>的<code>segment</code>是<code>shard</code>中每个<code>measurement</code>的确切基数。</p>
+<p>可以选择将每个<code>shard</code>中的结果限制为“前 n 个”。</p>
+</blockquote>
+<h3 id="语法-7"><a class="header" href="#语法-7"><code>语法</code></a></h3>
+<p><code>cnosdb_inspect reporttsi --db-path &lt;path-to-db&gt; [ options ]</code></p>
+<h3 id="选项-7"><a class="header" href="#选项-7"><code>选项</code></a></h3>
+<p>可选参数在括号中</p>
+<p><code>-db-path &lt;path-to-db&gt;</code></p>
+<p>数据库的路径。</p>
+<p><code>[ -top &lt;n&gt;]</code></p>
+<p>将结果限制为每个<code>shard</code>中指定的数字。</p>
 <h1 id="verify"><a class="header" href="#verify"><code>verify</code></a></h1>
 <h2 id="cnosdb_inspect-verify"><a class="header" href="#cnosdb_inspect-verify"><code>cnosdb_inspect verify</code></a></h2>
 <p>验证 <code>TSM</code>文件的完整性。</p>
-<h3 id="语法-4"><a class="header" href="#语法-4"><code>语法</code></a></h3>
+<h3 id="语法-8"><a class="header" href="#语法-8"><code>语法</code></a></h3>
 <p><code>cnosdb_inspect verify [ options ]</code></p>
-<h3 id="选项-4"><a class="header" href="#选项-4"><code>选项</code></a></h3>
+<h3 id="选项-8"><a class="header" href="#选项-8"><code>选项</code></a></h3>
 <p>可选参数在括号中</p>
 <p><code>--dir &lt;storage_root&gt;</code>
 存储根目录的路径。默认值为&quot;<code>/root/.cnosdb</code>&quot;.</p>
 <h1 id="verify-seriesfile"><a class="header" href="#verify-seriesfile"><code>verify-seriesfile</code></a></h1>
 <h2 id="cnosdb_inspect-verify-seriesfile"><a class="header" href="#cnosdb_inspect-verify-seriesfile"><code>cnosdb_inspect verify-seriesfile</code></a></h2>
 <p>验证 <code>series</code>文件的完整性。</p>
-<h3 id="语法-5"><a class="header" href="#语法-5"><code>语法</code></a></h3>
+<h3 id="语法-9"><a class="header" href="#语法-9"><code>语法</code></a></h3>
 <p><code>cnosdb_inspect verify-series [ options ]</code></p>
-<h3 id="选项-5"><a class="header" href="#选项-5"><code>选项</code></a></h3>
+<h3 id="选项-9"><a class="header" href="#选项-9"><code>选项</code></a></h3>
 <p>可选参数在括号中</p>
 <p><code>[ --c &lt;number&gt;]</code></p>
 <p>指定要为此命令运行的并发工作人员的数量。默认值等于 GOMAXPROCS 的值。如果性能受到不利影响，您可以设置一个较低的值。</p>
@@ -641,22 +745,37 @@ Content-Length: 45
 <p>特定系列文件的路径；覆盖-<code>db</code>和<code>-dir</code>.</p>
 <p><code>[ --v]</code></p>
 <p>启用详细日志记录。</p>
+<h1 id="verify-tombstone"><a class="header" href="#verify-tombstone"><code>verify-tombstone</code></a></h1>
+<h2 id="cnosdb_inspect-verify-tombstone"><a class="header" href="#cnosdb_inspect-verify-tombstone"><code>cnosdb_inspect verify-tombstone</code></a></h2>
+<p>验证 <code>tombstone</code>文件的完整性。</p>
+<h3 id="语法-10"><a class="header" href="#语法-10"><code>语法</code></a></h3>
+<p><code>cnosdb_inspect verify-tombstone [ options ]</code></p>
+<h3 id="选项-10"><a class="header" href="#选项-10"><code>选项</code></a></h3>
+<p>可选参数在括号中</p>
+<p><code>[ -dir &lt;path&gt;]</code></p>
+<p>指定根数据路径。默认为<code>~/.cnosdb/data</code>. 该路径可以是任意的，例如，它不需要是<code>CnosDB</code>数据目录。</p>
+<p><code>[ --v]</code></p>
+<p>启用详细日志记录。确认正在验证文件并每500万条<code>tombstone</code>条目显示进度。</p>
+<p><code>[ --vv]</code></p>
+<p>启用非常详细的日志记录。显示<code>tombstone</code>文件中每个<code>series key</code>和时间范围。自(1970-01-01T00:00:00Z)以来的时间戳以纳秒为单位显示。</p>
+<p><code>[ --vvv]</code></p>
+<p>启用非常非常详细的日志记录。显示<code>tombstone</code>文件中每个<code>series key</code>和时间范围。时间戳以<code>RFC3339</code>格式显示，精度为纳秒。</p>
 <h1 id="export"><a class="header" href="#export"><code>export</code></a></h1>
 <h2 id="cnosdb_inspect-export"><a class="header" href="#cnosdb_inspect-export"><code>cnosdb_inspect export</code></a></h2>
 <p>以 <code>CnosDB</code> 线路协议数据格式导出所有 <code>TSM</code> 文件。为所有 <code>WAL</code> 文件写入数据<code>_internal/monitor</code>。可以使用<code>cnosdb</code>命令导入此输出文件。</p>
-<h3 id="语法-6"><a class="header" href="#语法-6"><code>语法</code></a></h3>
+<h3 id="语法-11"><a class="header" href="#语法-11"><code>语法</code></a></h3>
 <p><code>cnosdb_inspect export [ options ]</code></p>
-<h3 id="选项-6"><a class="header" href="#选项-6"><code>选项</code></a></h3>
+<h3 id="选项-11"><a class="header" href="#选项-11"><code>选项</code></a></h3>
 <p>可选参数在括号中</p>
 <p><code>[ --compress]</code></p>
 <p>使用 gzip 压缩来压缩输出的标志。默认值为<code>false</code>。</p>
 <p><code>[ --database &lt;db_name&gt;]</code></p>
 <p>要导出的数据库的名称。默认值为<code>&quot;&quot;</code>.</p>
 <p><code>--datadir &lt;data_dir&gt;</code></p>
-<p>目录的路径<code>data</code>。默认值为&quot;<code>$HOME/.influxdb/data</code>&quot;。</p>
+<p>目录的路径<code>data</code>。默认值为&quot;<code>$HOME/.cnosdb/data</code>&quot;。</p>
 <p><code>[ --end &lt;timestamp&gt;]</code></p>
-<p>时间范围结束的时间戳。必须是<code>RFC3339</code>格式。</p>
-<p><code>RFC3339</code>需要非常具体的格式。例如，要指示没有时区偏移 (UTC+0)，您必须在秒后包含 Z 或 +00:00。有效<code>RFC3339</code>格式的示例包括：</p>
+<p>时间范围结束的时间戳。必须是<code>RFC3339 </code>格式。</p>
+<p>RFC3339 需要非常具体的格式。例如，要指示没有时区偏移 (UTC+0)，您必须在秒后包含 Z 或 +00:00。有效 RFC3339 格式的示例包括：</p>
 <h4 id="无偏移"><a class="header" href="#无偏移"><code>无偏移</code></a></h4>
 <blockquote>
 <p>YYYY-MM-DDTHH:MM:SS+00:00</p>
@@ -676,7 +795,7 @@ Content-Length: 45
 时间范围开始的时间戳。时间戳字符串必须采用<code>RFC3339 </code>格式。</p>
 <p><code>[ --waldir &lt;wal_dir&gt;]</code>
 <code>WAL</code>目录的路径。默认值为&quot;<code>$HOME/.cnosdb/wal</code>&quot;。</p>
-<h3 id="例子-2"><a class="header" href="#例子-2"><code>例子</code></a></h3>
+<h3 id="例子-4"><a class="header" href="#例子-4"><code>例子</code></a></h3>
 <p>导出所有数据库并压缩输出</p>
 <p><code>cnosdb_inspect export --compress</code></p>
 <p>从特定数据库和保留策略中导出数据</p>
@@ -1192,7 +1311,7 @@ SELECT MEAN(&quot;usage_idle&quot;) FROM &quot;cpu&quot; WHERE time &gt;= '2020-
 <h2 id="聚合函数"><a class="header" href="#聚合函数">聚合函数</a></h2>
 <h3 id="count"><a class="header" href="#count">COUNT()</a></h3>
 <p>返回非空值 field values数量</p>
-<h4 id="语法-7"><a class="header" href="#语法-7">语法</a></h4>
+<h4 id="语法-12"><a class="header" href="#语法-12">语法</a></h4>
 <pre><code class="language-sql">SELECT COUNT( [ * | &lt;field_key&gt; | /&lt;regular_expression&gt;/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <h5 id="嵌套语法"><a class="header" href="#嵌套语法">嵌套语法</a></h5>
@@ -1279,7 +1398,7 @@ time                   count
 </code></pre>
 <h3 id="distinct"><a class="header" href="#distinct"><code>DISTINCT()</code></a></h3>
 <p>返回<code>field value</code>的不重复值列表。</p>
-<h4 id="语法-8"><a class="header" href="#语法-8">语法</a></h4>
+<h4 id="语法-13"><a class="header" href="#语法-13">语法</a></h4>
 <pre><code class="language-sql">SELECT DISTINCT( [ &lt;field_key&gt; | /&lt;regular_expression&gt;/ ] ) FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <h5 id="嵌套语法-1"><a class="header" href="#嵌套语法-1">嵌套语法</a></h5>
@@ -1369,7 +1488,7 @@ time                   distinct
 </code></pre>
 <h3 id="integral"><a class="header" href="#integral"><code>INTEGRAL()</code></a></h3>
 <p>返回<code>field value</code>曲线下的面积，即关于<code>field value</code>的积分。</p>
-<h4 id="语法-9"><a class="header" href="#语法-9">语法</a></h4>
+<h4 id="语法-14"><a class="header" href="#语法-14">语法</a></h4>
 <pre><code>SELECT INTEGRAL( [ * | &lt;field_key&gt; | /&lt;regular_expression&gt;/ ] [ , &lt;unit&gt; ]  ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <h4 id="语法描述-1"><a class="header" href="#语法描述-1">语法描述</a></h4>
@@ -1439,7 +1558,7 @@ time                 integral
 <p>该查询返回<code>measurement</code> <code>h2o_feet</code>中<code>field key</code> <code>water_level</code>对应的field value曲线下的面积(以分钟为单位)，它涵盖的时间范围在<code>2020-08-18T00:00:00Z</code>和<code>2020-08-18T00:30:00Z</code>之间，并将查询结果按12分钟的时间间隔进行分组，同时，该查询将返回的<code>point</code>个数限制为1。</p>
 <h3 id="mean"><a class="header" href="#mean"><code>MEAN()</code></a></h3>
 <p>返回field value的平均值。</p>
-<h4 id="语法-10"><a class="header" href="#语法-10">语法</a></h4>
+<h4 id="语法-15"><a class="header" href="#语法-15">语法</a></h4>
 <pre><code>SELECT MEAN( [ * | &lt;field_key&gt; | /&lt;regular_expression&gt;/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <p><code>MEAN(field_key)</code>返回<code>field key</code>对应的<code>field value</code>的平均值。</p>
@@ -1491,7 +1610,7 @@ time                   mean
 <p>该查询返回<code>measurement</code> <code>h2o_feet</code>中field key <code>water_level</code>对应的field value的平均值，它涵盖的时间范围在<code>2020-08-17T23:48:00Z</code>和<code>2020-08-18T00:30:00Z</code>之间，并将查询结果按12分钟的时间间隔和每个<code>tag</code>进行分组，同时，该查询用<code>9.01</code>填充没有数据的时间间隔，并将返回的<code>point</code>个数和series个数分别限制为7和1。</p>
 <h3 id="median"><a class="header" href="#median">MEDIAN()</a></h3>
 <p>返回<code>field value</code>的计算平均值。</p>
-<h4 id="语法-11"><a class="header" href="#语法-11">语法</a></h4>
+<h4 id="语法-16"><a class="header" href="#语法-16">语法</a></h4>
 <pre><code>SELECT MEDIAN( [ * | &lt;field_key&gt; | /&lt;regular_expression&gt;/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <h4 id="语法描述-2"><a class="header" href="#语法描述-2">语法描述</a></h4>
@@ -1547,7 +1666,7 @@ time                   median
 <p>该查询返回<code>measurement</code> <code>h2o_feet</code>中<code>field key</code> <code>water_level</code>对应的<code>field value</code>的平均数，它涵盖的时间范围在<code>2020-08-17T23:48:00Z</code>和<code>2020-08-18T00:54:00Z</code>之间，并将查询结果按12分钟的时间间隔和每个<code>tag</code>进行分组，同时，该查询用<code>700</code>填充没有数据的时间间隔，将返回的<code>point</code>个数和series个数分别限制为7和1，并将返回的<code>series</code>偏移一个（即第一个<code>series</code>的数据不返回）。</p>
 <h3 id="mode"><a class="header" href="#mode">MODE()</a></h3>
 <p>返回<code>field value</code>中出现频率最高的值。</p>
-<h4 id="语法-12"><a class="header" href="#语法-12">语法</a></h4>
+<h4 id="语法-17"><a class="header" href="#语法-17">语法</a></h4>
 <pre><code>SELECT MODE( [ * | &lt;field_key&gt; | /&lt;regular_expression&gt;/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <p><code>MODE(field_key)</code>返回<code>field key</code>对应的<code>field value</code>中出现频率最高的值。</p>
@@ -1599,7 +1718,7 @@ time                   mode
 <p>该查询返回<code>measurement</code> <code>h2o_feet</code>中<code>field key</code> <code>water_level</code>对应的<code>field value</code>中出现频率最高的值，它涵盖的时间范围在<code>2020-08-17T23:48:00Z</code>和<code>2020-08-18T00:54:00Z</code>之间，并将查询结果按12分钟的时间间隔和每个<code>tag</code>进行分组，同时，该查询将返回的<code>point</code>个数和<code>series</code>个数分别限制为3和1，并将返回的<code>series</code>偏移一个（即第一个<code>series</code>的数据不返回）。</p>
 <h3 id="spread"><a class="header" href="#spread">SPREAD()</a></h3>
 <p>返回<code>field value</code>中最大值和最小值之差。</p>
-<h4 id="语法-13"><a class="header" href="#语法-13">语法</a></h4>
+<h4 id="语法-18"><a class="header" href="#语法-18">语法</a></h4>
 <pre><code class="language-sql">SELECT SPREAD( [ * | &lt;field_key&gt; | /&lt;regular_expression&gt;/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <h4 id="语法描述-3"><a class="header" href="#语法描述-3">语法描述</a></h4>
@@ -1649,7 +1768,7 @@ time                   spread
 <p>该查询返回<code>measurement</code> <code>h2o_feet</code>中field key <code>water_level</code>对应的field value中最大值和最小值之差，它涵盖的时间范围在<code>2020-08-17T23:48:00Z</code>和<code>2020-08-18T00:54:00Z</code>之间，并将查询结果按12分钟的时间间隔和每个<code>tag</code>进行分组，同时，该查询用<code>18</code>填充没有数据的时间间隔，将返回的<code>point</code>个数和<code>series</code>个数分别限制为3和1，并将返回的<code>series</code>偏移一个（即第一个<code>series</code>的数据不返回）</p>
 <h3 id="stddev"><a class="header" href="#stddev">STDDEV()</a></h3>
 <p>返回<code>field value</code>的标准差。</p>
-<h4 id="语法-14"><a class="header" href="#语法-14">语法</a></h4>
+<h4 id="语法-19"><a class="header" href="#语法-19">语法</a></h4>
 <pre><code class="language-sql">SELECT STDDEV( [ * | &lt;field_key&gt; | /&lt;regular_expression&gt;/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <p><code>STDDEV(field_key)</code>返回<code>field key</code>对应的<code>field value</code>的标准差。</p>
@@ -1697,7 +1816,7 @@ time                   stddev
 <p>该查询返回measurement <code>h2o_feet</code>中field key <code>water_level</code>对应的field value的标准差，它涵盖的时间范围在<code>2020-08-17T23:48:00Z</code>和<code>2020-08-18T00:54:00Z</code>之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用<code>18000</code>填充没有数据的时间间隔，将返回的<code>point</code>个数和series个数分别限制为2和1，并将返回的series偏移一个（即第一个series的数据不返回）。</p>
 <h3 id="sum"><a class="header" href="#sum">SUM()</a></h3>
 <p>返回field value的总和。</p>
-<h4 id="语法-15"><a class="header" href="#语法-15">语法</a></h4>
+<h4 id="语法-20"><a class="header" href="#语法-20">语法</a></h4>
 <pre><code>SELECT SUM( [ * | &lt;field_key&gt; | /&lt;regular_expression&gt;/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <h4 id="语法描述-4"><a class="header" href="#语法描述-4">语法描述</a></h4>
@@ -1749,7 +1868,7 @@ time                   sum
 <h2 id="选择函数"><a class="header" href="#选择函数">选择函数</a></h2>
 <h3 id="bottom"><a class="header" href="#bottom">BOTTOM()</a></h3>
 <p>返回最小的N个field value。</p>
-<h4 id="语法-16"><a class="header" href="#语法-16">语法</a></h4>
+<h4 id="语法-21"><a class="header" href="#语法-21">语法</a></h4>
 <pre><code>SELECT BOTTOM(&lt;field_key&gt;[,&lt;tag_key(s)&gt;],&lt;N&gt; )[,&lt;tag_key(s)&gt;|&lt;field_key(s)&gt;] [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <h4 id="语法描述-5"><a class="header" href="#语法描述-5">语法描述</a></h4>
@@ -1866,7 +1985,7 @@ location
 </code></pre>
 <h3 id="first"><a class="header" href="#first">FIRST()</a></h3>
 <p>返回具有最早时间戳的field value。</p>
-<h4 id="语法-17"><a class="header" href="#语法-17">语法</a></h4>
+<h4 id="语法-22"><a class="header" href="#语法-22">语法</a></h4>
 <pre><code>SELECT FIRST(&lt;field_key&gt;)[,&lt;tag_key(s)&gt;|&lt;field_key(s)&gt;] [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <h4 id="语法描述-6"><a class="header" href="#语法描述-6">语法描述</a></h4>
@@ -1928,7 +2047,7 @@ time                   first
 <p>请注意，<code>GROUP BY time()</code>子句会覆盖<code>point</code>的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个<code>point</code>涵盖的时间间隔在<code>2020-08-17T23:48:00Z</code>和<code>2020-08-18T00:00:00Z</code>之间，最后一个<code>point</code>涵盖的时间间隔在<code>2020-08-18T00:24:00Z</code>和<code>2020-08-18T00:36:00Z</code>之间。</p>
 <h3 id="last"><a class="header" href="#last">LAST()</a></h3>
 <p>返回具有最新时间戳的field value。</p>
-<h4 id="语法-18"><a class="header" href="#语法-18">语法</a></h4>
+<h4 id="语法-23"><a class="header" href="#语法-23">语法</a></h4>
 <pre><code class="language-sql">SELECT LAST(&lt;field_key&gt;)[,&lt;tag_key(s)&gt;|&lt;field_keys(s)&gt;] [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <p><code>LAST(field_key)</code>返回field key对应的具有最新时间戳的field value。</p>
@@ -1989,7 +2108,7 @@ time                   last
 <p>请注意，<code>GROUP BY time()</code>子句会覆盖<code>point</code>的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个<code>point</code>涵盖的时间间隔在<code>2020-08-17T23:48:00Z</code>和<code>2020-08-18T00:00:00Z</code>之间，最后一个<code>point</code>涵盖的时间间隔在<code>2020-08-18T00:24:00Z</code>和<code>2020-08-18T00:36:00Z</code>之间。</p>
 <h3 id="max"><a class="header" href="#max">MAX()</a></h3>
 <p>返回field value的最大值。</p>
-<h4 id="语法-19"><a class="header" href="#语法-19">语法</a></h4>
+<h4 id="语法-24"><a class="header" href="#语法-24">语法</a></h4>
 <pre><code>SELECT MAX(&lt;field_key&gt;)[,&lt;tag_key(s)&gt;|&lt;field__key(s)&gt;] [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <p><code>MAX(field_key)</code>返回field key对应的field value的最大值。</p>
@@ -2050,7 +2169,7 @@ time                   max
 <p>请注意，<code>GROUP BY time()</code>子句会覆盖<code>point</code>的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个<code>point</code>涵盖的时间间隔在<code>2020-08-17T23:48:00Z</code>和<code>2020-08-18T00:00:00Z</code>之间，最后一个<code>point</code>涵盖的时间间隔在<code>2020-08-18T00:24:00Z</code>和<code>2020-08-18T00:36:00Z</code>之间。</p>
 <h3 id="min"><a class="header" href="#min">MIN()</a></h3>
 <p>返回field value的最小值。</p>
-<h4 id="语法-20"><a class="header" href="#语法-20">语法</a></h4>
+<h4 id="语法-25"><a class="header" href="#语法-25">语法</a></h4>
 <pre><code>SELECT MIN(&lt;field_key&gt;)[,&lt;tag_key(s)&gt;|&lt;field_key(s)&gt;] [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <p><code>MIN(field_key)</code>返回field key对应的field value的最小值。</p>
@@ -2111,7 +2230,7 @@ time                   min
 <p>请注意，<code>GROUP BY time()</code>子句会覆盖<code>point</code>的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个<code>point</code>涵盖的时间间隔在<code>2020-08-17T23:48:00Z</code>和<code>2020-08-18T00:00:00Z</code>之间，最后一个<code>point</code>涵盖的时间间隔在<code>2020-08-18T00:24:00Z</code>和<code>2020-08-18T00:36:00Z</code>之间。</p>
 <h3 id="percentile"><a class="header" href="#percentile">PERCENTILE()</a></h3>
 <p>返回第N个百分位数的<code>field value</code></p>
-<h4 id="语法-21"><a class="header" href="#语法-21">语法</a></h4>
+<h4 id="语法-26"><a class="header" href="#语法-26">语法</a></h4>
 <pre><code>SELECT PERCENTILE(&lt;field_key&gt;, &lt;N&gt;)[,&lt;tag_key(s)&gt;|&lt;field_key(s)&gt;] [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <p><code>PERCENTILE(field_key,N)</code>返回指定field key对应的第N个百分位数的field value。</p>
@@ -2177,7 +2296,7 @@ time                   percentile
 </ul>
 <h3 id="sample"><a class="header" href="#sample">SAMPLE()</a></h3>
 <p>返回包含N个field value的随机样本。<code>SAMPLE()</code>使用<a href="https://en.wikipedia.org/wiki/Reservoir_sampling">reservoir sampling</a>来生成随机<code>point</code>。</p>
-<h4 id="语法-22"><a class="header" href="#语法-22">语法</a></h4>
+<h4 id="语法-27"><a class="header" href="#语法-27">语法</a></h4>
 <pre><code>SELECT SAMPLE(&lt;field_key&gt;, &lt;N&gt;)[,&lt;tag_key(s)&gt;|&lt;field_key(s)&gt;] [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <p><code>SAMPLE(field_key,N)</code>返回指定field key对应的N个随机选择的field value。</p>
@@ -2263,7 +2382,7 @@ time                   sample
 </code></pre>
 <h3 id="top"><a class="header" href="#top">TOP()</a></h3>
 <p>返回最大的N个field value</p>
-<h4 id="语法-23"><a class="header" href="#语法-23">语法</a></h4>
+<h4 id="语法-28"><a class="header" href="#语法-28">语法</a></h4>
 <pre><code>SELECT TOP( &lt;field_key&gt;[,&lt;tag_key(s)&gt;],&lt;N&gt; )[,&lt;tag_key(s)&gt;|&lt;field_key(s)&gt;] [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <p><code>TOP(field_key,N)</code>返回field key对应的最大的N个值。</p>
@@ -3579,7 +3698,7 @@ time                   max
 <p>然后，cnosDB计算这些最大值之间的差值。最终查询结果中的第一个<code>point</code>(<code>0.009999999999999787</code>)是<code>2.126</code>和<code>2.116</code>的差，第二个<code>point</code>(<code>-0.07499999999999973</code>)是<code>2.051</code>和<code>2.126</code>的差。</p>
 <h3 id="elapsed"><a class="header" href="#elapsed">ELAPSED()</a></h3>
 <p>返回field value的时间戳之间的差值。</p>
-<h4 id="语法-24"><a class="header" href="#语法-24">语法</a></h4>
+<h4 id="语法-29"><a class="header" href="#语法-29">语法</a></h4>
 <pre><code>SELECT ELAPSED( [ * | &lt;field_key&gt; | /&lt;regular_expression&gt;/ ] [ , &lt;unit&gt; ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <p>cnosDB计算时间戳之间的差值。参数<code>unit</code>的值是一个整数，后跟一个时间单位，它决定了返回的差值的单位。这个参数是可选的，不是必须要有的。如果没有指定<code>unit</code>的值，那么查询将返回以纳秒为单位的两个时间戳之间的差值。</p>
@@ -4998,7 +5117,7 @@ time                   mean
 </ul>
 </li>
 </ul>
-<h4 id="语法-25"><a class="header" href="#语法-25">语法</a></h4>
+<h4 id="语法-30"><a class="header" href="#语法-30">语法</a></h4>
 <pre><code>SELECT HOLT_WINTERS[_WITH-FIT](&lt;function&gt;(&lt;field_key&gt;),&lt;N&gt;,&lt;S&gt;) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
 </code></pre>
 <p><code>HOLT_WINTERS(function(field_key),N,S)</code>返回field key对应的<code>N</code>个季节性调整的预测field value。</p>
@@ -5233,7 +5352,7 @@ time                   mean
 <p>本文档使用的数据可在<a href="content/cnosdb/0.10/cnosql/NOAA_water_database.txt">示例数据</a>中下载。</p>
 <h3 id="函数的通用语法"><a class="header" href="#函数的通用语法">函数的通用语法</a></h3>
 <h4 id="在select中指定多个函数"><a class="header" href="#在select中指定多个函数">在<code>SELECT</code>中指定多个函数</a></h4>
-<h5 id="语法-26"><a class="header" href="#语法-26">语法</a></h5>
+<h5 id="语法-31"><a class="header" href="#语法-31">语法</a></h5>
 <pre><code>SELECT &lt;function&gt;(),&lt;function&gt;() FROM_clause [...]
 </code></pre>
 <p>使用逗号(<code>,</code>)将<code>SELECT</code>语句中的多个函数分开。该语法适用于除<code>TOP()</code>和<code>BOTTOM()</code>之外的所有cnosQL函数。<code>SELECT</code>子句不支持<code>TOP()</code>或<code>BOTTOM()</code>和其它函数同时使用。</p>
@@ -5281,7 +5400,7 @@ time                  max
 2020-08-29T07:24:00Z  9.964    &lt;--- Timestamp 2
 </code></pre>
 <h4 id="重命名查询结果字段"><a class="header" href="#重命名查询结果字段">重命名查询结果字段</a></h4>
-<h5 id="语法-27"><a class="header" href="#语法-27">语法</a></h5>
+<h5 id="语法-32"><a class="header" href="#语法-32">语法</a></h5>
 <pre><code>SELECT &lt;function&gt;() AS &lt;field_key&gt; [...]
 </code></pre>
 <p>默认情况下，函数返回的结果在与函数名称匹配的field key下面。使用<code>AS</code>子句可以指定输出的field key的名字。</p>
@@ -5463,7 +5582,7 @@ time                  max
 <table><thead><tr><th><a href="content/cnosdb/0.10/cnosql/countine_query.html#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95">基本语法</a></th><th><a href="content/cnosdb/0.10/cnosql/countine_query.html#%E9%AB%98%E7%BA%A7%E8%AF%AD%E6%B3%95">高级语法</a></th><th><a href="content/cnosdb/0.10/cnosql/countine_query.html#%E7%AE%A1%E7%90%86CQ">管理CQ</a></th></tr></thead><tbody>
 <tr><td><a href="content/cnosdb/0.10/cnosql/countine_query.html#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E7%A4%BA%E4%BE%8B">基本语法示例</a></td><td><a href="content/cnosdb/0.10/cnosql/countine_query.html#%E9%AB%98%E7%BA%A7%E8%AF%AD%E6%B3%95%E7%A4%BA%E4%BE%8B">高级语法示例</a></td><td></td></tr>
 </tbody></table>
-<h2 id="语法-28"><a class="header" href="#语法-28">语法</a></h2>
+<h2 id="语法-33"><a class="header" href="#语法-33">语法</a></h2>
 <h3 id="基本语法-32"><a class="header" href="#基本语法-32">基本语法</a></h3>
 <pre><code class="language-sql">CREATE CONTINUOUS QUERY &lt;cq_name&gt; ON &lt;database_name&gt;
 BEGIN
@@ -5715,6 +5834,50 @@ cnosdb-ctl --bind cnosdb-data-01:8091 add-data cnosdb-data-02:8088
 Meta Nodes:
 ==========
 
+1      cnosdb-meta-01:8091
+2      cnosdb-meta-02:8091
+3      cnosdb-meta-03:8091
+</code></pre>
+<h2 id="distributed-sandbox"><a class="header" href="#distributed-sandbox">Distributed-sandbox</a></h2>
+<p>可以使用<code>Distributed-sandbox</code>工具快速生产分布式集群</p>
+<h2 id="要求"><a class="header" href="#要求">要求</a></h2>
+<p>本地上要有<code>Docker</code></p>
+<h2 id="快速开始-1"><a class="header" href="#快速开始-1">快速开始</a></h2>
+<h3 id="克隆项目"><a class="header" href="#克隆项目">克隆项目</a></h3>
+<pre><code>git clone https://github.com/IvanGao01/distributed-sandbox.git
+</code></pre>
+<h3 id="运行-1"><a class="header" href="#运行-1">运行</a></h3>
+<pre><code>docker-compose up -d
+chmod 777 cluster.sh
+./cluster.sh
+</code></pre>
+<p>运行成功后可看到如下结果</p>
+<pre><code>Joining meta nodes to cluster...
+Added meta node 1 at cnosdb-meta-01:8091
+Added meta node 2 at cnosdb-meta-02:8091
+Added meta node 3 at cnosdb-meta-03:8091
+Data Nodes:
+==========
+4      cnosdb-data-01:8088
+5      cnosdb-data-02:8088
+
+Meta Nodes:
+==========
+1      cnosdb-meta-01:8091
+2      cnosdb-meta-02:8091
+3      cnosdb-meta-03:8091
+
+Joining data nodes to cluster...
+EOF
+EOF
+Cluster successfully created
+Data Nodes:
+==========
+4      cnosdb-data-01:8088
+5      cnosdb-data-02:8088
+
+Meta Nodes:
+==========
 1      cnosdb-meta-01:8091
 2      cnosdb-meta-02:8091
 3      cnosdb-meta-03:8091

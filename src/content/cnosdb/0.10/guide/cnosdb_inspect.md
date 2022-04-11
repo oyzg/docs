@@ -5,7 +5,7 @@
 >
 > 1.查看有关磁盘分片的详细信息。
 >
-> 2.将数据从分片导出到可以插入回数据库的InfluxDB 线路协议。
+> 2.将数据从分片导出到可以插入回数据库的CnosDB 线路协议。
 >
 > 3.将 TSM 索引分片转换为 TSI 索引分片。
 
@@ -268,7 +268,7 @@ cnodb_inspect buildtsi --database stress -shard 1 --datadir ~/.cnosdb/data --wal
 ### `语法`
 
 ```
-influx_inspect dumptsmwal [ options ] <wal_dir>
+cnosdb_inspect dumptsmwal [ options ] <wal_dir>
 ```
 ### `选项`
 
@@ -457,7 +457,7 @@ influx_inspect dumptsmwal [ options ] <wal_dir>
 
 `--datadir <data_dir>`
 
-目录的路径`data`。默认值为"`$HOME/.influxdb/data`"。
+目录的路径`data`。默认值为"`$HOME/.cnosdb/data`"。
 
 `[ --end <timestamp>]`
 
@@ -480,7 +480,7 @@ RFC3339 需要非常具体的格式。例如，要指示没有时区偏移 (UTC+
 >YYYY-MM-DDTHH:MM:SS+07:00
 
 `[ --out <export_dir>]`
-导出文件的位置。默认值为"`$HOME/.influxdb/export`"。
+导出文件的位置。默认值为"`$HOME/.cnosdb/export`"。
 
 `[ --retention <rp_name> ]`
 要导出的保留策略的名称。默认值为`""`。
