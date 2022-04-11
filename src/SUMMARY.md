@@ -22,3 +22,4 @@
 - [其他](./content/cnosdb/0.10/other/index.md)
   - [使用Kubernetes部署CnosDB](./content/cnosdb/0.10/other/kubernetes-deployment.md)
   - [使用Kubernetes部署CnosDB集群](./content/cnosdb/0.10/other/kubernetes-StatefulSet.md)
+- [latest](./content/cnosdb/latest/SUMMARY.md)
