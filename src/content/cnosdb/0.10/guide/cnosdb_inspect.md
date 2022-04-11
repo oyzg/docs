@@ -16,10 +16,15 @@ cnosdb_inspect [ [ command ] [ options ] ]
 
 - [deletetsm](#deletetsm)
 - [dumptsm](#dumptsm)
+- [dumptsi](#dumptsi)
+- [buildtsi](#buildtsi)
 - [dumptsmwal](#dumptsmwal)
 - [report-disk](#report-disk)
+- [report](#report)
+- [reporttsi](#reporttsi)
 - [verify](#verify)
 - [verify-seriesfile](#verify-seriesfile)
+- [verify-tombstone](#verify-tombstone)
 - [export](#export)
 
 # `deletetsm`
@@ -28,9 +33,7 @@ cnosdb_inspect [ [ command ] [ options ] ]
 
 批量从原始 `TSM` 文件中删除`measurement`数据
 
-### `警告`
-
-仅当您的`CnosDB`离线（`CnosDB`服务未运行） 时才使用`deletetsm`。
+#### 注意：仅当您的`CnosDB`离线（`CnosDB`服务未运行） 时才使用`deletetsm`。
 
 ### `语法`
 
@@ -109,6 +112,153 @@ cnosdb_inspect deletetsm --measurement <measurement_name> [ arguments ] <path>
 
 仅显示与此键子字符串匹配的索引数据和块数据。默认值为`""`。
 
+# `dumptsi`
+
+## `cnosdb_inspect dumptsi`
+
+转储有关`TSI`文件的底层信息，包括`.tsl`日志文件和`.tsi`文件
+
+### `语法`
+
+`cnosdb_inspect dumptsi [ options ] <index_path>`
+
+若未指定任何选项，则会为每个文件提供汇总信息。
+
+### `选项`
+
+可选参数在括号中
+
+`--series-file <series_path>`
+
+`_series`数据库目录下的目录路径`data`。必须要有。
+
+`[ --series]`
+
+转储原始系列数据。
+
+`[ --measurements]`
+
+转储原始测量数据。
+`
+[ --tag-keys]`
+
+转储原始标签键。
+
+`[ --tag-values]`
+
+转储原始标签值。
+
+`[ --tag-value-series]`
+
+为每个标签值转储原始系列。
+
+`[ --measurement-filter <regular_expression>]`
+
+通过测量正则表达式过滤数据。
+
+`[ --tag-key-filter <regular_expression>]`
+
+按标签键正则表达式过滤数据。
+
+`[ --tag-value-filter <regular_expresssion>]`
+
+按标签值正则表达式过滤数据。
+
+### `例子`
+
+指定_series和index目录的路径
+
+`cnsodb_inspect dumptsi --series-file /path/to/db/_series /path/to/index`
+
+指定_series目录和index文件的路径
+
+`cnosdb_inspect dumptsi --series-file /path/to/db/_series /path/to/index/file0`
+
+指定_series目录和多个index文件的路径
+
+```
+cnosdb_inspect dumptsi --series-file /path/to/db/_series /path/to/index/file0 /path/to/index/file1 ...
+```
+
+# `buildtsi`
+
+## `cnosdb_inspect buildtsi`
+
+构建基于 TSI（时间序列索引）磁盘的分片索引文件和关联的序列文件。索引被写入一个临时位置直到完成，然后移动到一个永久位置。如果发生错误，则此操作将回退到原始内存索引。
+
+#### 注意： 仅适用于离线转换。 启用 TSI 后，新分片使用 TSI 索引。现有分片继续作为基于 TSM 的分片，直到离线转换。
+
+### `语法`
+```
+cnosdb_inspect buildtsi [ options ] -datadir <data_dir> -waldir <wal_dir> [ options ]
+```
+
+####注意：将buildtsi命令与您要运行数据库的用户帐户一起使用，或者在运行命令后确保权限匹配。
+
+### `选项`
+
+可选参数在括号中
+
+`[ --batch-size ]`
+
+写入索引的批次大小。默认值为`10000`。设置此值会对性能和堆大小产生不利影响。
+
+`[ --compact-series-file]`
+
+压缩现有`series`文件，包括离线`series`。迭代每个`segment`中的`series`并将`Index`中的`non-tombstoned series`重写到旁边的新 `.tmp `文件。转换所有`segment`后，临时文件将覆盖原始段。
+
+`[ --concurrency ]`
+
+专用于分片索引的工作人员数量。默认值为`GOMAXPROCS`。
+
+`[ --database <db_name> ]`
+
+数据库的名称。
+
+`--datadir <data_dir>`
+
+`data`的文件路径。
+
+`[ --max-cache-size ]`
+
+开始拒绝写入之前缓存的最大大小。此值覆盖的配置设置 `[data] cache-max-memory-size`。默认值为`1073741824`。
+
+`[ --max-log-file-size ]`
+
+日志文件的最大大小。默认值为`1048576`。
+
+`[ --retention <rp_name> ]`
+
+保留策略的名称。
+
+`[ --shard <shard_ID> ]`
+
+分片的标识符。
+
+`[ --v ]`
+
+以详细模式启用输出的标志。
+`
+--waldir <wal_dir>`
+
+`WAL`（预写日志）文件的目录。
+
+### `例子`
+
+转换节点上的所有`shard`
+
+`cnosdb_inspect buildtsi --datadir ~/.cnosdb/data --waldir ~/.cnosdb/wal`
+
+转换数据库的所有`shard`
+
+`cnosdb_inspect buildtsi --database mydb --datadir ~/.cnosdb/data --waldir ~/.cnosdb/wal`
+
+转换特定`shard`
+
+```
+cnodb_inspect buildtsi --database stress -shard 1 --datadir ~/.cnosdb/data --waldir ~/.cnosdb/wal
+```
+
 # `dumptsmwal`
 
 ## `cnosdb_inspect dumptsmwal`
@@ -130,13 +280,31 @@ influx_inspect dumptsmwal [ options ] <wal_dir>
 
 # `report-disk`
 
-## `cnosdb_inspect report-disk`
+## `cnosdb_inspect report`
+
+使用`report-disk`命令查看指定目录下的`TSM`文件的`shards`和`measurements`的磁盘使用情况。
+
+### `语法`
+
+`cnosdb_inspect report-disk [ options ]`
+
+### `选项`
+
+可选参数在括号中
+
+`[ --detailed]`
+
+包括`flag`来报告`measurements`的磁盘使用情况。
+
+# `report`
+
+## `cnosdb_inspect report`
 
 显示所有`shard`的系列元数据。默认位置是`$HOME/.cnosdb`。
 
 ### `语法`
 
-`cnosdb_inspect report-disk [ options ]`
+`cnosdb_inspect report [ options ]`
 
 ### `选项`
 
@@ -153,6 +321,36 @@ influx_inspect dumptsmwal [ options ] <wal_dir>
 `[ --exact]`
 
 报告确切基数而不是估计值的标志。默认值为`false`。注意：这会占用大量内存。
+
+# `reporttsi`
+
+## `cnosdb_inspect reporttsi`
+
+>计算数据库中的总精确`series`基数。
+> 
+>通过`measurements`分割`series`，并发出这些`series`值。
+> 
+>为数据库中的每个`shard`发出总的精确基数。
+> 
+>每个`shard`的`segment`是`shard`中每个`measurement`的确切基数。
+> 
+>可以选择将每个`shard`中的结果限制为“前 n 个”。
+
+### `语法`
+
+`cnosdb_inspect reporttsi --db-path <path-to-db> [ options ]`
+
+### `选项`
+
+可选参数在括号中
+
+`-db-path <path-to-db>`
+
+数据库的路径。
+
+`[ -top <n>]`
+
+将结果限制为每个`shard`中指定的数字。
 
 # `verify`
 
@@ -205,6 +403,36 @@ influx_inspect dumptsmwal [ options ] <wal_dir>
 
 启用详细日志记录。
 
+# `verify-tombstone`
+
+## `cnosdb_inspect verify-tombstone`
+
+验证 `tombstone`文件的完整性。
+
+### `语法`
+
+`cnosdb_inspect verify-tombstone [ options ]`
+
+### `选项`
+
+可选参数在括号中
+
+`[ -dir <path>]`
+
+指定根数据路径。默认为`~/.cnosdb/data`. 该路径可以是任意的，例如，它不需要是` CnosDB `数据目录。
+
+`[ --v]`
+
+启用详细日志记录。确认正在验证文件并每500万条`tombstone`条目显示进度。
+
+`[ --vv]`
+
+启用非常详细的日志记录。显示`tombstone`文件中每个`series key`和时间范围。自(1970-01-01T00:00:00Z)以来的时间戳以纳秒为单位显示。
+
+`[ --vvv]`
+
+启用非常非常详细的日志记录。显示`tombstone`文件中每个`series key`和时间范围。时间戳以`RFC3339`格式显示，精度为纳秒。
+
 # `export`
 
 ## `cnosdb_inspect export`
@@ -233,16 +461,16 @@ influx_inspect dumptsmwal [ options ] <wal_dir>
 
 `[ --end <timestamp>]`
 
-时间范围结束的时间戳。必须是`RFC3339`格式。
+时间范围结束的时间戳。必须是`RFC3339 `格式。
 
-`RFC3339`需要非常具体的格式。例如，要指示没有时区偏移 (UTC+0)，您必须在秒后包含 Z 或 +00:00。有效`RFC3339`格式的示例包括：
+RFC3339 需要非常具体的格式。例如，要指示没有时区偏移 (UTC+0)，您必须在秒后包含 Z 或 +00:00。有效 RFC3339 格式的示例包括：
 
 #### `无偏移`
 
 > YYYY-MM-DDTHH:MM:SS+00:00
-> 
+>
 >YYYY-MM-DDTHH:MM:SSZ
-> 
+>
 >YYYY-MM-DDTHH:MM:SS.nnnnnnZ (fractional seconds (.nnnnnn) are optional)
 
 #### `带偏移`
@@ -252,7 +480,7 @@ influx_inspect dumptsmwal [ options ] <wal_dir>
 >YYYY-MM-DDTHH:MM:SS+07:00
 
 `[ --out <export_dir>]`
-导出文件的位置。默认值为"`$HOME/.cnosdb/export`"。
+导出文件的位置。默认值为"`$HOME/.influxdb/export`"。
 
 `[ --retention <rp_name> ]`
 要导出的保留策略的名称。默认值为`""`。
