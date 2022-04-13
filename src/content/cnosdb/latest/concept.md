@@ -500,7 +500,15 @@ CnosDB应用时间序列数据的优化设计原则。其中一些设计原则�
   - [Kubernetes](####Kubernetes) 
 
 #### macOS
- 
+
+macOs默认目录
+
+|          路径           |       默认路径        |
+|:---------------------:|:-----------------:|
+|    Data directory     | 	~/.cnosdb/data/  |
+|    Meta directory     | 	~/.cnosdb/mata/  |
+|     WAL directory     | 	~/.cnosdb/wal/   |
+
 macOS 文件系统概述
 
               ~/.cnosdb/
