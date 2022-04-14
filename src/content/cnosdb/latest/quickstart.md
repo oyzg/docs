@@ -162,4 +162,38 @@ tar xvfz cnosdb-0.10.3_linux_arm64.tar.gz
 
    ```shell
    sudo systemctl start cnosdb
+   <<<<<<< Updated upstream
+   ```
+   =======
+   ```
+
+# 源码使用介绍
+
+### 构建
+
+1. 克隆项目
+
+   ```
+   git clone https://github.com/cnosdb/cnosdb.git
+   ```
+
+2. 编译
+
+   ```
+   go install ./...
+   ```
+
+### 运行
+
+
+1. 启动服务端
+
+   ```bash
+   $GOPATH/bin/cnosdb
+   ```
+
+2. 使用客户端
+
+   ```bash
+   $GOPATH/bin/cnosdb-cli
    ```
