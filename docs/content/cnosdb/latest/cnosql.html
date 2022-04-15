@@ -225,16 +225,15 @@ USE oceanic_station
 </li>
 </ul>
 </li>
-</ul>
+<li>
 <h3 id="查询入门"><a class="header" href="#查询入门">查询入门</a></h3>
 <h4 id="查看所有-measurements"><a class="header" href="#查看所有-measurements">查看所有 <code>measurements</code></a></h4>
-<pre><code>  SHOW MEASUREMENTS
+<pre><code>SHOW MEASUREMENTS
 </code></pre>
 <h4 id="计算air中temperature的数量"><a class="header" href="#计算air中temperature的数量">计算<code>air</code>中<code>temperature</code>的数量</a></h4>
 <p><code>  SELECT COUNT(&quot;temperature&quot;) FROM air</code></p>
 <h4 id="查看air中的前五个值"><a class="header" href="#查看air中的前五个值">查看<code>air</code>中的前五个值</a></h4>
-<pre><code>`SELECT * FROM air LIMIT 5`
-</code></pre>
+<p><code>SELECT * FROM air LIMIT 5</code></p>
 <h4 id="指定字段的标识符号"><a class="header" href="#指定字段的标识符号">指定字段的标识符号</a></h4>
 <pre><code> SELECT &quot;temperature&quot;::field,&quot;station&quot;::tag,&quot;visibility&quot;::field FROM &quot;air&quot; limit 10
 </code></pre>
@@ -245,13 +244,14 @@ USE oceanic_station
 <h4 id="查看field-key"><a class="header" href="#查看field-key">查看field key</a></h4>
 <p><code> SHOW FIELD KEYS FROM air</code></p>
 <h4 id="查看series"><a class="header" href="#查看series">查看series</a></h4>
-<pre><code>`SHOW SERIES`
-</code></pre>
+<p><code>SHOW SERIES</code></p>
 <h4 id="函数使用"><a class="header" href="#函数使用">函数使用</a></h4>
 <blockquote>
 <p><a href="https://www.cnosdb.com/content/cnosdb/0.10/cnosql/function.html">更多</a></p>
 </blockquote>
 <p><code> SELECT MEAN(&quot;temperature&quot;) FROM &quot;air&quot;</code></p>
+</li>
+</ul>
 <h2 id="cnosql语法"><a class="header" href="#cnosql语法">CnosQL语法</a></h2>
 <ul>
 <li>
