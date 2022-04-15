@@ -30,5 +30,6 @@
   - [运维管理](./content/cnosdb/latest/management.md)
   - [CnosQL](./content/cnosdb/latest/cnosql.md)
   - [数据协议](./content/cnosdb/latest/protocol.md)
+  - [集群管理](./content/cnosdb/latest/sandboxmanagement.md)
   - [集群 管理](./content/cnosdb/latest/sandboxmanagement.md)
   - [疑难解答](./content/cnosdb/latest/question.md)
