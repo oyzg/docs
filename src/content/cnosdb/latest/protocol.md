@@ -369,4 +369,3 @@ CnosDB对Prometheus远程读写的支持是将以下HTTP端点添加到CnosDB。
   Telegraf的输入和输出插件在Telegraf的配置文件(`Telegraf .conf`)中启用和配置。您有以下配置Telegraf的选项:
   
   - #### 自动配置 Telegraf
-    

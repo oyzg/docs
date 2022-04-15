@@ -1,0 +1,740 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>概念</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../../favicon.svg">
+        <link rel="shortcut icon" href="../../../favicon.png">
+        <link rel="stylesheet" href="../../../css/variables.css">
+        <link rel="stylesheet" href="../../../css/general.css">
+        <link rel="stylesheet" href="../../../css/chrome.css">
+        <link rel="stylesheet" href="../../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../../highlight.css">
+        <link rel="stylesheet" href="../../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/about.html"><strong aria-hidden="true">1.</strong> 关于本项目</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/introduction/index.html"><strong aria-hidden="true">2.</strong> 介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/introduction/download.html"><strong aria-hidden="true">2.1.</strong> 下载</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/introduction/install.html"><strong aria-hidden="true">2.2.</strong> 安装</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/introduction/get-start.html"><strong aria-hidden="true">2.3.</strong> 快速开始</a></li></ol></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/concept/index.html"><strong aria-hidden="true">3.</strong> 概念</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/guide/index.html"><strong aria-hidden="true">4.</strong> 指南</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/guide/cnosdb.html"><strong aria-hidden="true">4.1.</strong> cnosdb</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/guide/cnosdb-cli.html"><strong aria-hidden="true">4.2.</strong> cnosdb-cli</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/guide/write.html"><strong aria-hidden="true">4.3.</strong> HTTP写入</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/guide/query.html"><strong aria-hidden="true">4.4.</strong> HTTP查询</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/guide/cnosdb_inspect.html"><strong aria-hidden="true">4.5.</strong> CnosDB Inspect</a></li></ol></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/cnosql/index.html"><strong aria-hidden="true">5.</strong> CnosQL</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/cnosql/ddl.html"><strong aria-hidden="true">5.1.</strong> DDL</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/cnosql/dml.html"><strong aria-hidden="true">5.2.</strong> DML</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/cnosql/function.html"><strong aria-hidden="true">5.3.</strong> 函数</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/cnosql/countine_query.html"><strong aria-hidden="true">5.4.</strong> 连续查询</a></li></ol></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/cluster/introduction.html"><strong aria-hidden="true">6.</strong> CnosDB分布式</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/other/index.html"><strong aria-hidden="true">7.</strong> 其他</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/other/kubernetes-deployment.html"><strong aria-hidden="true">7.1.</strong> 使用Kubernetes部署CnosDB</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/0.10/other/kubernetes-StatefulSet.html"><strong aria-hidden="true">7.2.</strong> 使用Kubernetes部署CnosDB集群</a></li></ol></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/latest/SUMMARY.html"><strong aria-hidden="true">8.</strong> latest</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../content/cnosdb/latest/introduction.html"><strong aria-hidden="true">8.1.</strong> 介绍</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/latest/quickstart.html"><strong aria-hidden="true">8.2.</strong> 快速开始</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/latest/concept.html" class="active"><strong aria-hidden="true">8.3.</strong> 概念</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/latest/guide.html"><strong aria-hidden="true">8.4.</strong> 入门指南</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/latest/management.html"><strong aria-hidden="true">8.5.</strong> 运维管理</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/latest/cnosql.html"><strong aria-hidden="true">8.6.</strong> CnosQL</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/latest/protocol.html"><strong aria-hidden="true">8.7.</strong> 数据协议</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/latest/sandboxmanagement.html"><strong aria-hidden="true">8.8.</strong> 集群管理</a></li><li class="chapter-item expanded "><a href="../../../content/cnosdb/latest/question.html"><strong aria-hidden="true">8.9.</strong> 疑难解答</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="概念"><a class="header" href="#概念">概念</a></h1>
+<h2 id="cnosdb-vs-sql"><a class="header" href="#cnosdb-vs-sql">CnosDB VS SQL</a></h2>
+<ul>
+<li>
+<h3 id="概念-1"><a class="header" href="#概念-1">概念</a></h3>
+<p>CnosDB类似于SQL数据库，但在许多方面有所不同。CnosDB是专门为时间序列数据构建的。关系数据库可以处理时间序列数据，但对常见的时间序列工作负载没有进行优化。CnosDB旨在存储大量时间序列数据，并快速对这些数据执行实时分析。</p>
+<p>在CnosDB中，时间戳标识任何给定数据系列中的单个点。这就像一个SQL数据库表，其中的主键是由系统预先设置的，并且总是时间。</p>
+<p>CnosDB还认识到，您的模式首选项可能会随着时间而改变。在CnosDB中，您不必预先定义模式。数据点可以具有measurements上的一个字段、measurements上的所有字段或中间的任何数字。只需为新字段编写一个点，就可以向measurements添加新字段。如果您需要了解相关术语，如measurement、tag和field等，请阅读本节内容，了解SQL数据库到CnosDB术语交叉。</p>
+</li>
+<li>
+<h3 id="术语"><a class="header" href="#术语">术语</a></h3>
+<p>下面的表是一个(非常)简单的例子，它是一个SQL数据库中名为<code>wind_speed</code>的表，其中没有索引的列是<code>#wind_speed</code>，索引的列是<code>station_id</code>、<code>station</code>和<code>time</code>。</p>
+<pre><code>+------------+---------------+---------------------+--------------+
+| station_id |   station     |       time          |  #wind_speed |
++------------+---------------+---------------------+--------------+
+|       1    | LianYunGang   | 1429185600000000000 |       63     |
+|       1    | LianYunGang   | 1429185601000000000 |       74     |
+|       1    | LianYunGang   | 1429185602000000000 |       51     |
+|       1    | LianYunGang   | 1429185603000000000 |       15     |
+|       2    | XiaoMaiDao    | 1429185600000000000 |       104    |
+|       2    | XiaoMaiDao    | 1429185601000000000 |       20     |
+|       2    | XiaoMaiDao    | 1429185602000000000 |       21     |
+|       2    | XiaoMaiDao    | 1429185603000000000 |       34     |
++------------+---------------+---------------------+--------------+
+</code></pre>
+<p>同样的数据在 CnosDB 中看起来是这样的：</p>
+<pre><code>name: wind_speed
+tags: station_id=1, station=LianYunGang
+time			               #wind_speed
+----			               ------------
+2015-04-16T12:00:00Z	 63
+2015-04-16T12:00:01Z	 74
+2015-04-16T12:00:02Z	 51
+2015-04-16T12:00:03Z	 15
+
+name: wind_speed
+tags: station_id=2, station=XiaoMaiDao
+time			               #wind_speed
+----			               ------------
+2015-04-16T12:00:00Z	 104
+2015-04-16T12:00:01Z	 20
+2015-04-16T12:00:02Z	 21
+2015-04-16T12:00:03Z	 34
+</code></pre>
+<ul>
+<li>时间序列数据在聚合场景中最有用</li>
+<li>CnosDB 中的<code>measurement</code>类似于SQL数据库<code>table</code>。</li>
+<li>CnosDB 中的<code>tags</code>类似于SQL数据库中的有索引的列。</li>
+<li>CnosDB 中的<code>fields</code>就像SQL数据库中没有索引的列。</li>
+<li>CnosDB 中的<code>points</code>类似于SQL行。</li>
+<li>CnosDB 中不需要预定义<code>schema</code></li>
+</ul>
+<p>基于对数据库术语的这种比较，CnosDB连续查询和保留策略类似于SQL数据库中的存储过程。它们只指定一次，然后定期自动执行。</p>
+<p>当然，SQL数据库和CnosDB之间存在一些主要差异。SQL join不能用于CnosDB的<code>measurements</code>; 您的模式设计应该反映这种差异。而且，正如我们上面提到的，<code>measurements</code>就像一个SQL表，其中的主索引总是预先设置为time。CnosDB时间戳必须在U<code>NIX epoch (GMT)</code>或格式化为<code>RFC3339</code>下有效的日期-时间字符串。</p>
+</li>
+<li>
+<h3 id="cnosql"><a class="header" href="#cnosql">CnosQL</a></h3>
+<p>CnosDB支持的查询语言主要是CnosQL。</p>
+<p>CnosQL是一种类似sql的查询语言，用于与CnosDB交互。它经过精心设计，使之与其他SQL或类似SQL的环境中的SQL相似，同时还提供了特定于存储和分析时间序列数据的特性。然而，CnosQL不是SQL，缺乏对SQL高级用户习惯的更高级操作，如UNION、JOIN和HAVING的支持。</p>
+<p>CnosQL的SELECT语句遵循SQL SELECT语句的形式:</p>
+<p><code>SELECT &lt;stuff&gt; FROM &lt;measurement_name&gt; WHERE &lt;some_conditions&gt;</code></p>
+<p><code>WHERE</code>是可选的</p>
+<p>要获得上面部分的CnosDB输出，您需要输入:</p>
+<p><code>SELECT * FROM &quot;wind_speed&quot;</code></p>
+<p>如果你只想看到LianYunGang的数据，你可以输入:</p>
+<p><code>SELECT * FROM &quot;wind_speed&quot; WHERE &quot;station&quot; = 'LianYunGang'</code></p>
+<p>如果你想查看2015年4月16日12:00:01 UTC之后LianYunGang的数据，你可以输入:</p>
+<p><code>SELECT * FROM &quot;wind_speed&quot; WHERE &quot;station&quot; = 'LianYunGang' AND time &gt; '2015-04-16 12:00:01'</code></p>
+<p>如上例所示，CnosQL允许您在<code>WHERE</code>语句中指定查询的时间范围。可以使用单引号括起来的日期-时间字符串，格式为Y<code>YYY-MM-DD HH:MM:SS。MMM </code>(<code>MMM</code>是可选的毫秒数，您还可以指定微秒或纳秒)。你也可以在<code>now()</code>中使用相对时间，它指的是服务器的当前时间戳:</p>
+<p><code>SELECT * FROM &quot;wind_speed&quot; WHERE time &gt; now() - 1h</code></p>
+<p>该查询输出wind_speed的measurements中的数据，其中时间戳比服务器当前时间早1小时。使用now()指定持续时间的选项有:ns(纳秒)、u或µ(微秒)、ms(毫秒)、s(秒)、m(分钟)、h(小时)、d(天)和w(周)。</p>
+</li>
+<li>
+<h3 id="cnosdb-并非-crud"><a class="header" href="#cnosdb-并非-crud">CnosDB 并非 CRUD</a></h3>
+<p>CnosDB是一个针对时间序列数据进行了优化的数据库。这些数据通常来自分布式传感器组、大型网站的点击数据或金融交易列表。</p>
+<p>这些数据的一个共同之处是，它们在总体上更有用。有一篇文章说，你的电脑在UTC时间周二12:38:35的时候CPU利用率为12%，这很难从中得出结论。当与本序列的其他部分结合使用时，它将变得更加有用。这是随着时间的推移趋势开始显现的地方，可以从数据中得出可操作的见解。此外，时间序列数据通常只写入一次，很少更新。</p>
+<p>其结果是，CnosDB不是一个完整的CRUD数据库，而是更像一个CR-ud，优先考虑创建和读取数据的性能，而不是更新和销毁，并防止一些更新和销毁行为，以使创建和读取性能更高:</p>
+<ul>
+<li>要更新一个点，请插入一个具有相同measurements、tag set和timestamp的点。</li>
+<li>您可以删除或删除序列，但不能基于字段值删除单个点。作为一种解决方案，您可以搜索字段值，检索时间，然后基于时间字段进行DELETE操作。</li>
+<li>您还不能更新或重命名tags。要修改一系列点的tags，请找到有问题标记值的点，将值更改为所需的值，将这些点写回，然后删除带有旧tag values的序列。</li>
+<li>你不能通过tag keys来删除tags。</li>
+</ul>
+</li>
+</ul>
+<h2 id="设计原则"><a class="header" href="#设计原则">设计原则</a></h2>
+<p>CnosDB应用时间序列数据的优化设计原则。其中一些设计原则可能与性能方面的权衡有关。主要设计原则包括：</p>
+<ul>
+<li>
+<p>以时间为顺序的数据</p>
+</li>
+<li>
+<p>严格的更新和删除权限</p>
+</li>
+<li>
+<p>先处理读写查询</p>
+</li>
+<li>
+<p>无模式设计</p>
+</li>
+<li>
+<p>单个点上的数据集</p>
+</li>
+<li>
+<p>重复数据</p>
+</li>
+<li>
+<h3 id="以时间为顺序的数据"><a class="header" href="#以时间为顺序的数据">以时间为顺序的数据</a></h3>
+<p>为了提高性能，数据按时间升序写入。</p>
+</li>
+<li>
+<h3 id="严格的更新和删除权限"><a class="header" href="#严格的更新和删除权限">严格的更新和删除权限</a></h3>
+<p>为了提高查询和写性能，CnosDB严格限制更新和删除权限。时间序列数据主要是从未更新的新数据。删除通常只会影响未写入的数据，不会发生有争议的更新。</p>
+</li>
+<li>
+<h3 id="先处理读写查询"><a class="header" href="#先处理读写查询">先处理读写查询</a></h3>
+<p>CnosDB优先考虑读和写请求，而不是强一致性。CnosDB在执行查询时返回结果。所有影响查询数据的事务随后都会被处理，以确保数据最终是一致的。因此，如果摄取速率很高(每毫秒多个写操作)，查询结果可能不包括最近的数据。</p>
+</li>
+<li>
+<h3 id="无模式设计"><a class="header" href="#无模式设计">无模式设计</a></h3>
+<p>CnosDB使用无模式设计来更好地管理不连续数据。时间序列数据通常是短暂的，这意味着数据出现几个小时，然后就消失了。</p>
+</li>
+<li>
+<h3 id="单个点上的数据集"><a class="header" href="#单个点上的数据集">单个点上的数据集</a></h3>
+<p>由于数据集比单个点更重要，因此CnosDB实现了强大的工具来聚合数据和处理大型数据集。点通过时间戳和序列来区分，所以没有传统意义上的ID。</p>
+</li>
+<li>
+<h3 id="重复数据"><a class="header" href="#重复数据">重复数据</a></h3>
+<p>为了简化冲突解决和提高写性能，CnosDB假设发送多次的数据是重复数据。相同的点不会存储两次。如果为某个点提交了新的字段值，则CnosDB使用最新的字段值更新该点。在极少数情况下，数据可能会被覆盖。</p>
+</li>
+</ul>
+<h2 id="设计架构和tsm"><a class="header" href="#设计架构和tsm">设计架构和TSM</a></h2>
+<ul>
+<li>
+<h3 id="设计架构"><a class="header" href="#设计架构">设计架构</a></h3>
+<p>每个CnosDB用例都是唯一的，您的模式反映了这种唯一性。通常，为查询而设计的模式可以实现更简单、更高效的查询。对于大多数用例，我们推荐以下设计架构:</p>
+<ul>
+<li>在何处存储数据(标签或字段)</li>
+<li>避免过多的series</li>
+<li>使用推荐的命名约定</li>
+<li>分片时长管理</li>
+</ul>
+</li>
+<li>
+<h4 id="在何处存储数据标签或字段"><a class="header" href="#在何处存储数据标签或字段">在何处存储数据(标签或字段)</a></h4>
+<ul>
+<li>将常用查询和分组元数据存储在标签中。</li>
+<li>如果每个数据点包含不同的值，则将数据存储在字段中。</li>
+<li>将数字值存储为fields(tag values只支持字符串值)。</li>
+</ul>
+</li>
+<li>
+<h4 id="避免过多的series"><a class="header" href="#避免过多的series">避免过多的series</a></h4>
+<p>按tags查询比按fields查询性能更好。但是，当创建过多的索引时，写和读都可能开始变慢。</p>
+<p>每一组索引数据元素形成一个series key。包含高度可变信息(如唯一id、哈希值和随机字符串)的标记将导致大量的series，也称为高series基数。对于许多数据库工作负载来说，高series基数是高内存使用量的主要驱动因素。因此，为了减少内存消耗，可以考虑将高基数值存储在field values中，而不是存储在tag keys或field keys中。</p>
+</li>
+<li>
+<h4 id="使用推荐的命名约定"><a class="header" href="#使用推荐的命名约定">使用推荐的命名约定</a></h4>
+<ul>
+<li>避免在tag和field keys中保留关键字</li>
+<li>如果每个数据点包含不同的值，则将数据存储在field中。</li>
+<li>将数字值存储为fields(tag values只支持字符串值)。</li>
+</ul>
+</li>
+<li>
+<h3 id="tsm-树"><a class="header" href="#tsm-树">TSM 树</a></h3>
+<p>时间结构合并树(TSM)引擎解决了获得最大吞吐量、压缩和原始时间序列数据查询速度的问题。在TSI之前，倒排索引是一种内存中的数据结构，是在基于TSM中的数据启动数据库时构建的。这意味着对于每个度量、标记键值对和字段名，内存中都有一个查询表来将这些元数据位映射到底层的时间序列。对于具有大量临时序列的用户，内存利用率随着新的时间序列的创建而不断增加。而且，启动时间增加了，因为所有的数据都必须在启动时加载到堆上。</p>
+</li>
+<li>
+<h3 id="tsm-相关概念"><a class="header" href="#tsm-相关概念">TSM 相关概念</a></h3>
+<p>CnosDB存储引擎看起来非常类似于LSM树。它有一个预写日志和一组只读数据文件，这些文件在概念上类似于LSM树中的sstable。TSM文件包含排序、压缩的系列数据。</p>
+<p>CnosDB将为每个时间块创建一个分片（即shard）。例如，如果您有一个无限持续时间的保留策略，那么将为每7天的时间块创建分片。每个分片都映射到底层存储引擎数据库。每个数据库都有自己的WAL和TSM文件。</p>
+</li>
+<li>
+<h3 id="存储引擎"><a class="header" href="#存储引擎">存储引擎</a></h3>
+<p>存储引擎将多个组件捆绑在一起，提供存储和查询系列数据的外部接口。它由多个组件组成，每个组件都扮演一个特定的角色:</p>
+<ul>
+<li>
+<p><code>内存索引</code>- 内存索引是跨分片的共享索引，提供对<code>measurement</code>、<code>tags</code>和<code>series</code>的快速访问。索引由引擎使用，但并不特定于存储引擎本身。</p>
+</li>
+<li>
+<p><code>WAL</code> - <code>WAL</code>是一种写入优化的存储格式，它允许写入是持久的，但不容易查询。对<code>WAL</code>的写入附加到固定大小的段。</p>
+</li>
+<li>
+<p><code>缓存</code> - 缓存是存储在<code>WAL</code>中的数据的内存表示。它在运行时被查询并与存储在<code>TSM</code>文件中的数据合并。</p>
+</li>
+<li>
+<p><code>TSM 文件</code> - <code>TSM</code>文件以列格式存储压缩的系列数据。</p>
+</li>
+<li>
+<p><code>FileStore</code>- <code>FileStore</code>调解对磁盘上所有<code>TSM</code>文件的访问。它确保在替换现有文件以及删除不再使用的<code>TSM</code>文件时自动安装<code>TSM</code>文件。</p>
+</li>
+<li>
+<p><code>Compactor</code> - <code>Compactor</code>负责将优化程度较低的<code>Cache</code>和<code>TSM</code>数据转换为读取优化程度更高的格式。它通过压缩系列、删除已删除的数据、优化索引以及将较小的文件组合成较大的文件来实现这一点。</p>
+</li>
+<li>
+<p><code>Compaction Planner</code> - <code>Compaction Planner</code>确定哪些<code>TSM</code>文件已准备好进行压缩，并确保多个并发压缩不会相互干扰。</p>
+</li>
+<li>
+<p><code>Compression</code>- <code>Compression</code>由各种编码器和解码器处理特定数据类型。一些编码器是相当静态的，并且总是以相同的方式编码相同的类型；其他人根据数据的形状切换压缩策略。</p>
+</li>
+<li>
+<p><code>Writers/Readers</code> - 每种文件类型（<code>WAL</code>段、<code>TSM</code>文件、<code>tombstones</code>等）都有用于处理格式的<code>Writers</code>和<code>Readers</code>。</p>
+</li>
+<li>
+<h3 id="预写日志-wal"><a class="header" href="#预写日志-wal">预写日志 WAL</a></h3>
+<p>WAL被组织成一组类似于<code>_000001.wal</code>的文件。文件编号是单调递增的，称为WAL段。当一个段的大小达到10MB时，它被关闭并打开一个新的段。每个WAL段存储多个压缩的写和删除块。</p>
+<p>当写入时，新的点被序列化，使用Snappy压缩，并写入WAL文件。在成功返回之前，文件被fsync并将数据添加到内存索引中。这意味着需要将点批处理在一起以实现高吞吐量性能。(对于许多用例来说，最佳批量大小似乎是每批5000 - 10000个点。)</p>
+<p>WAL中的每个表项都遵循<code>TLV标准</code>，一个字节代表表项的类型(写或删除)，一个4字节的<code>uint32</code>压缩块的长度，然后是压缩块。</p>
+</li>
+</ul>
+</li>
+<li>
+<h3 id="缓存"><a class="header" href="#缓存">缓存</a></h3>
+<p>缓存是当前存储在WAL中的所有数据点的内存副本。这些点由key组织，key是measurement、tag set和field。每个field保存为自己的时间顺序范围。缓存数据在内存中没有被压缩。</p>
+<p>对存储引擎的查询将把来自缓存的数据与来自TSM文件的数据合并。在查询处理时，对从缓存中获取的数据的副本执行查询。这样，在查询运行时输入的写操作不会影响结果。</p>
+<p>发送到缓存的删除操作将清除给定key或给定key的特定时间范围。</p>
+<p>缓存为快照行为提供了一些控制。最重要的控制是内存限制。有一个下界，即<code>cache-snapshot-memory-size</code>，超过这个下界将触发对TSM文件的快照，并删除相应的WAL段。还有一个上限，<code>cache-max-memory-size</code>，超过这个上限会导致缓存拒绝新的写操作。这些配置对于防止内存不足的情况以及对客户机施加反压力非常有用，因为写入数据的速度比实例持久化数据的速度要快。每次写操作时都会检查内存阈值。</p>
+<p>其他快照控制是基于时间的。空闲阈值<code>cache -snapshot-write-cold-duration</code>在制定时间间隔内没有收到写请求时，强制缓存快照TSM文件。</p>
+<p>通过重新读取磁盘上的WAL文件，在重新启动时重新创建内存缓存。</p>
+</li>
+<li>
+<h3 id="tsm-文件"><a class="header" href="#tsm-文件">TSM 文件</a></h3>
+<p>TSM文件是内存映射的只读文件的集合。这些文件的结构看起来非常类似于LevelDB或其他LSM树变体中的SSTable。</p>
+<p>TSM文件由四部分组成：header, blocks, index, footer.</p>
+<h4 id="header"><a class="header" href="#header">Header</a></h4>
+<pre><code>+--------+------------------------------------+-------------+--------------+
+| Header |               Blocks               |    Index    |    Footer    |
+|5 bytes |              N bytes               |   N bytes   |   4 bytes    |
++--------+------------------------------------+-------------+--------------+
+</code></pre>
+<p><code>Header</code>用于标识文件类型和版本号。</p>
+<pre><code>  +-------------------+
+  |      Header       |
+  +-------------------+
+  |  Magic  │ Version |
+  | 4 bytes │ 1 byte  |
+  +-------------------+
+</code></pre>
+<h4 id="blocks"><a class="header" href="#blocks">Blocks</a></h4>
+<p><code>Blocks</code> 是成对的 CRC32 校验和和数据的序列。block数据对文件是不透明的。CRC32 用于block级错误检测。block的长度存储在索引中。</p>
+<pre><code>  +--------------------------------------------------------------------+
+  │                           Blocks                                   │
+  +---------------------+-----------------------+----------------------+
+  |       Block 1       |        Block 2        |       Block N        |
+  +---------------------+-----------------------+----------------------+
+  |   CRC    |  Data    |    CRC    |   Data    |   CRC    |   Data    |
+  | 4 bytes  | N bytes  |  4 bytes  | N bytes   | 4 bytes  |  N bytes  |
+  +---------------------+-----------------------+----------------------+
+</code></pre>
+<h4 id="index"><a class="header" href="#index">Index</a></h4>
+<p>block之后是文件中block的Index。Index由一系列Index条目组成，这些条目按字典顺序按key排序，然后按时间排序。key包括measurement name、tag set和one field。每个点的多个字段在 TSM 文件中创建多个Index条目。每个Index条目以key长度和key开头，然后是block类型（float、int、bool、string）和key后面的block Index条目数。每个block Index条目由block的最小和最大时间、block所在文件的偏移量和block的大小组成。TSM 文件中包含密钥的每个block都有一个block Index条目。</p>
+<p>Index结构可以提供对所有block的有效访问以及确定与访问给定key相关的成本的能力。给定一个key和timestamp，我们可以确定一个文件是否包含该时间戳的块。我们还可以确定该block所在的位置以及必须读取多少数据才能检索该block。知道block的大小，我们可以有效地配置我们的 IO 语句。</p>
+<pre><code>  +-----------------------------------------------------------------------------+
+  │                                   Index                                     │
+  +-----------------------------------------------------------------------------+
+  │ Key Len │   Key   │ Type │ Count │Min Time │Max Time │ Offset │  Size  │....│
+  │ 2 bytes │ N bytes │1 byte│2 bytes│ 8 bytes │ 8 bytes │8 bytes │4 bytes │    │
+  +-----------------------------------------------------------------------------+
+</code></pre>
+<h4 id="footer"><a class="header" href="#footer">Footer</a></h4>
+<p>最后一部分是存储索引开始的偏移量的页脚。</p>
+<pre><code>  +---------+
+  │ Footer  │
+  +---------+
+  │Index Ofs│
+  │ 8 bytes │
+  +---------+
+</code></pre>
+</li>
+<li>
+<h3 id="压缩"><a class="header" href="#压缩">压缩</a></h3>
+<p>压缩是将以写优化格式存储的数据迁移到读优化格式的循环过程。当写一个shard时，有几个压缩阶段:</p>
+<p>1.快照 —— 必须将Cache和WAL中的值转换为TSM文件，以释放WAL段所使用的内存和磁盘空间。这些压缩是基于缓存内存和时间阈值进行的。</p>
+<p>2.级别压缩 —— 级别压缩(级别1-4)发生在TSM文件生成时。TSM文件从快照文件压缩到一级文件。多个1级文件被压缩以生成2级文件。这个过程继续进行，直到文件达到TSM文件的最大大小4级(完全压缩)。除非需要运行删除、索引优化压缩或完全压缩，否则不会进一步压缩它们。较低级别的压缩使用的策略避免了cpu密集型活动，如解压缩和组合块。更高级别(因此更少频率)的压缩将重新组合块，以完全压缩它们，并增加压缩比。</p>
+<p>3.索引优化 —— 当许多4级TSM文件累积时，内部索引将变得更大，访问成本也更高。索引优化压缩在一组新的TSM文件中分割序列和索引，将给定序列的所有点排序到一个TSM文件中。在进行索引优化之前，每个TSM文件包含大多数或所有系列的点，因此每个文件包含相同的系列索引。在索引优化之后，每个TSM文件包含来自最小序列的点，并且文件之间的序列重叠很少。因此，每个TSM文件都有一个较小的惟一系列索引，而不是完整系列列表的副本。此外，来自特定系列的所有点在TSM文件中是连续的，而不是分布在多个TSM文件中。</p>
+<p>4.完全压缩(4级压缩) —— 当碎片长时间处于冷状态，或者碎片上发生删除时，就会发生完全压缩。完全压缩生成一组最优的TSM文件，并包括来自级别和索引优化压缩的所有优化。一旦碎片被完全压缩，除非存储了新的写或删除操作，否则不会在其上运行其他压缩操作。</p>
+<p>每个块都被压缩，以减少查询时的存储空间和磁盘IO。一个块包含给定序列和字段的时间戳和值。每个块有一个字节头，后面是压缩时间戳和压缩值。</p>
+<pre><code>  +--------------------------------------------------+
+  | Type  |  Len  |   Timestamps    |      Values    |
+  |1 Byte | VByte |     N Bytes     |    N Bytes     │
+  +--------------------------------------------------+
+</code></pre>
+<p>根据数据类型及其形状，使用编码对时间戳和值进行压缩和单独存储。独立存储它们允许对所有时间戳使用时间戳编码，同时允许对不同的字段类型使用不同的编码。例如，有些点可以使用游程编码，而其他点则不能。</p>
+<p>每个值类型还包含一个1字节的头，指示剩余字节的压缩类型。四个高位存储压缩类型，四个低位在需要时由编码器使用。</p>
+<h4 id="时间戳"><a class="header" href="#时间戳">时间戳</a></h4>
+<p>时间戳编码是自适应的，并基于所编码的时间戳的结构。它结合使用增量编码、缩放和使用simple8b游程编码的压缩，并在需要时退回到无压缩。</p>
+<p>时间戳的分辨率是可变的，但可以是纳秒级的粒度，需要8个字节来存储未压缩的数据。在编码期间，值首先进行增量编码。第一个值是起始时间戳，随后的值是与前一个值的差值。这通常将值转换成更小的整数，更容易压缩。许多时间戳也是单调增加的，并落在时间的偶数边界上，例如每10秒。当时间戳具有这种结构时，它们的最大公约数也是10的倍数。这可以将非常大的整数delta转换为更小的整数delta，从而更好地压缩。</p>
+<p>使用这些调整后的值，如果所有增量相同，则使用游程编码存储时间范围。如果不能进行游程编码，并且所有值都小于(1«60)- 1(在纳秒分辨率下~36.5年)，则使用simple8b编码对时间戳进行编码。Simple8b编码是一种64位字对齐整数编码，它将多个整数打包成一个64位字。如果任何值超过了最大值，增量将不压缩地存储，每个块使用8个字节。未来的编码可能使用补丁方案，如PFOR，以更有效地处理异常值。</p>
+<h4 id="浮点数"><a class="header" href="#浮点数">浮点数</a></h4>
+<p>浮点是使用<code>Facebook Gorilla paper</code>的实现进行编码的。将XORS连续的值编码在一起，当这些值很接近时产生一个小结果。然后使用控制位存储增量，以指示异或值中有多少前导和尾零。我们的实现删除了论文中描述的时间戳编码，只对浮点值进行编码。</p>
+<h4 id="整数"><a class="header" href="#整数">整数</a></h4>
+<p>整数编码根据未压缩数据中的值范围使用两种不同的策略。编码后的值首先使用ZigZag编码。它使正整数和负整数在一个正整数范围内交叉。</p>
+<p>如果所有ZigZag编码的值都小于(1«60)- 1，则使用simple8b编码对它们进行压缩。如果任何值大于最大值，那么所有的值都被不压缩地存储在块中。如果所有值都相同，则使用游程编码。对于经常是常量的值，这种方法非常有效。</p>
+<h4 id="布尔值"><a class="header" href="#布尔值">布尔值</a></h4>
+<p>布尔值使用简单的位打包策略进行编码，每个布尔值使用1位。编码的布尔值的数量使用可变字节编码存储在块的开头。</p>
+<h4 id="字符串"><a class="header" href="#字符串">字符串</a></h4>
+<p>字符串使用<code>Snappy</code>压缩进行编码。每个字符串都是连续打包的，它们被压缩为一个更大的块。</p>
+</li>
+<li>
+<h3 id="写"><a class="header" href="#写">写</a></h3>
+<p>写操作被添加到当前的WAL段，同时也被添加到缓存中。每个WAL段都有一个最大尺寸。当前文件写满时，写入滚动到新文件。缓存也是有大小限制的；当缓存太满时，会进行snapshot和WAL压缩。如果写速率在一段持续时间内超过WAL压缩速率，那么缓存可能会变得太满，在这种情况下，新的写操作将会失败，直到snapshot进程赶上。</p>
+<p>当WAL段被填满并关闭时，Compactor会snapshot缓存并将数据写入一个新的TSM文件。当成功写入TSM文件并进行fsync时，文件存储就会加载并引用它。</p>
+</li>
+<li>
+<h3 id="更新"><a class="header" href="#更新">更新</a></h3>
+<p>更新(为一个已经存在的点写一个新的值)与正常写操作一样发生。因为缓存的值会覆盖现有的值，所以新的写操作优先。如果写入将覆盖以前的TSM文件中的一个点，那么这些点将在查询运行时合并，新的写入优先。</p>
+</li>
+<li>
+<h3 id="删除"><a class="header" href="#删除">删除</a></h3>
+<p>删除是通过向WAL写入一个删除条目来进行的，该条目用于测量或序列，然后更新Cache和FileStore。Cache将收回所有相关条目。FileStore为每个包含相关数据的TSM文件写一个tombstone文件。这些tombstone文件在启动时用于忽略块以及在压缩期间用于删除已删除的条目。</p>
+<p>对部分删除的系列的查询在查询时进行处理，直到压缩从TSM文件中完全删除数据。</p>
+</li>
+<li>
+<h3 id="查询"><a class="header" href="#查询">查询</a></h3>
+<p>当存储引擎执行查询时，它本质上是对与特定series key和field相关的给定时间的搜索。首先，我们对数据文件进行搜索，以找到包含与查询匹配的时间范围以及包含匹配序列的文件。</p>
+<p>选中数据文件后，接下来需要找到series key索引条目在文件中的位置。我们对每个TSM索引执行二进制搜索，以找到其索引块的位置。</p>
+<p>在通常情况下，多个TSM文件之间的块不会重叠，我们可以线性搜索索引条目，以找到要读取的起始块。如果有重叠的时间块，则对索引项进行排序，以确保较新的写操作优先，并且在查询执行期间可以按顺序处理这些块。</p>
+<p>当遍历索引项时，块顺序地从块部分读取。块被解压缩，我们寻找特定的点。</p>
+</li>
+</ul>
+<h2 id="tsi的设计"><a class="header" href="#tsi的设计">TSI的设计</a></h2>
+<ul>
+<li>
+<h3 id="概述"><a class="header" href="#概述">概述</a></h3>
+<p>为了支持大量时间序列，即在数据库存储的惟一时间序列数量中具有非常高的基数，CnosDB添加了新的时间序列索引(TSI)。CnosDB支持客户使用具有数千万个时间序列的CnosDB。然而，CnosDB的目标是扩大到数亿，最终达到数十亿。使用CnosDB的TSI存储引擎，用户应该能够拥有数百万个唯一的时间序列。目标是系列的数量应该不受服务器硬件上的内存数量的限制。重要的是，数据库中存在的序列数量对数据库启动时间的影响可以忽略不计。</p>
+</li>
+<li>
+<h3 id="时间序列指数"><a class="header" href="#时间序列指数">时间序列指数</a></h3>
+<p>新的时间序列索引(TSI)将索引移动到我们内存映射的磁盘上的文件。这意味着我们让操作系统句柄成为最近最少使用(Least Recently Used, LRU)内存。与处理原始时间序列数据的TSM引擎非常类似，我们有一个预写日志，它具有一个内存结构，在查询时与内存映射索引合并。不断运行后台进程将索引压缩成越来越大的文件，以避免在查询时进行太多的索引合并。在后台，我们使用了像Robin Hood Hashing这样的技术来进行快速索引查找，并使用hyperloglog++来保存基数估计的草图。后者将使我们能够向查询语言中添加内容。</p>
+</li>
+<li>
+<h3 id="启用-tsi"><a class="header" href="#启用-tsi">启用 TSI</a></h3>
+<p>启用TSI时，需要在CnosDB配置文件(<code>CnosDB.conf</code>)中设置以下行:</p>
+<p><code>index-version = &quot;tsi1&quot;</code></p>
+</li>
+<li>
+<h3 id="工具"><a class="header" href="#工具">工具</a></h3>
+<h4 id="cnosdb_inspect-dumptsi"><a class="header" href="#cnosdb_inspect-dumptsi"><code>cnosdb_inspect dumptsi</code></a></h4>
+<p>如果正在对索引问题进行故障排除，可以使用<code>cnosdb_inspect dumptsi</code>命令。这个命令允许您打印索引、文件或一组文件的汇总统计信息。此命令一次只对一个索引起作用。</p>
+<h4 id="cnosdb_inspect-buildtsi"><a class="header" href="#cnosdb_inspect-buildtsi"><code>cnosdb_inspect buildtsi</code></a></h4>
+<p>如果希望将现有的<code>shard</code>从内存索引转换为TSI索引，或者如果现有的TSI索引已经损坏，可以使用c<code>nosdb_inspect buildtsi</code>命令从底层的TSM数据创建索引。如果您有一个现有的TSI索引，您想要重建，首先删除您的分片中的索引目录。</p>
+<p>该命令在服务器级工作，但您可以选择添加数据库、保留策略和碎片过滤器，以仅应用于碎片的一个子集。</p>
+</li>
+<li>
+<h3 id="理解-tsi"><a class="header" href="#理解-tsi">理解 TSI</a></h3>
+<h4 id="文件组织"><a class="header" href="#文件组织">文件组织</a></h4>
+<p>TSI 由如下几部分构成</p>
+<ul>
+<li>索引:包含单个分片的整个索引数据集。</li>
+<li>分区:包含用于分片的数据的分片分区。</li>
+<li>日志文件:以内存索引的形式包含新写入的series，并持久化为WAL。</li>
+<li>索引文件:包含一个不可变的、内存映射的索引，由一个日志文件构建或由两个连续的索引文件合并而成。</li>
+<li>序列文件：它包含整个数据库中所有series keys的集合。数据库中的每个分片共享相同的序列文件。</li>
+</ul>
+<h4 id="写-1"><a class="header" href="#写-1">写</a></h4>
+<p>当写入操作系统时，会发生以下情况。</p>
+<ol>
+<li>Series被添加到Series文件中，如果Series文件已经存在，则查找它。这将返回一个自动递增的序列ID。</li>
+<li>series被发送到索引。索引维护现有系列id的咆哮位图，并忽略已经创建的系列。</li>
+<li>该序列被散列并发送到适当的分区。</li>
+<li>分区将系列作为一个条目写入日志文件。</li>
+<li>日志文件将该系列写入磁盘上的预写日志文件，并将该系列添加到一组内存索引中。</li>
+</ol>
+<h4 id="压实"><a class="header" href="#压实">压实</a></h4>
+<p>一旦日志文件大小超过阈值(5MB)，就会创建一个新的活动日志文件，并将前一个日志文件压缩到一个索引文件中。第一个索引文件的级别是1 (L1)。日志文件被认为是级别0 (L0)。</p>
+<p>索引文件也可以通过合并两个较小的索引文件来创建。例如，如果两个相邻的L1索引文件存在，则可以将它们合并到L2索引文件中。</p>
+<h4 id="读"><a class="header" href="#读">读</a></h4>
+<p>索引提供了几个API调用来检索数据集，例如:</p>
+<p><code>MeasurementIterator ()</code>: 返回已排序的measurement名称列表。</p>
+<p><code>TagKeyIterator() </code>: 返回measurements中已排序的标签键列表。</p>
+<p><code>TagValueIterator()</code>: 返回tag keys的tag values的排序列表。</p>
+<p><code>MeasurementSeriesIDIterator()</code>: 返回measurements的所有series id的排序列表。</p>
+<p><code>TagKeySeriesIDIterator()</code>: 返回tag keys的所有series id的排序列表。</p>
+<p><code>TagValueSeriesIDIterator() </code>: 返回一个tag values的所有series id的排序列表。</p>
+<h4 id="日志文件结构"><a class="header" href="#日志文件结构">日志文件结构</a></h4>
+<p>日志文件的结构很简单，它是按顺序写入磁盘的LogEntry对象列表。日志文件一直写到5MB，然后压缩成索引文件。日志中的条目对象可以是以下任何一种类型:</p>
+<ul>
+<li>AddSeries</li>
+<li>DeleteSeries</li>
+<li>DeleteMeasurement</li>
+<li>DeleteTagKey</li>
+<li>DeleteTagValue</li>
+</ul>
+<p>日志文件的内存索引跟踪以下内容:</p>
+<ul>
+<li>measurements的名字</li>
+<li>measurements的tag keys</li>
+<li>tag keys的tag values</li>
+<li>series的measurements</li>
+<li>series的tag values</li>
+<li>series, measurements, tag keys和tag values的tombstones文件</li>
+</ul>
+<h4 id="索引文件结构"><a class="header" href="#索引文件结构">索引文件结构</a></h4>
+<p>索引文件是一个不可变的文件，它跟踪与日志文件类似的信息，但所有数据都被索引并写入磁盘，以便可以直接从内存映射中访问它。</p>
+<p>索引文件包含以下部分：</p>
+<ul>
+<li>TagBlocks: 为单个tag key维护tag value的索引。</li>
+<li>MeasurementBlock: 维护measurements值及其tag keys的索引。</li>
+<li>Trailer: 存储文件的偏移量信息，以及用于基数估计的HyperLogLog草图。</li>
+</ul>
+<h4 id="manifest文件"><a class="header" href="#manifest文件">MANIFEST文件</a></h4>
+<p>MANIFEST文件存储在索引目录中，并列出属于该索引的所有文件以及访问它们的顺序。每次发生压缩时，都会更新此文件。目录中任何不在索引文件中的文件都是正在压缩过程中的索引文件。</p>
+<h4 id="文件集"><a class="header" href="#文件集">文件集</a></h4>
+<p>文件集是在CnosDB进程运行时获得的清单的内存快照。这需要提供索引在某个时间点的一致视图。该文件集还促进了对其所有文件的引用计数，以便在文件的所有读取器完成对文件的操作之前，不会通过压缩删除任何文件。</p>
+</li>
+</ul>
+<h2 id="文件系统布局"><a class="header" href="#文件系统布局">文件系统布局</a></h2>
+<ul>
+<li>
+<h3 id="cnosdb-文件结构"><a class="header" href="#cnosdb-文件结构">CnosDB 文件结构</a></h3>
+<h4 id="data-目录"><a class="header" href="#data-目录">Data 目录</a></h4>
+<p>CnosDB存储时间序列数据(TSM文件)的目录路径。要定制此路径，请使用<code>[data].dir</code>配置选项。</p>
+<h4 id="wal-目录"><a class="header" href="#wal-目录">WAL 目录</a></h4>
+<p>CnosDB存放WAL(Write Ahead Log 预写日志)文件的目录路径。要定制此路径，请使用<code>[data].wal-dir</code>配置选项。</p>
+<h4 id="meta-目录"><a class="header" href="#meta-目录">Meta 目录</a></h4>
+<p>CnosDB存放meta文件的目录路径，存储有关用户、数据库、保留策略、分片和连续查询的信息。要定制此路径，请使用<code>[meta].dir</code>配置选项。</p>
+</li>
+<li>
+<h3 id="文件布局"><a class="header" href="#文件布局">文件布局</a></h3>
+<ul>
+<li><a href="####macOS">macOS</a></li>
+<li><a href="####Linux">Linux</a></li>
+<li><a href="####Windows">Windows</a></li>
+<li><a href="####Docker">Docker</a></li>
+<li><a href="####Kubernetes">Kubernetes</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="macos"><a class="header" href="#macos">macOS</a></h4>
+<p>macOs默认目录</p>
+<table><thead><tr><th style="text-align: center">路径</th><th style="text-align: center">默认路径</th></tr></thead><tbody>
+<tr><td style="text-align: center">Data directory</td><td style="text-align: center">~/.cnosdb/data/</td></tr>
+<tr><td style="text-align: center">Meta directory</td><td style="text-align: center">~/.cnosdb/mata/</td></tr>
+<tr><td style="text-align: center">WAL directory</td><td style="text-align: center">~/.cnosdb/wal/</td></tr>
+</tbody></table>
+<p>macOS 文件系统概述</p>
+<pre><code>          ~/.cnosdb/
+            ├──data
+            │  └──TSM目录和文件
+            ├──wal
+            │  └──WAL目录和文件
+            └──meta
+               └──meta.db
+</code></pre>
+<h4 id="linux"><a class="header" href="#linux">Linux</a></h4>
+<p>在Linux上安装CnosDB时，您可以下载并安装cnosdb二进制文件，也可以以包的形式安装。使用的安装方法决定了文件系统的布局。</p>
+<p>Linux 默认目录 (以独立的二进制文件形式安装)</p>
+<table><thead><tr><th style="text-align: center">路径</th><th style="text-align: center">默认路径</th></tr></thead><tbody>
+<tr><td style="text-align: center">Data directory</td><td style="text-align: center">~/.cnosdb/data/</td></tr>
+<tr><td style="text-align: center">Meta directory</td><td style="text-align: center">~/.cnosdb/mata/</td></tr>
+<tr><td style="text-align: center">WAL directory</td><td style="text-align: center">~/.cnosdb/wal/</td></tr>
+</tbody></table>
+<p>Linux 文件系统概述 (以独立的二进制文件形式安装)</p>
+<pre><code>          ~/.cnosdb/
+            ├──data
+            │  └──TSM目录和文件
+            ├──wal
+            │  └──WAL目录和文件
+            └──meta
+               └──meta.db
+</code></pre>
+<p>Linux 默认目录 (以包的形式安装)</p>
+<table><thead><tr><th style="text-align: center">路径</th><th style="text-align: center">默认路径</th></tr></thead><tbody>
+<tr><td style="text-align: center">Data directory</td><td style="text-align: center">/var/lib/cnosdb/data/</td></tr>
+<tr><td style="text-align: center">Meta directory</td><td style="text-align: center">/var/lib/cnosdb/meta/</td></tr>
+<tr><td style="text-align: center">WAL directory</td><td style="text-align: center">/var/lib/cnosdb/wal/</td></tr>
+<tr><td style="text-align: center">默认配置文件路径</td><td style="text-align: center">/etc/cnosdb/cnosdb.conf</td></tr>
+</tbody></table>
+<p>Linux 文件系统概述 (以包的形式安装)</p>
+<pre><code>          /var/lib/cnosdb/
+            ├──data
+            │  └──TSM目录和文件
+            ├──wal
+            │  └──WAL目录和文件
+            └──meta
+               └──meta.db
+
+          /etc/cnosdb/
+            └──cnosdb.conf
+</code></pre>
+<h4 id="windows"><a class="header" href="#windows">Windows</a></h4>
+<p>Windows 默认目录</p>
+<table><thead><tr><th style="text-align: center">路径</th><th style="text-align: center">默认路径</th></tr></thead><tbody>
+<tr><td style="text-align: center">Data directory</td><td style="text-align: center">%USERPROFILE% \ .cnosdb\data\</td></tr>
+<tr><td style="text-align: center">Meta directory</td><td style="text-align: center">%USERPROFILE% \ .cnosdb\meta\</td></tr>
+<tr><td style="text-align: center">WAL directory</td><td style="text-align: center">%USERPROFILE% \ .cnosdb\meta\</td></tr>
+</tbody></table>
+<p>Windows 文件系统概述</p>
+<pre><code>          %USERPROFILE% \ .cnosdb\
+            ├──data
+            │  └──TSM目录和文件
+            ├──wal
+            │  └──WAL目录和文件
+            └──meta
+               └──meta.db
+</code></pre>
+<h4 id="docker"><a class="header" href="#docker">Docker</a></h4>
+<p>Docker 默认目录</p>
+<table><thead><tr><th style="text-align: center">路径</th><th style="text-align: center">默认路径</th></tr></thead><tbody>
+<tr><td style="text-align: center">Data directory</td><td style="text-align: center">/var/lib/cnosdb/data/</td></tr>
+<tr><td style="text-align: center">Meta directory</td><td style="text-align: center">/var/lib/cnosdb/meta/</td></tr>
+<tr><td style="text-align: center">WAL directory</td><td style="text-align: center">/var/lib/cnosdb/wal/</td></tr>
+</tbody></table>
+<p>Docker 文件系统概述</p>
+<pre><code>          /var/lib/cnosdb/
+            ├──data
+            │  └──TSM目录和文件
+            ├──wal
+            │  └──WAL目录和文件
+            └──meta
+               └──meta.db
+</code></pre>
+<h4 id="kubernetes"><a class="header" href="#kubernetes">kubernetes</a></h4>
+<p>Kubernetes 默认目录</p>
+<table><thead><tr><th style="text-align: center">路径</th><th style="text-align: center">默认路径</th></tr></thead><tbody>
+<tr><td style="text-align: center">Data directory</td><td style="text-align: center">/var/lib/cnosdb/data/</td></tr>
+<tr><td style="text-align: center">Meta directory</td><td style="text-align: center">/var/lib/cnosdb/meta/</td></tr>
+<tr><td style="text-align: center">WAL directory</td><td style="text-align: center">/var/lib/cnosdb/wal/</td></tr>
+</tbody></table>
+<p>Kubernetes 文件系统概述</p>
+<pre><code>          /var/lib/cnosdb/
+            ├──data
+            │  └──TSM目录和文件
+            ├──wal
+            │  └──WAL目录和文件
+            └──meta
+               └──meta.db
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../../content/cnosdb/latest/quickstart.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../../../content/cnosdb/latest/guide.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../../content/cnosdb/latest/quickstart.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../../../content/cnosdb/latest/guide.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
