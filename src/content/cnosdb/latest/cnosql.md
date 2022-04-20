@@ -12,11 +12,11 @@
 
 - ### 什么是时序数据？
 
-    时序数据是指时间序列数据。是按**时间顺序**记录的数据列，在同一数据列中的各个数据必须是同口径的，要求具有可比性。
+  时序数据是指时间序列数据。是按**时间顺序**记录的数据列，在同一数据列中的各个数据必须是同口径的，要求具有可比性。
 
-    [场景](https://www.cnosdb.com)
-    
-    [天气](https://weathernew.pae.baidu.com/weathernew/pc?query=%E5%8C%97%E4%BA%AC%E5%A4%A9%E6%B0%94&srcid=4982)
+  [场景](https://www.cnosdb.com)
+
+  [天气](https://weathernew.pae.baidu.com/weathernew/pc?query=%E5%8C%97%E4%BA%AC%E5%A4%A9%E6%B0%94&srcid=4982)
 
 - ### CnosDB简介
 
@@ -35,7 +35,7 @@
 - ### 快速开始
 
   #### 使用Docker启动
-    
+
     ```bash
     docker pull cnosdb/cnosdb:latest
     docker run -itd -p 8086:8086 cnosdb/cnosdb:latest
@@ -43,22 +43,27 @@
 
   #### 导入示例数据
 
-    > 如何提示`bash: wget: command not found`
-    >
-    > 请下载`wget`工具: `apt-get update && apt-get install wget`
-    
+  > 如何提示`bash: wget: command not found`
+  >
+  > 请下载`wget`工具: `apt-get update && apt-get install wget`
+
     ```bash
     docker ps # 查看运行中的容器
     
     docker exec -it container_id bash # 进入容器
     
-    wget https://gist.githubusercontent.com/cnos-db/9839ac8e78e45b0ee50d2803de4acfd8/raw/818b19d0dd3c80befe636b60ee569451ac2ca4b1/oceanic_station
     
-    cnosdb-cli import --path oceanic_station # 导入数据到cnosdb
+    #下载提前准备的有效数据
+    wget https://github.com/ailunyegeer/docs/blob/main/src/content/cnosdb/latest/data.txt
+    
+    cnosdb-cli import --path data.txt # 导入数据到cnosdb
     
     cnosdb-cli
     
     SHOW DATABASES
+    
+    #能看见名为oceanic_station的数据库
+    
     
     USE oceanic_station
     
@@ -90,7 +95,7 @@
 
   #### 查看`air`中的前五个值
 
-    `SELECT * FROM air LIMIT 5`
+  `SELECT * FROM air LIMIT 5`
 
   #### 指定字段的标识符号
    ```
@@ -98,25 +103,25 @@
    ```
   #### 查看`measurement`的tag key
 
-   ` SHOW TAG KEYS FROM air`
+  ` SHOW TAG KEYS FROM air`
 
   #### 查看tag value
 
-   ` SHOW TAG VALUES FROM air WITH KEY = "station"`
+  ` SHOW TAG VALUES FROM air WITH KEY = "station"`
 
   #### 查看field key
 
-   ` SHOW FIELD KEYS FROM air`
+  ` SHOW FIELD KEYS FROM air`
 
   #### 查看series
 
-    `SHOW SERIES`
+  `SHOW SERIES`
 
   #### 函数使用
 
   > [更多](https://www.cnosdb.com/content/cnosdb/0.10/cnosql/function.html)
 
-   ` SELECT MEAN("temperature") FROM "air"`
+  ` SELECT MEAN("temperature") FROM "air"`
 
 ## CnosQL语法
 
@@ -142,39 +147,39 @@
   #### 创建数据库
 
   **语法**
-  
+
   ```sql
   CREATE DATABASE <database_name> [WITH [DURATION <duration>] [REPLICATION <n>] [SHARD DURATION <duration>] [NAME <rp-name>]]
   ```
-  
+
   **语法描述**
-  
+
   `CREATE DATABASE`需要一个数据库名称，其他都为可选项。如果未在`WITH`后面指定保留策略，则会创建一个默认的保留策略，名称为`autogen`。
-  
+
   `DURATION`保留策略的总窗口时长。
-  
+
   `REPLICATION`副本数量，默认为`1`并且只能为`1`。
-  
+
   `SHARD DURATION`分片的窗口时长。
-  
+
   `NAME`指定保留策略名称。
-  
+
   `CREATE DATABASE`成功执行后不会返回任何结果。
-  
+
   **示例**
-  
+
   创建数据库
-  
+
   > 创建一个名为`cnos`的数据库，CnosDB还会在其下创建一个名为`autogen`的保留策略。
-  
+
   ```sql
    CREATE DATABASE "cnos"
   ```
-  
+
   创建数据库并指定保留策略
-  
+
   > 创建一个名为`cnos`的数据库，并指定保留策略为`1d_events`，它的生命周期为总保留时长为一天，副本数为1，每个分片的的窗口长度为一小时。
-  
+
   ```sql
   > CREATE DATABASE "cnos" WITH DURATION 1d REPLICATION 1 SHARD DURATION 1h NAME "1d_events"
   ```
@@ -182,7 +187,7 @@
   #### 显示数据库
 
   **语法**
-  
+
   ```
   SHOW DATABASES
   ```
@@ -190,17 +195,17 @@
   #### 删除数据库
 
   **语法**
-  
+
   ```sql
   DROP DATABASE <database_name>
   ```
-  
+
   **语法描述**
-  
+
   `DROP DATABASE`会删除数据库下所有数据。
-  
+
   **示例**
-  
+
   ```sql
   DROP DATABASE "cnos"
   ```
@@ -210,34 +215,34 @@
   #### 创建保留策略
 
   **语法**
-  
+
   ```sql
   CREATE RETENTION POLICY <rp_name> ON <database_name> DURATION <duration> REPLICATION <n> [SHARD DURATION <duration>] [DEFAULT]
   ```
-  
+
   **描述**
-  
+
   `DURATION`保留策略的总窗口时长。
-  
+
   `REPLICATION`副本数量，默认为`1`并且只能为`1`。
-  
+
   `SHARD DURATION`分片的窗口时长。
-  
+
   `DEFAULT`可选项，指定其是否为默认保留策略
-  
+
   **示例**
-  
+
   创建保留策略
-  
+
   > 该语句创建了一个名为`1d_events`的保留策略，并且副本数为1
-  
+
   ```sql
   > CREATE RETENTION POLICY "1d_events" ON "cnos" DURATION 1d REPLICATION 1
   >
   ```
-  
+
   创建默认保留策略
-  
+
   ```sql
   > CREATE RETENTION POLICY "1d_events" ON "cnos" DURATION 23h60m REPLICATION 1 DEFAULT
   >
@@ -246,13 +251,13 @@
   #### 显示保留策略
 
   **语法**
-  
+
     ```sql
     SHOW RETENTION POLICIES [ON <database_name>]
     ```
-    
-    **示例**
-    
+
+  **示例**
+
     ```sql
     > SHOW RETENTION POLICIES ON "cnos"
     
@@ -264,27 +269,27 @@
   #### 修改保留策略
 
   **语法**
-  
+
   ```sql
   ALTER RETENTION POLICY <rp_name> ON <database_name> DURATION <duration> REPLICATION <n> SHARD DURATION <duration> DEFAULT
   ```
-  
+
   **示例**
-  
+
   ```sql
   ALTER RETENTION POLICY "1d_events" ON "cnos" DURATION 7 SHARD DURATION 1d DEFAULT
   ```
 
   #### 删除保留策略
-  
+
   **语法**
-  
+
   ```sql
   DROP RETENTION POLICY <rp_name> ON <database_name>
   ```
-  
+
   **示例**
-  
+
   ```sql
   > DROP RETENTION POLICY "1d_events" ON "cnos"
   >
@@ -293,71 +298,71 @@
 ## schema查询
 
 - ### 显示`SERIES`
-  
+
   **语法**
-  
+
   ```sql
   SHOW SERIES [ON <database_name>] [FROM_clause] [WHERE <tag_key> <operator> [ '<tag_value>' | <regular_expression>]] [LIMIT_clause] [OFFSET_clause]
   ```
-  
+
   **语法描述**
-  
+
   `SHOW SERIES`后面都是可选项
-  
+
   `[ON <database_name>]`指定数据库名称
-  
+
   `FROM`子句指定`measurement`
-  
+
   `WHERE`子句支持比较`tag`，`field`比较是无效的
-  
+
   **示例**
-  
+
   ```sql
-  SHOW SERIES ON "cnos" WHERE time > now() - 1m LIMIT 10
+  SHOW SERIES ON "oceanic_station" WHERE time > now() - 1m LIMIT 10
   ```
-  
+
 - ### 使用`DROP`删除`series`
 
   **语法**
-  
+
   ```sql
   DROP SERIES FROM <measurement_name[,measurement_name]> WHERE <tag_key>='<tag_value>'
   ```
-  
+
   **语法描述**
-  
+
   `DROP SERIES`会删除数据库中符合条件的所有数据以及数据所对应的索引
-  
+
   **示例**
-  
+
   从一个`measurement`中删除所有`series`
-  
+
   ```sql
-  > DROP SERIES FROM "cpu"
+  > DROP SERIES FROM "oceanic_station"
   ```
-  
+
   从一个`measurement`中删除具有特定条件的`series`
-  
+
   ```sql
-  DROP SERIES FROM "cpu" WHERE "region" = 'Shanghai'
+  DROP SERIES FROM "oceanic_station" WHERE "station" = 'XiaoMaiDao'
   ```
 
 - ### 使用`DELETE`删除`series`
 
   **语法**
-  
+
   ```sql
   DELETE FROM <measurement_name> WHERE [<tag_key>='<tag_value>'] | [<time interval>]
   ```
-  
+
   **语法描述**
-  
+
   `DROP SERIES`会删除数据库中符合条件的所有数据，但是不会删除索引，并且支持时间过滤
-  
+
   **示例**
-  
+
   > 删除2020-01-01之前产生的的所有数据
-  
+
   ```sql
   > DELETE WHERE time < '2021-01-01'
   ```
@@ -365,131 +370,131 @@
 - ### 显示`measurement`
 
   **语法**
-  
+
   ```sql
   SHOW MEASUREMENTS [ON <database_name>] [WITH MEASUREMENT <operator> ['<measurement_name>' | <regular_expression>]] [WHERE <tag_key> <operator> ['<tag_value>' | <regular_expression>]] [LIMIT_clause] [OFFSET_clause]
   ```
-  
+
   `SHOW MEASUREMENTS`后面都是可选项
-  
+
   `[ON <database_name>]`指定数据库名称
-  
+
   `FROM`子句指定`measurement`
-  
+
   `WHERE`子句支持比较`tag`，`field`比较是无效的
-  
+
   **示例**
-  
-  > 该查询返回数据库`cnos`下`tag key`host下的`tag value`的值中包含一个整数
-  
+
+  > 该查询返回数据库`oceanic_station`下`tag key`   oceanic_station下满足正则表达式air*的一个measurement
+
   ```sql
-  SHOW MEASUREMENTS ON "cnos" WITH MEASUREMENT =~ /h2o.*/ WHERE "host"  =~ /\d/
+  SHOW MEASUREMENTS ON "oceanic_station" WITH MEASUREMENT =~ /air*/
   ```
 
 - ### 删除`measurement`
 
   **语法**
-  
+
   ```sql
   DROP MEASUREMENT <measurement_name>
   ```
-  
+
   **语法描述**
-  
+
   `DROP MEASUREMENT`会删除指定`measurement`下所有的数据
-  
+
   **示例**
-  
+
   ```sql
-  DROP MEASUREMENT "cpu"
+  DROP MEASUREMENT "air"
   ```
 
 - ### 显示`tag key`
-  
+
   **语法**
-  
+
   ```sql
   SHOW TAG KEYS [ON <database_name>] [FROM_clause] [WHERE <tag_key> <operator> ['<tag_value>' | <regular_expression>]] [LIMIT_clause] [OFFSET_clause]
   ```
-  
+
   **语法描述**
-  
+
   `SHOW tag keys`后面都是可选项
-  
+
   `[ON <database_name>]`指定数据库名称
-  
+
   `FROM`子句指定`measurement`
-  
+
   `WHERE`子句支持比较`tag`，`field`比较是无效的
-  
+
   **示例**
-  
+
   ```sql
-  SHOW TAG KEYS ON "cnos" FROM "cpu" LIMIT 1 OFFSET 1
+  SHOW TAG KEYS ON "oceanic_station" FROM "air" LIMIT 1 OFFSET 1
   ```
 
 - ### 显示`tag value`
 
   **语法**
-  
+
     ```sql
     SHOW TAG VALUES [ON <database_name>][FROM_clause] WITH KEY [ [<operator> "<tag_key>" | <regular_expression>] | [IN ("<tag_key1>","<tag_key2")]] [WHERE <tag_key> <operator> ['<tag_value>' | <regular_expression>]] [LIMIT_clause] [OFFSET_clause]
     ```
-  
+
   **语法描述**
-  
+
   `[ON <database_name>]`指定数据库名称
-  
+
   `FROM`子句指定`measurement`
-  
+
   `WHERE`子句支持比较`tag`，`field`比较是无效的
-  
+
   **示例**
-  
+
   ```sql
-  SHOW TAG VALUES ON "cnos" WITH KEY IN ("region","host") WHERE "host" =~ /./ LIMIT 3
+  SHOW TAG VALUES ON "oceanic_station" WITH KEY IN ("station")
   ```
 
 - ### 显示`field key`
 
   **语法**
-  
+
   ```sql
   SHOW FIELD KEYS [ON <database_name>] [FROM <measurement_name>]
   ```
-  
+
   **语法描述**
-  
+
   `FROM`子句为可选项
-  
+
   **示例**
-  
+
   ```sql
-  SHOW FIELD KEYS ON "cnos" FROM "cpu"
+  SHOW FIELD KEYS ON "oceanic_station" FROM "air"
   ```
 
 - ### 按时间过滤
-  
+
   可以在`SHOW TAG KEYS`、`SHOW TAG VALUES` `SHOW SERIES` `SHOW MEASUREMENTS` `SHOW FIELD KEYS`上使用
-  
+
   **示例**
-  
+
   ```sql
-  SHOW TAG KEYS ON cnos where time > now() -1h and time < now()
+  SHOW TAG KEYS ON "oceanic_station" where time > now() -1h and time < now()
   ```
 
 - ### 删除分片
-  
+
   **语法**
-  
+
   ```sql
   DROP SHARD <shard_id_number>
   ```
-  
+
   **语法描述**
-  
+
   `DROP SHARD`会在磁盘上删除有关分片的所有数据以及元数据
-  
+
   ```sql
   > DROP SHARD 1
   >
@@ -515,21 +520,21 @@
     <cq_query>
   END
   ```
-  
+
   **语法描述**
-  
+
   CQ查询必须包含一个函数，一个`INTO`子句和一个`GROUP BY time()`子句：
-  
+
   ```sql
   SELECT <function[s]> INTO <destination_measurement> FROM <measurement> [WHERE <stuff>] GROUP BY time(<interval>)[,<tag_key[s]>]
   ```
-  
+
   > 在`WHERE`子句中，不需要指定时间范围，CQ查询会为语句自动匹配时间范围
 
   #### 基本语法示例
 
   以下示例使用数据库`transportation`中的示例数据，`bus_data`中存储的数据是公交车乘客数量和投诉数量的15分钟数：
-  
+
   ```sql
   name: bus_data
   --------------
@@ -544,20 +549,20 @@
   2020-08-28T08:45:00Z   17           7
   2020-08-28T09:00:00Z   20           7
   ```
-  
+
   **自动采样数据**
-  
+
   使用CQ自动从单个字段下采样数据，并将结果写入到同一个数据库的另一个`measurement`中：
-  
+
   ```sql
   CREATE CONTINUOUS QUERY "cq_basic" ON "transportation"
   BEGIN
     SELECT mean("passengers") INTO "average_passengers" FROM "bus_data" GROUP BY time(1h)
   END
   ```
-  
+
   最终结果如下：
-  
+
   ```sql
   > SELECT * FROM "average_passengers"
   name: average_passengers
@@ -566,18 +571,18 @@
   2020-08-28T07:00:00Z   7
   2020-08-28T08:00:00Z   13.75
   ```
-  
+
   **自动采样数据并将结果保存到另一个保留策略中**
-  
+
   ```sql
   CREATE CONTINUOUS QUERY "cq_basic_rp" ON "transportation"
   BEGIN
     SELECT mean("passengers") INTO "transportation"."three_weeks"."average_passengers" FROM "bus_data" GROUP BY time(1h)
   END
   ```
-  
+
   最终结果如下：
-  
+
   ```sql
   > SELECT * FROM "transportation"."three_weeks"."average_passengers"
   name: average_passengers
@@ -586,18 +591,18 @@
   2020-08-28T07:00:00Z   7
   2020-08-28T08:00:00Z   13.75
   ```
-  
+
   **使用通配符自动下采样数据**
-  
+
   ```sql
   CREATE CONTINUOUS QUERY "cq_basic_br" ON "transportation"
   BEGIN
     SELECT mean(*) INTO "downsampled_transportation"."autogen".:MEASUREMENT FROM /.*/ GROUP BY time(30m),*
   END
   ```
-  
+
   最终结果如下：
-  
+
   ```sql
   > SELECT * FROM "downsampled_transportation."autogen"."bus_data"
   name: bus_data
@@ -608,18 +613,18 @@
   2020-08-28T08:00:00Z   8                 11.5
   2020-08-28T08:30:00Z   7                 16
   ```
-  
+
   **自动采样数据并配置CQ的时间边界**
-  
+
   ```sql
   CREATE CONTINUOUS QUERY "cq_basic_offset" ON "transportation"
   BEGIN
     SELECT mean("passengers") INTO "average_passengers" FROM "bus_data" GROUP BY time(1h,15m)
   END
   ```
-  
+
   最终结果如下：
-  
+
   ```sql
   > SELECT * FROM "average_passengers"
   name: average_passengers
@@ -642,7 +647,7 @@
   #### 高级语法示例
 
   示例数据如下：
-  
+
   ```sql
   name: bus_data
   --------------
@@ -659,11 +664,11 @@
   2020-08-28T08:45:00Z   17
   2020-08-28T09:00:00Z   20
   ```
-  
+
   **配置时间间隔**
-  
+
   在`RESAMPLE`中使用`EVERY`来指明CQ的执行间隔
-  
+
   ```sql
   CREATE CONTINUOUS QUERY "cq_advanced_every" ON "transportation"
   RESAMPLE EVERY 30m
@@ -671,9 +676,9 @@
     SELECT mean("passengers") INTO "average_passengers" FROM "bus_data" GROUP BY time(1h)
   END
   ```
-  
+
   最终结果如下：
-  
+
   ```sql
   > SELECT * FROM "average_passengers"
   name: average_passengers
@@ -682,11 +687,11 @@
   2020-08-28T07:00:00Z   7
   2020-08-28T08:00:00Z   13.75
   ```
-  
+
   **配置CQ的重采样时间范围**
-  
+
   在`RESAMPLE`中使用`FOR`来指明CQ的时间间隔的长度
-  
+
   ```sql
   CREATE CONTINUOUS QUERY "cq_advanced_for" ON "transportation"
   RESAMPLE FOR 1h
@@ -694,9 +699,9 @@
     SELECT mean("passengers") INTO "average_passengers" FROM "bus_data" GROUP BY time(30m)
   END
   ```
-  
+
   最终结果如下：
-  
+
   ```sql
   > SELECT * FROM "average_passengers"
   name: average_passengers
@@ -707,11 +712,11 @@
   2020-08-28T08:00:00Z   11.5
   2020-08-28T08:30:00Z   16
   ```
-  
+
   **配置执行间隔和CQ时间范围**
-  
+
   在`RESAMPLE`子句中使用`EVERY`和`FOR`来指定CQ的执行间隔和CQ的时间范围长度。
-  
+
   ```sql
   CREATE CONTINUOUS QUERY "cq_advanced_every_for" ON "transportation"
   RESAMPLE EVERY 1h FOR 90m
@@ -719,9 +724,9 @@
     SELECT mean("passengers") INTO "average_passengers" FROM "bus_data" GROUP BY time(30m)
   END
   ```
-  
+
   最终结果如下：
-  
+
   ```sql
   > SELECT * FROM "average_passengers"
   name: average_passengers
@@ -733,11 +738,11 @@
   2020-08-28T08:00:00Z   11.5
   2020-08-28T08:30:00Z   16
   ```
-  
+
   **配置CQ的时间范围并填充空值**
-  
+
   使用`FOR`间隔和`fill()`来更改不含数据的时间间隔值。请注意，至少有一个数据点必须在`fill()`运行的`FOR`间隔内。 如果没有数据落在`FOR`间隔内，则CQ不会将任何数据写入目标`measurement`。
-  
+
   ```sql
   CREATE CONTINUOUS QUERY "cq_advanced_for_fill" ON "transportation"
   RESAMPLE FOR 2h
@@ -745,9 +750,9 @@
     SELECT mean("passengers") INTO "average_passengers" FROM "bus_data" GROUP BY time(1h) fill(1000)
   END
   ```
-  
+
   最终结果如下：
-  
+
   ```sql
   > SELECT * FROM "average_passengers"
   name: average_passengers
@@ -764,15 +769,15 @@
 - ### 管理CQ
 
   > CQ不能`update`，只能`drop`和`create`
-  
+
   **列出所有CQ**
-  
+
   ```sql
   SHOW CONTINUOUS QUERIES
   ```
-  
+
   **删除CQ**
-  
+
   ```sql
   DROP CONTINUOUS QUERY <cq_name> ON <database_name>
   ```
@@ -849,130 +854,134 @@
 ### 聚合函数
 
 - ### COUNT()
-  
+
   返回非空值 field values数量
-  
+
   #### 语法
-  
+
   ```sql
   SELECT COUNT( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
-  
+
   #### 嵌套语法
-  
+
   ```sql
   SELECT COUNT(DISTINCT( [ * | <field_key> | /<regular_expression>/ ] )) [...]
   ```
-  
+
   `COUNT(field_key)`返回`field key`对应的`field value`的个数。
-  
+
   `COUNT(/regular_expression/)`返回与正则表达式匹配的每个`field key`对应的`field value`的个数。
-  
+
   `COUNT(*)`返回在`measurement`中每个`field key`对应的`field value`的个数。
-  
+
   `COUNT()`支持所有数据类型的`field value`。cnosQL支持将[`DISTINCT()`](#distinct)函数嵌套在`COUNT()`函数里。
-  
+
   #### 示例
-  
+
   - #### 计算指定field key的field value的数目
-  
+
   ```sql
-  > SELECT COUNT("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   count
-  ----                   -----
-  1970-01-01T00:00:00Z   15258
+  > SELECT COUNT("temperature") FROM "air"
+  name: air
+  time                 count
+  ----                 -----
+  1970-01-01T00:00:00Z 3334
   ```
-  
-  该查询返回`measurement``h2o_feet`中的`water_level`的非空field value的数量。
-  
+
+  该查询返回`measurement``air`中的`temperature`的非空field value的数量。
+
   - #### 计数measurement中每个field key关联的field value的数量
-  
+
   ```sql
-  > SELECT COUNT(*) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   count_level description   count_water_level
-  ----                   -----------------------   -----------------
-  1970-01-01T00:00:00Z   15258                     15258
+  > SELECT COUNT(*) FROM "air"
+  name: air
+  time                 count_pressure count_temperature count_visibility
+  ----                 -------------- ----------------- ----------------
+  1970-01-01T00:00:00Z 3334           3334              3334
   ```
-  
-  该查询返回与1measurement``h2o_feet`相关联的每个field key的非空field value的数量。`h2o_feet`有两个field keys：`level_description`和`water_level`
-  
+
+  该查询返回与measurement`air`相关联的每个field key的非空field value的数量。`air`有3个field keys：`count_pressure` `count_temperature` `count_visibility`
+
   - #### 计算匹配一个正则表达式的每个field key关联的field value的数目
-  
+
   ```sql
-  > SELECT COUNT(/water/) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   count_water_level
-  ----                   -----------------
-  1970-01-01T00:00:00Z   15258
+  > SELECT COUNT(/.*pre.*/) FROM "air"
+  name: air
+  time                 count_pressure
+  ----                 --------------
+  1970-01-01T00:00:00Z 3334
   ```
-  
-  该查询返回measurement`h2o_feet`中包含`water`单词的每个field key的非空字段值的数量。
-  
+
+  该查询返回measurement`air`中包含`pre`的每个field key的非空字段值的数量。
+
   - #### 计数包括多个子句的field key的field value的数目
-  
+
   ```sql
-  > SELECT COUNT("water_level") FROM "h2o_feet" WHERE time >= '2020-08-17T23:48:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m),* fill(200) LIMIT 7 SLIMIT 1
-  
-  name: h2o_feet
-  tags: location=coyote_creek
-  time                   count
-  ----                   -----
-  2020-08-17T23:48:00Z   200
-  2020-08-18T00:00:00Z   2
-  2020-08-18T00:12:00Z   2
-  2020-08-18T00:24:00Z   2
-  2020-08-18T00:36:00Z   2
-  2020-08-18T00:48:00Z   2
+  >  SELECT COUNT("pressure") FROM "air" WHERE time < now()  GROUP BY time(1ms),* fill(-1) LIMIT 7 SLIMIT 1
+  name: air
+  tags: station=LianYunGang
+  time                     count
+  ----                     -----
+  2022-04-11T08:03:37.071Z 108
+  2022-04-11T08:03:37.072Z 193
+  2022-04-11T08:03:37.073Z 207
+  2022-04-11T08:03:37.074Z 209
+  2022-04-11T08:03:37.075Z 209
+  2022-04-11T08:03:37.076Z 218
+  2022-04-11T08:03:37.077Z 216
   ```
-  
-  该查询返回`water_level`field key中的非空field value的数量。它涵盖`2020-08-17T23：48：00Z`和`2020-08-18T00：54：00Z`之间的`时间段`，并将结果分组为12分钟的时间间隔和每个tag。并用`200`填充空的时间间隔，并返回7个`point`，表格返回1。
-  
-  - #### 计算一个field key的distinct的field value的数量
-  
+
+  该查询返回`pressure`field key中的非空field value的数量。它涵盖`now()`之间的`时间段`，并将结果分组为1ms的时间间隔和每个tag(表示为以上代码中的`*`)。并用`-1`填充空的时间间隔，并返回7个`point`，表格返回1。
+
+- #### 计算一个field key的distinct的field value的数量
+
   ```sql
-  > SELECT COUNT(DISTINCT("level description")) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   count
-  ----                   -----
-  1970-01-01T00:00:00Z   4
+  > SELECT COUNT(DISTINCT("pressure")) FROM "air"
+  name: air
+  time                 count
+  ----                 -----
+  1970-01-01T00:00:00Z 7
   ```
-  
-  查询返回measurement为`h2o_feet`field`为`level description 的唯一field value的数量。
-  
-  #### `COUNT()`的常见问题
-  
-  - #### `COUNT()`和`fill()`
-  
-  大多数cnosQL函数对于没有数据的时间间隔返回`null`值，`fill(<fill_option>)`将该`null`值替换为`fill_option`。 `COUNT()`针对没有数据的时间间隔返回`0`，`fill(<fill_option>)`用`fill_option`替换0值。
-  
-  *示例*
-  
-  下面的代码块中的第一个查询不包括`fill()`。最后一个时间间隔没有数据，因此该时间间隔的值返回为零。第二个查询包括`fill(800000)`; 它将最后一个间隔中的零替换为`800000`。
-  
+
+查询返回measurement为`air`field`为`pressure 的唯一field value的数量。
+
+#### `COUNT()`的常见问题
+
+- #### `COUNT()`和`fill()`
+
+大多数cnosQL函数对于没有数据的时间间隔返回`null`值，`fill(<fill_option>)`将该`null`值替换为`fill_option`。 `COUNT()`针对没有数据的时间间隔返回`0`，`fill(<fill_option>)`用`fill_option`替换0值。
+
+*示例*
+
+下面的代码块中的第一个查询不包括`fill()`。最后一个时间间隔没有数据，因此该时间间隔的值返回为零。第二个查询包括`fill(-1)`; 它将最后一个间隔中的零替换为`-1`。
+
   ```sql
-  > SELECT COUNT("water_level") FROM "h2o_feet" WHERE time >= '2020-09-18T21:24:00Z' AND time <= '2020-09-18T21:54:00Z' GROUP BY time(12m)
+  > SELECT COUNT("pressure") FROM "air" WHERE time < now()  GROUP BY time(1s),*  LIMIT 7 SLIMIT 1
+  name: air
+  tags: station=LianYunGang
+  time                 count
+  ----                 -----
+  2022-04-11T08:03:37Z 1617
+  2022-04-11T08:03:38Z 0
+  2022-04-11T08:03:39Z 0
+  2022-04-11T08:03:40Z 0
+  2022-04-11T08:03:41Z 0
+  2022-04-11T08:03:42Z 0
+  2022-04-11T08:03:43Z 0
   
-  name: h2o_feet
-  time                   count
-  ----                   -----
-  2020-09-18T21:24:00Z   2
-  2020-09-18T21:36:00Z   2
-  2020-09-18T21:48:00Z   0
-  
-  > SELECT COUNT("water_level") FROM "h2o_feet" WHERE time >= '2020-09-18T21:24:00Z' AND time <= '2020-09-18T21:54:00Z' GROUP BY time(12m) fill(800000)
-  
-  name: h2o_feet
-  time                   count
-  ----                   -----
-  2020-09-18T21:24:00Z   2
-  2020-09-18T21:36:00Z   2
-  2020-09-18T21:48:00Z   800000
+  > SELECT COUNT("pressure") FROM "air" WHERE time < now()  GROUP BY time(1s),* fill(-1) LIMIT 7 SLIMIT 1
+  name: air
+  tags: station=LianYunGang
+  time                 count
+  ----                 -----
+  2022-04-11T08:03:37Z 1617
+  2022-04-11T08:03:38Z -1
+  2022-04-11T08:03:39Z -1
+  2022-04-11T08:03:40Z -1
+  2022-04-11T08:03:41Z -1
+  2022-04-11T08:03:42Z -1
+  2022-04-11T08:03:43Z -1
   ```
 
 - ### `DISTINCT()`
@@ -984,122 +993,187 @@
   ```sql
   SELECT DISTINCT( [ <field_key> | /<regular_expression>/ ] ) FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
-  
+
   #### 嵌套语法
-  
+
   ```sql
   SELECT COUNT(DISTINCT( [ <field_key> | /<regular_expression>/ ] )) [...]
   ```
-  
+
   #### 语法描述
-  
+
   `DISTINCT(field_key)` 返回`field key`对应的不同`field values`。
-  
+
   `DISTINCT()` 支持所有数据类型的`field value`，cnosQL支持[`COUNT()`](#count)嵌套`DISTINCT()`。
-  
+
   #### 示例
-  
+
   - #### 列出一个`field key`的不同的`field value`
-  
+
   ```sql
-  > SELECT DISTINCT("level description") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   distinct
-  ----                   --------
-  1970-01-01T00:00:00Z   between 6 and 9 feet
-  1970-01-01T00:00:00Z   below 3 feet
-  1970-01-01T00:00:00Z   between 3 and 6 feet
-  1970-01-01T00:00:00Z   at or greater than 9 feet
+  > SELECT DISTINCT("temperature") FROM "air"
+  name: air
+  time                 distinct
+  ----                 --------
+  1970-01-01T00:00:00Z 58
+  1970-01-01T00:00:00Z 62
+  1970-01-01T00:00:00Z 56
+  1970-01-01T00:00:00Z 59
+  1970-01-01T00:00:00Z 57
+  1970-01-01T00:00:00Z 61
+  1970-01-01T00:00:00Z 60
   ```
-  
-  该查询返回`h2o_feet` measurement中`level description`filed 关键字中唯一`field values`的列表
-  
-  - #### 列出一个measurement中每个field key的不同的值
-  
-  ```sql
-  > SELECT DISTINCT(*) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   distinct_level description   distinct_water_level
-  ----                   --------------------------   --------------------
-  1970-01-01T00:00:00Z   between 6 and 9 feet         8.12
-  1970-01-01T00:00:00Z   between 3 and 6 feet         8.005
-  1970-01-01T00:00:00Z   at or greater than 9 feet    7.887
-  1970-01-01T00:00:00Z   below 3 feet                 7.762
-  [...]
-  ```
-  
-  查询返回`h2o_feet`中每个字段的唯一字段值的列表。`h2o_feet`有两个字段：`description`和`water_level`。
-  
+
+  该查询返回`air` measurement中`temperature`field 关键字中唯一`field values`的列表
+
+[//]: # (  - #### 列出一个measurement中每个field key的不同的值)
+
+[//]: # ()
+[//]: # (  ```sql)
+
+[//]: # (  > SELECT DISTINCT&#40;"temperature"&#41; FROM "air")
+
+[//]: # (  name: air)
+
+[//]: # (  time                 distinct)
+
+[//]: # (  ----                 --------)
+
+[//]: # (  1970-01-01T00:00:00Z 63)
+
+[//]: # (  1970-01-01T00:00:00Z 79)
+
+[//]: # (  1970-01-01T00:00:00Z 52)
+
+[//]: # (  1970-01-01T00:00:00Z 70)
+
+[//]: # (  1970-01-01T00:00:00Z 77)
+
+[//]: # (  1970-01-01T00:00:00Z 54)
+
+[//]: # (  1970-01-01T00:00:00Z 73)
+
+[//]: # (  1970-01-01T00:00:00Z 55)
+
+[//]: # (  1970-01-01T00:00:00Z 71)
+
+[//]: # (  1970-01-01T00:00:00Z 50)
+
+[//]: # (  1970-01-01T00:00:00Z 58)
+
+[//]: # (  1970-01-01T00:00:00Z 59)
+
+[//]: # (  1970-01-01T00:00:00Z 76)
+
+[//]: # (  1970-01-01T00:00:00Z 57)
+
+[//]: # (  1970-01-01T00:00:00Z 68)
+
+[//]: # (  1970-01-01T00:00:00Z 67)
+
+[//]: # (  1970-01-01T00:00:00Z 62)
+
+[//]: # (  1970-01-01T00:00:00Z 74)
+
+[//]: # (  1970-01-01T00:00:00Z 64)
+
+[//]: # (  1970-01-01T00:00:00Z 53)
+
+[//]: # (  1970-01-01T00:00:00Z 60)
+
+[//]: # (  1970-01-01T00:00:00Z 56)
+
+[//]: # (  1970-01-01T00:00:00Z 61)
+
+[//]: # (  1970-01-01T00:00:00Z 69)
+
+[//]: # (  1970-01-01T00:00:00Z 65)
+
+[//]: # (  1970-01-01T00:00:00Z 66)
+
+[//]: # (  1970-01-01T00:00:00Z 78)
+
+[//]: # (  1970-01-01T00:00:00Z 51)
+
+[//]: # (  1970-01-01T00:00:00Z 80)
+
+[//]: # (  1970-01-01T00:00:00Z 72)
+
+[//]: # (  1970-01-01T00:00:00Z 75)
+
+[//]: # (  ```)
+
+[//]: # ()
+[//]: # (  查询返回`air`中字段的唯一字段值的列表。)
+
   - #### 列出包含多个子句的field key关联的不同值的列表
-  
+
   ```sql
-  >  SELECT DISTINCT("level description") FROM "h2o_feet" WHERE time >= '2020-08-17T23:48:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m),* SLIMIT 1
-  
-  name: h2o_feet
-  tags: location=coyote_creek
-  time                   distinct
-  ----                   --------
-  2020-08-18T00:00:00Z   between 6 and 9 feet
-  2020-08-18T00:12:00Z   between 6 and 9 feet
-  2020-08-18T00:24:00Z   between 6 and 9 feet
-  2020-08-18T00:36:00Z   between 6 and 9 feet
-  2020-08-18T00:48:00Z   between 6 and 9 feet
+  >SELECT DISTINCT("pressure") FROM "air" WHERE  time <now() GROUP BY time(12m),* SLIMIT 1
+  name: air
+  tags: station=LianYunGang
+  time                 distinct
+  ----                 --------
+  2022-04-11T08:00:00Z 58
+  2022-04-11T08:00:00Z 56
+  2022-04-11T08:00:00Z 59
+  2022-04-11T08:00:00Z 57
+  2022-04-11T08:00:00Z 62
+  2022-04-11T08:00:00Z 60
+  2022-04-11T08:00:00Z 61
   ```
-  
-  该查询返回`level description`field key中不同field value的列表。它涵盖`2020-08-17T23：48：00Z`和`2020-08-18T00：54：00Z`之间的时间段，并将结果按12分钟的时间间隔和每个tag分组。查询限制返回一个series。
-  
+
+  该查询返回`pressure`field key中不同field value的列表。它涵盖now()之前的时间段，并将结果按12分钟的时间间隔和每个tag分组。查询限制（SLIMIT）返回一个series。
+
   - #### 对一个字段的不同值进行计算
-  
+
   ```sql
-  > SELECT COUNT(DISTINCT("level description")) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   count
-  ----                   -----
-  1970-01-01T00:00:00Z   4
+  > SELECT COUNT(DISTINCT("pressure")) FROM "air"
+  name: air
+  time                 count
+  ----                 -----
+  1970-01-01T00:00:00Z 7
   ```
-  
-  查询返回`h2o_feet`这个measurement中字段`level description`的不同值的数目。
-  
+
+  查询返回`air`这个measurement中字段`pressure`的不同值的数目。
+
   #### `DISTINCT()`的常见问题
-  
+
   - #### `DISTINCT()` 和 `INTO` 子句
-  
-  在`INTO`子句中使用`DISTINCT()`可能会导致cnosDB覆盖目标measurement中的`points`。`DISTINCT()`通常返回多个具有相同时间戳的结果；cnosDB假设在相同series中并具有相同时间戳的`point`是重复`point`，并简单地用目标measurement中最新的`point`覆盖重复`point`。
-  
+
+  在`INTO`子句中使用`DISTINCT()`可能会导致CnosDB覆盖目标measurement中的`points`。`DISTINCT()`通常返回多个具有相同时间戳的结果；CnosDB假设在相同series中并具有相同时间戳的`point`是重复`point`，并简单地用目标measurement中最新的`point`覆盖重复`point`。
+
   ####示例
-  
-  下面代码块中的第一个查询使用了`DISTINCT()`，并返回四个结果。请注意，每个结果都有相同的时间戳。第二个查询将`INTO`子句添加到查询中，并将查询结果写入measurement `distincts`。最后一个查询选择measurement `distincts`中所有数据。
+
+  下面代码块中的第一个查询使用了`DISTINCT()`，并返回7个结果。请注意，每个结果都有相同的时间戳。第二个查询将`INTO`子句添加到查询中，并将查询结果写入measurement `distincts`。最后一个查询选择measurement `distincts`中所有数据。
   因为原来的四个结果是重复的(它们在相同的series，有相同的时间戳)，所以最后一个查询只返回一个`point`。当系统遇到重复数据`point`，它会用最近的`point`覆盖之前的`point`。
-  
+
   ```sql
-  >  SELECT DISTINCT("level description") FROM "h2o_feet"
+  > SELECT DISTINCT("pressure") FROM "air"
+  name: air
+  time                 distinct
+  ----                 --------
+  1970-01-01T00:00:00Z 56
+  1970-01-01T00:00:00Z 59
+  1970-01-01T00:00:00Z 62
+  1970-01-01T00:00:00Z 58
+  1970-01-01T00:00:00Z 60
+  1970-01-01T00:00:00Z 61
+  1970-01-01T00:00:00Z 57
   
-  name: h2o_feet
-  time                   distinct
-  ----                   --------
-  1970-01-01T00:00:00Z   below 3 feet
-  1970-01-01T00:00:00Z   between 6 and 9 feet
-  1970-01-01T00:00:00Z   between 3 and 6 feet
-  1970-01-01T00:00:00Z   at or greater than 9 feet
-  
-  >  SELECT DISTINCT("level description") INTO "distincts" FROM "h2o_feet"
-  
+  > SELECT DISTINCT("pressure") INTO "distincts" FROM "air"
   name: result
-  time                   written
-  ----                   -------
-  1970-01-01T00:00:00Z   4
+  time                 written
+  ----                 -------
+  1970-01-01T00:00:00Z 7 
   
   > SELECT * FROM "distincts"
-  
   name: distincts
-  time                   distinct
-  ----                   --------
-  1970-01-01T00:00:00Z   at or greater than 9 feet
+  time                 distinct
+  ----                 --------
+  1970-01-01T00:00:00Z 57
   ```
-  
+
 - ### `INTEGRAL()`
 
   返回`field value`曲线下的面积，即关于`field value`的积分。
@@ -1109,564 +1183,538 @@
   ```
   SELECT INTEGRAL( [ * | <field_key> | /<regular_expression>/ ] [ , <unit> ]  ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
-  
+
   #### 语法描述
-  
-  cnosDB计算field value曲线下的面积，并将这些结果转换为每个`unit`的总面积。参数`unit`的值是一个整数，后跟一个时间单位。这个参数是可选的，不是必须要有的。如果查询没有指定`unit`的值，那么`unit`默认为一秒(`1s`)。
-  
+
+  CnosDB计算field value曲线下的面积，并将这些结果转换为每个`unit`的总面积。参数`unit`的值是一个整数，后跟一个时间单位。这个参数是可选的，不是必须要有的。如果查询没有指定`unit`的值，那么`unit`默认为一秒(`1s`)。
+
   `INTEGRAL(field_key)`返回field key关联的值之下的面积。
-  
+
   `INTEGRAL(/regular_expression/)`返回满足正则表达式的每个field key关联的值之下的面积。
-  
+
   `INTEGRAL(*)`返回`measurement`中每个`field key`关联的值之下的面积。
-  
+
   `INTEGRAL()`不支持`fill()`，`INTEGRAL()`支持int64和float64两个数据类型。
-  
+
   #### 示例
-  
-  下面的五个例子，使用数据库[`NOAA_water_database`中的数据](NOAA_water_database.txt)：
-  
+
+  下面的五个例子，使用数据库[`oceanic_station`中的数据](oceanic_station.txt)：
+
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
-  
-  name: h2o_feet
-  time                   water_level
-  ----                   -----------
-  2020-08-18T00:00:00Z   2.064
-  2020-08-18T00:06:00Z   2.116
-  2020-08-18T00:12:00Z   2.028
-  2020-08-18T00:18:00Z   2.126
-  2020-08-18T00:24:00Z   2.041
-  2020-08-18T00:30:00Z   2.051
+  >  SELECT  temperature  FROM "air" WHERE "station" = 'XiaoMaiDao' limit 10
+  name: air
+  time                        temperature
+  ----                        -----------
+  2022-04-11T08:03:37.07132Z  58
+  2022-04-11T08:03:37.071378Z 62
+  2022-04-11T08:03:37.071385Z 58
+  2022-04-11T08:03:37.071391Z 56
+  2022-04-11T08:03:37.071394Z 56
+  2022-04-11T08:03:37.071401Z 59
+  2022-04-11T08:03:37.071403Z 57
+  2022-04-11T08:03:37.071406Z 62
+  2022-04-11T08:03:37.071409Z 59
+  2022-04-11T08:03:37.071411Z 62
   ```
-  
+
   - #### 计算指定的field key的值得积分
-  
+
   ```sql
-  > SELECT INTEGRAL("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
-  
-  name: h2o_feet
+  >SELECT  INTEGRAL(temperature)  FROM "air" WHERE "station" = 'XiaoMaiDao' limit 10 
+  name: air
   time                 integral
   ----                 --------
-  1970-01-01T00:00:00Z 3732.66
+  1970-01-01T00:00:00Z 0.4677579999999999
   ```
-  
-  该查询返回`h2o_feet`中的字段`water_level`的曲线下的面积（以秒为单位）。
-  
-  - #### 计算指定的field key和时间单位的值得积分
-  
+
+  该查询返回`air`中的字段`temperature`的曲线下的面积（以秒为单位）。
+
+  - #### 计算指定的field key和时间单位的值的积分
+
   ```sql
-  > SELECT INTEGRAL("water_level",1m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
-  
-  name: h2o_feet
+  > SELECT  INTEGRAL(temperature,1ms)  FROM "air" WHERE "station" = 'XiaoMaiDao' limit 10
+  name: air
   time                 integral
   ----                 --------
-  1970-01-01T00:00:00Z 62.211
+  1970-01-01T00:00:00Z 467.7580000000045
   ```
-  
-  该查询返回`h2o_feet`中的字段`water_level`的曲线下的面积（以分钟为单位）。
-  
+
+  该查询返回`air`中的字段`temperature`的曲线下的面积（以1ms为单位）。
+
   - #### 计算measurement中每个field key在指定时间单位的值得积分
-  
+
   ```sql
-  > SELECT INTEGRAL(*,1m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
-  
-  name: h2o_feet
-  time                 integral_water_level
-  ----                 --------------------
-  1970-01-01T00:00:00Z 62.211
+  > SELECT  INTEGRAL(*,1ms)  FROM "air" WHERE "station" = 'XiaoMaiDao' and time<now()
+  name: air
+  time                 integral_pressure  integral_temperature integral_visibility
+  ----                 -----------------  -------------------- -------------------
+  1970-01-01T00:00:00Z 467.22900000000413 467.7580000000045    491.2000000000007
   ```
-  
-  查询返回measurement`h2o_feet`中存储的每个数值字段相关的字段值的曲线下面积（以分钟为单位）。 `h2o_feet`的数值字段为`water_level`。
-  
+
+  查询返回measurement`air`中存储的每个数值字段相关的字段值的曲线下面积（以1ms为单位）
+
   - #### 计算measurement中匹配正则表达式的field key在指定时间单位的值得积分
-  
+
   ```sql
-  > SELECT INTEGRAL(/water/,1m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
-  
-  name: h2o_feet
-  time                 integral_water_level
+  > SELECT  INTEGRAL(/temp/,1ms)  FROM "air" WHERE "station" = 'XiaoMaiDao' and time<now()
+  name: air
+  time                 integral_temperature
   ----                 --------------------
-  1970-01-01T00:00:00Z 62.211
-  ```
+  1970-01-01T00:00:00Z 467.7580000000045
   
+  ```
+
   查询返回field key包括单词`water`的每个数值类型的字段相关联的字段值的曲线下的区域（以分钟为单位）。
-  
+
   - #### 在含有多个子句中计算指定字段的积分
-  
+
   ```sql
-  > SELECT INTEGRAL("water_level",1m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' GROUP BY time(12m) LIMIT 1
-  
-  name: h2o_feet
-  time                 integral
-  ----                 --------
-  2020-08-18T00:00:00Z 24.972
+  > SELECT  INTEGRAL(temperature,1ms)  FROM "air" WHERE "station" = 'XiaoMaiDao' and time<now() GROUP BY time(12m) LIMIT 1
+  name: air
+  time                 integral_temperature
+  ----                 --------------------
+  2022-04-11T08:00:00Z 467.7580000000045
   ```
-  
-  该查询返回`measurement` `h2o_feet`中`field key` `water_level`对应的field value曲线下的面积(以分钟为单位)，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并将查询结果按12分钟的时间间隔进行分组，同时，该查询将返回的`point`个数限制为1。
+
+  该查询返回`measurement` `air`中`field key` `temperature`对应的field value曲线下的面积(以分钟为单位)，它涵盖的时间范围在now()之前，并将查询结果按12分钟的时间间隔进行分组，同时，该查询将返回的`point`个数限制为1。
 
 - ### `MEAN()`
 
   返回field value的平均值。
 
   #### 语法
-  
+
   ```
   SELECT MEAN( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
-  
+
   `MEAN(field_key)`返回`field key`对应的`field value`的平均值。
-  
+
   `MEAN(/regular_expression/)`返回与正则表达式匹配的每个`field key`对应的field value的平均值。
-  
+
   `MEAN(*)`返回在`measurement`中每个`field key`对应的`field value`的平均值。
-  
+
   `MEAN()`支持数据类型为int64和float64的field value。
-  
+
   #### 示例
-  
+
   - #### 计算指定field key对应的field value的平均值
-  
+
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
+  > SELECT MEAN("temperature") FROM "air"
+  name: air
   time                   mean
   ----                   ----
   1970-01-01T00:00:00Z   4.442107025822522
   ```
-  该查询返回`measurement` `h2o_feet`中`field key` `water_level`对应的`field value`的平均值。
-  
+  该查询返回`measurement` `air`中`field key` `temperature`对应的`field value`的平均值。
+
   - #### 计算measurement中每个field key对应的field value的平均值
-  
+
   ```sql
-  > SELECT MEAN(*) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   mean_water_level
-  ----                   ----------------
-  1970-01-01T00:00:00Z   4.442107025822522
+  > SELECT MEAN(*) FROM "air" 
+  name: air
+  time                 mean_pressure     mean_temperature  mean_visibility
+  ----                 -------------     ----------------  ---------------
+  1970-01-01T00:00:00Z 59.00689862027595 59.04949010197961 62.01889622075585
   ```
-  该查询返回`measurement` `h2o_feet`中每个存储数值的`field key`对应的`field value`的平均值。`measurement` `h2o_feet`中只有一个数值类型的field：`water_level`。
-  
+  该查询返回`measurement` `air`中每个存储数值的`field key`对应的`field value`的平均值。
+
   - #### 计算与正则表达式匹配的每个field key对应的field value的平均值
-  
+
   ```sql
-  > SELECT MEAN(/water/) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   mean_water_level
+  > SELECT MEAN(/temp/) FROM "air" 
+  name: air
+  time                   mean_temperature
   ----                   ----------------
   1970-01-01T00:00:00Z   4.442107025822523
   ```
-  
-  该查询返回`measurement` `h2o_feet`中每个存储数值并包含单词`water`的`field key`对应的`field value`的平均值。
-  
+
+  该查询返回`measurement` `air`中每个存储数值并包含单词`water`的`field key`对应的`field value`的平均值。
+
   - #### 计算指定field key对应的field value的平均值并包含多个子句
-  
+
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-17T23:48:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m),* fill(9.01) LIMIT 7 SLIMIT 1
-  
-  name: h2o_feet
-  tags: location=coyote_creek
-  time                   mean
-  ----                   ----
-  2020-08-17T23:48:00Z   9.01
-  2020-08-18T00:00:00Z   8.0625
-  2020-08-18T00:12:00Z   7.8245
-  2020-08-18T00:24:00Z   7.5675
-  2020-08-18T00:36:00Z   7.303
-  2020-08-18T00:48:00Z   7.046
+  > SELECT MEAN("temperature") FROM "air" WHERE time <now() GROUP BY time(12m),* fill(9.01) LIMIT 7 SLIMIT 1
+  name: air
+  tags: station=LianYunGang
+  time                 mean
+  ----                 ----
+  2022-04-11T08:00:00Z 59.06864564007421
+  2022-04-11T08:12:00Z 9.01
+  2022-04-11T08:24:00Z 9.01
+  2022-04-11T08:36:00Z 9.01
+  2022-04-11T08:48:00Z 9.01
+  2022-04-11T09:00:00Z 9.01
+  2022-04-11T09:12:00Z 9.01 
   ```
-  
-  该查询返回`measurement` `h2o_feet`中field key `water_level`对应的field value的平均值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:30:00Z`之间，并将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为7和1。
+
+  该查询返回`measurement` `air`中field key `temperature`对应的field value的平均值，将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为7和1。
 
 - ### MEDIAN()
 
-  返回`field value`的计算平均值。
+  返回`field value`的计算中值。
 
   #### 语法
-  
+
   ```
   SELECT MEDIAN( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
-  
+
   #### 语法描述
-  
-  `MEDIAN(field_key)`返回与`field key`对应的field value的平均值。
-  
-  `MEDIAN(/regular_expression/)`返回与正则表达式匹配的每个`field key`对应的`field value`的平均值。
-  
-  `MEDIAN(*)`返回在`measurement`中每个`field key`对应的`field value`的平均值。
-  
+
+  `MEDIAN(field_key)`返回与`field key`对应的field value的中值。
+
+  `MEDIAN(/regular_expression/)`返回与正则表达式匹配的每个`field key`对应的`field value`的中值。
+
+  `MEDIAN(*)`返回在`measurement`中每个`field key`对应的`field value`的中值。
+
   `MEDIAN()` 支持数据类型为int64和float64的field value。
-  
+
   > **注意：**`MEDIAN()`近似于`PERCENTILE(field_key, 50)`，除非`field key`包含的`field value`有偶数个，那么这时候`MEDIAN()`将返回两个中间值的平均数。
-  
+
   #### 示例
-  
-  - #### 计算指定field key对应的field value的平均数
-  
+
+  - #### 计算指定field key对应的field value的中值
+
   ```sql
-  > SELECT MEDIAN("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   median
-  ----                   ------
-  1970-01-01T00:00:00Z   4.124
+  > SELECT MEDIAN("pressure") FROM "air"
+  name: air
+  time                 median
+  ----                 ------
+  1970-01-01T00:00:00Z 59
   ```
-  
-  该查询返回`measurement` `h2o_feet`中field key `water_level`对应的`field value`的平均数。
-  
-  - #### 计算measurement中每个field key对应的field value的平均数
-  
+
+  该查询返回`measurement` `air`中field key `pressure`对应的`field value`的中值。
+
+  - #### 计算measurement中每个field key对应的field value的中值
+
   ```sql
-  > SELECT MEDIAN(*) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   median_water_level
-  ----                   ------------------
-  1970-01-01T00:00:00Z   4.124
+  > SELECT MEDIAN(*) FROM "air"
+  name: air
+  time                 median_pressure median_temperature median_visibility
+  ----                 --------------- ------------------ -----------------
+  1970-01-01T00:00:00Z 59              59                 62
   ```
-  
-  该查询返回`measurement` `h2o_feet`中每个存储数值的`field key`对应的`field value`的平均数。`measurement` `h2o_feet`中只有一个数值类型的field：`water_level`。
-  
-  - #### 计算与正则表达式匹配的每个field key对应的field value的平均数
-  
+
+  该查询返回`measurement` `air`中每个存储数值的`field key`对应的`field value`的中值。
+
+  - #### 计算与正则表达式匹配的每个field key对应的field value的中值
+
   ```sql
-  > SELECT MEDIAN(/water/) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   median_water_level
-  ----                   ------------------
-  1970-01-01T00:00:00Z   4.124
+  > SELECT MEDIAN(/temp/) FROM "air"
+  name: air
+  time                 median_temperature
+  ----                 ------------------
+  1970-01-01T00:00:00Z 59
   ```
-  该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的平均数。
-  
-  - #### 计算指定field key对应的field value的平均数并包含多个子句
-  
+  该查询返回measurement `air`中每个存储数值并包含单词`water`的field key对应的field value的中值。
+
+  - #### 计算指定field key对应的field value的中值并包含多个子句
+
   ```sql
-  > SELECT MEDIAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-17T23:48:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m),* fill(700) LIMIT 7 SLIMIT 1 SOFFSET 1
-  
-  name: h2o_feet
-  tags: location=santa_monica
-  time                   median
-  ----                   ------
-  2020-08-17T23:48:00Z   700
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
-  2020-08-18T00:36:00Z   2.0620000000000003
-  2020-08-18T00:48:00Z   700
+  > SELECT MEDIAN("temperature") FROM "air" WHERE  time<now()  GROUP BY time(1m),* fill(-1) LIMIT 7 SLIMIT 3 SOFFSET 1
+  name: air
+  tags: station=XiaoMaiDao
+  time                 median
+  ----                 ------
+  2022-04-11T08:03:00Z 59
+  2022-04-11T08:04:00Z -1
+  2022-04-11T08:05:00Z -1
+  2022-04-11T08:06:00Z -1
+  2022-04-11T08:07:00Z -1
+  2022-04-11T08:08:00Z -1
+  2022-04-11T08:09:00Z -1
   ```
-  
-  该查询返回`measurement` `h2o_feet`中`field key` `water_level`对应的`field value`的平均数，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询用`700`填充没有数据的时间间隔，将返回的`point`个数和series个数分别限制为7和1，并将返回的`series`偏移一个（即第一个`series`的数据不返回）。
+
+  该查询返回`measurement` `air`中`field key` `temperature`对应的`field value`的平均数，它涵盖的时间范围在now()之前，并将查询结果按1分钟的时间间隔和每个`tag`进行分组，同时，该查询用`-1`填充没有数据的时间间隔，将返回的`point`个数和series个数分别限制为3和1，并将返回的`series`偏移一个（即第一个`series`的数据不返回）。
 
 - ### MODE()
 
   返回`field value`中出现频率最高的值。
 
   #### 语法
-  
+
   ```
   SELECT MODE( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
-  
+
   `MODE(field_key)`返回`field key`对应的`field value`中出现频率最高的值。
-  
+
   `MODE(/regular_expression/)`返回与正则表达式匹配的每个`field key`对应的`field value`中出现频率最高的值。
-  
+
   `MODE(*)`返回在`measurement`中每个`field key`对应的`field value`中出现频率最高的值。
-  
+
   `MODE()` 支持所有数据类型的`field value`。
-  
+
   > **注意：**如果出现频率最高的值有两个或多个并且它们之间有关联，那么`MODE()`返回具有最早时间戳的`field value`。
-  
+
   #### 示例
-  
+
   - #### 计算指定field key对应的field value中出现频率最高的值
-  
+
   ```sql
-  > SELECT MODE("level description") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   mode
-  ----                   ----
-  1970-01-01T00:00:00Z   between 3 and 6 feet
+  > SELECT MODE("temperature") FROM "air"
+  name: air
+  time                 mode
+  ----                 ----
+  1970-01-01T00:00:00Z 62
   ```
-  
-  该查询返回`measurement` `h2o_feet`中每个`field key`对应的`field value`中出现频率最高的值。measurement `h2o_feet`中有两个`field key`：`level description`和`water_level`。
-  
+
+  该查询返回`measurement` `air`中某个`field key`对应的`field value`中出现频率最高的值。
+
   - #### 计算measurement中每个field key对应的field value中出现频率最高的值
-  
+
   ```sql
-  > SELECT MODE(*) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   mode_level description   mode_water_level
-  ----                   ----------------------   ----------------
-  1970-01-01T00:00:00Z   between 3 and 6 feet     2.69
+  > SELECT MODE(*) FROM "air"
+  name: air
+  time                 mode_pressure mode_temperature mode_visibility
+  ----                 ------------- ---------------- ---------------
+  1970-01-01T00:00:00Z 57            62               61
   ```
-  
-  该查询返回`measurement` `h2o_feet`中每个`field key`对应的`field value`中出现频率最高的值。`measurement` `h2o_feet`中有两个`field key`：`level description`和`water_level`。
-  
+
   - #### 计算与正则表达式匹配的每个field key对应的field value中出现频率最高的值
-  
+
   ```sql
-  > SELECT MODE(/water/) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   mode_water_level
-  ----                   ----------------
-  1970-01-01T00:00:00Z   2.69
+  SELECT MODE(/temp/) FROM "air"
+  name: air
+  time                 mode_temperature
+  ----                 ----------------
+  1970-01-01T00:00:00Z 62
   ```
-  
-  该查询返回`measurement` `h2o_feet`中每个包含单词`water`的`field key`对应的`field value`中出现频率最高的值。
-  
+
   - #### 计算指定field key对应的field value中出现频率最高的值并包含多个子句
-  
+
   ```sql
-  > SELECT MODE("level description") FROM "h2o_feet" WHERE time >= '2020-08-17T23:48:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m),* LIMIT 3 SLIMIT 1 SOFFSET 1
-  
-  name: h2o_feet
-  tags: location=santa_monica
-  time                   mode
-  ----                   ----
-  2020-08-17T23:48:00Z
-  2020-08-18T00:00:00Z   below 3 feet
-  2020-08-18T00:12:00Z   below 3 feet
+  > SELECT MODE("temperature") FROM "air" WHERE time <now() GROUP BY time(12m),* LIMIT 3 SLIMIT 1 SOFFSET 1
+  name: air
+  tags: station=XiaoMaiDao
+  time                 mode
+  ----                 ----
+  2022-04-11T08:00:00Z 59
+  2022-04-11T08:12:00Z 
+  2022-04-11T08:24:00Z 
   ```
-  
-  该查询返回`measurement` `h2o_feet`中`field key` `water_level`对应的`field value`中出现频率最高的值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询将返回的`point`个数和`series`个数分别限制为3和1，并将返回的`series`偏移一个（即第一个`series`的数据不返回）。
+
+  该查询返回`measurement` `air`中`field key` `temperature`对应的`temperature`中出现频率最高的值，并将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询将返回的`point`个数和`series`个数分别限制为3和1，并将返回的`series`偏移一个（即第一个`series`的数据不返回）。
 
 - ### SPREAD()
 
   返回`field value`中最大值和最小值之差。
 
   #### 语法
-  
+
   ```sql
   SELECT SPREAD( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
-  
+
   #### 语法描述
-  
+
   `SPREAD(field_key)`返回`field key`对应的`field value`中最大值和最小值之差。
-  
+
   `SPREAD(/regular_expression/)`返回与正则表达式匹配的每个`field key`对应的`field value`中最大值和最小值之差。
-  
+
   `SPREAD(*)`返回在`measurement`中每个`field key`对应的`field value`中最大值和最小值之差。
-  
+
   `SPREAD()`支持数据类型为int64和float64的`field value`。
-  
+
   #### 示例
-  
+
   - #### 计算指定field key对应的field value中最大值和最小值之差
-  
+
   ```sql
-  > SELECT SPREAD("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   spread
-  ----                   ------
-  1970-01-01T00:00:00Z   10.574
+  SELECT SPREAD("temperature") FROM "air"
+  name: air
+  time                 spread
+  ----                 ------
+  1970-01-01T00:00:00Z 6
   ```
-  
-  该查询返回`measurement` `h2o_feet`中`field key` `water_level`对应的`field value`中最大值和最小值之差。
-  
+
+  该查询返回`measurement` `air`中`field key` `temperature`对应的`field value`中最大值和最小值之差。
+
   - #### 计算measurement中每个field key对应的field value中最大值和最小值之差
-  
+
   ```sql
-  > SELECT SPREAD(*) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   spread_water_level
-  ----                   ------------------
-  1970-01-01T00:00:00Z   10.574
+  > SELECT SPREAD(*) FROM "air"
+  name: air
+  time                 spread_pressure spread_temperature spread_visibility
+  ----                 --------------- ------------------ -----------------
+  1970-01-01T00:00:00Z 6               6                  6
   ```
-  
-  该查询返回`measurement` `h2o_feet`中每个存储数值的`field key`对应的`field value`中最大值和最小值之差。`measurement` `h2o_feet`中只有一个数值类型的field：`water_level`。
-  
+
+  该查询返回`measurement` `air`中每个存储数值的`field key`对应的`field value`中最大值和最小值之差。
+
   - #### 计算与正则表达式匹配的每个field key对应的field value中最大值和最小值之差
-  
+
   ```sql
-  > SELECT SPREAD(/water/) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   spread_water_level
-  ----                   ------------------
-  1970-01-01T00:00:00Z   10.574
+  > SELECT SPREAD(/tem/) FROM "air"
+  name: air
+  time                 spread_temperature
+  ----                 ------------------
+  1970-01-01T00:00:00Z 6
   ```
-  
-  该查询返回`measurement` `h2o_feet`中每个存储数值并包含单词`water`的`field key`对应的`field value`中最大值和最小值之差。
-  
+
+  该查询返回`measurement` `air`中每个存储数值并包含单词`water`的`field key`对应的`field value`中最大值和最小值之差。
+
   - #### 计算指定field key对应的field value中最大值和最小值之差并包含多个子句
-  
+
   ```sql
-  > SELECT SPREAD("water_level") FROM "h2o_feet" WHERE time >= '2020-08-17T23:48:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m),* fill(18) LIMIT 3 SLIMIT 1 SOFFSET 1
-  
-  name: h2o_feet
-  tags: location=santa_monica
-  time                   spread
-  ----                   ------
-  2020-08-17T23:48:00Z   18
-  2020-08-18T00:00:00Z   0.052000000000000046
-  2020-08-18T00:12:00Z   0.09799999999999986
+  > SELECT SPREAD("temperature") FROM "air" WHERE time <now() GROUP BY time(12m),* fill(-1) LIMIT 3 SLIMIT 1 SOFFSET 1
+  name: air
+  tags: station=XiaoMaiDao
+  time                 spread
+  ----                 ------
+  2022-04-11T08:00:00Z 6
+  2022-04-11T08:12:00Z -1
+  2022-04-11T08:24:00Z -1
   ```
-  
-  该查询返回`measurement` `h2o_feet`中field key `water_level`对应的field value中最大值和最小值之差，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询用`18`填充没有数据的时间间隔，将返回的`point`个数和`series`个数分别限制为3和1，并将返回的`series`偏移一个（即第一个`series`的数据不返回）
+
+  该查询返回`measurement` `air`中field key `temperature`对应的field value中最大值和最小值之差，将查询结果按12分钟的时间间隔和每个`tag`进行分组，同时，该查询用`-1`填充没有数据的时间间隔，将返回的`point`个数和`series`个数分别限制为3和1，并将返回的`series`偏移一个（即第一个`series`的数据不返回）
 
 - ### STDDEV()
 
   返回`field value`的标准差。
 
   #### 语法
-  
+
   ```sql
   SELECT STDDEV( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
-  
+
   `STDDEV(field_key)`返回`field key`对应的`field value`的标准差。
-  
+
   `STDDEV(/regular_expression/)`返回与正则表达式匹配的每个`field key`对应的`field value`的标准差。
-  
+
   `STDDEV(*)`返回在measurement中每个field key对应的field value的标准差。
-  
+
   `STDDEV()`支持数据类型为int64和float64的field value。
-  
+
   #### 示例
-  
+
   - #### 计算指定field key对应的field value的标准差
-  
+
   ```sql
-  > SELECT STDDEV("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   stddev
-  ----                   ------
-  1970-01-01T00:00:00Z   2.279144584196141
+  > SELECT STDDEV("temperature") FROM "air"
+  name: air
+  time                 stddev
+  ----                 ------
+  1970-01-01T00:00:00Z 1.9933006709246002
   ```
-  
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的标准差。
-  
+
+  该查询返回measurement `air`中field key `temperature`对应的field value的标准差。
+
   - #### 计算measurement中每个field key对应的field value的标准差
-  
+
   ```sql
-  > SELECT STDDEV(*) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   stddev_water_level
-  ----                   ------------------
-  1970-01-01T00:00:00Z   2.279144584196141
+  > SELECT STDDEV(*) FROM "air"
+  name: air
+  time                 stddev_pressure    stddev_temperature stddev_visibility
+  ----                 ---------------    ------------------ -----------------
+  1970-01-01T00:00:00Z 2.0234776612813525 1.9933006709246002 1.9942769555619093
   ```
-  
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的标准差。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
-  
+
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的标准差。
+
   - #### 计算与正则表达式匹配的每个field key对应的field value的标准差
-  
+
   ```sql
-  > SELECT STDDEV(/water/) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   stddev_water_level
+  > SELECT STDDEV(/temp/) FROM "air"
+  name: air
+  time                   stddev_temperature
   ----                   ------------------
   1970-01-01T00:00:00Z   2.279144584196141
   ```
-  
-  该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的标准差。
-  
+
+  该查询返回measurement `air`中每个存储数值并包含单词`water`的field key对应的field value的标准差。
+
   - #### 计算指定field key对应的field value的标准差并包含多个子句
-  
+
   ```sql
-  > SELECT STDDEV("water_level") FROM "h2o_feet" WHERE time >= '2020-08-17T23:48:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m),* fill(18000) LIMIT 2 SLIMIT 1 SOFFSET 1
-  
-  name: h2o_feet
-  tags: location=santa_monica
-  time                   stddev
-  ----                   ------
-  2020-08-17T23:48:00Z   18000
-  2020-08-18T00:00:00Z   0.03676955262170051
+  SELECT STDDEV("temperature") FROM "air" WHERE time <now() GROUP BY time(12m),* fill(18000) LIMIT 2 SLIMIT 1 SOFFSET 1
+  name: air
+  tags: station=XiaoMaiDao
+  time                 stddev
+  ----                 ------
+  2022-04-11T08:00:00Z 1.9988781365491315
+  2022-04-11T08:12:00Z 18000
   ```
-  
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的标准差，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`18000`填充没有数据的时间间隔，将返回的`point`个数和series个数分别限制为2和1，并将返回的series偏移一个（即第一个series的数据不返回）。
+
+  该查询返回measurement `air`中field key `temperature`对应的field value的标准差，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`18000`填充没有数据的时间间隔，将返回的`point`个数和series个数分别限制为2和1，并将返回的series偏移一个（即第一个series的数据不返回）。
 
 - ### SUM()
 
   返回field value的总和。
 
   #### 语法
-  
+
   ```
   SELECT SUM( [ * | <field_key> | /<regular_expression>/ ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
-  
+
   #### 语法描述
-  
+
   `SUM(field_key)`返回field key对应的field value的总和。
-  
+
   `SUM(/regular_expression/)`返回与正则表达式匹配的每个field key对应的field value的总和。
-  
+
   `SUM(*)`返回在measurement中每个field key对应的field value的总和。
-  
+
   `SUM()`支持数据类型为int64和float64的field value。
-  
+
   #### 示例
-  
+
   - #### 计算指定field key对应的field value的总和
-  
+
   ```sql
-  > SELECT SUM("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   sum
-  ----                   ---
-  1970-01-01T00:00:00Z   67777.66900000004
+  > SELECT SUM("temperature") FROM "air"
+  name: air
+  time                 sum
+  ----                 ---
+  1970-01-01T00:00:00Z 196871
   ```
-  
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的总和。
-  
+
+  该查询返回measurement `air`中field key `temperature`对应的field value的总和。
+
   - #### 计算measurement中每个field key对应的field value的总和
-  
+
   ```sql
-  > SELECT SUM(*) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   sum_water_level
-  ----                   ---------------
-  1970-01-01T00:00:00Z   67777.66900000004
+  > SELECT SUM(*) FROM "air"
+  name: air
+  time                 sum_pressure sum_temperature sum_visibility
+  ----                 ------------ --------------- --------------
+  1970-01-01T00:00:00Z 196729       196871          206771
   ```
-  
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的总和。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
-  
+
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的总和。
+
   - #### 计算与正则表达式匹配的每个field key对应的field value的总和
-  
+
   ```sql
-  > SELECT SUM(/water/) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   sum_water_level
-  ----                   ---------------
-  1970-01-01T00:00:00Z   67777.66900000004
+  > SELECT SUM(/temp/) FROM "air"
+  name: air
+  time                 sum_temperature
+  ----                 ---------------
+  1970-01-01T00:00:00Z 196871
   ```
-  
-  该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的总和。
-  
+
+  该查询返回measurement `air`中每个存储数值并包含单词`water`的field key对应的field value的总和。
+
   - #### 计算指定field key对应的field value的总和并包含多个子句
-  
+
   ```sql
-  > SELECT SUM("water_level") FROM "h2o_feet" WHERE time >= '2020-08-17T23:48:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m),* fill(18000) LIMIT 4 SLIMIT 1
-  
-  name: h2o_feet
-  tags: location=coyote_creek
-  time                   sum
-  ----                   ---
-  2020-08-17T23:48:00Z   18000
-  2020-08-18T00:00:00Z   16.125
-  2020-08-18T00:12:00Z   15.649
-  2020-08-18T00:24:00Z   15.135
+  > SELECT SUM("temperature") FROM "air" WHERE time <now() GROUP BY time(12m),* fill(18000) LIMIT 4 SLIMIT 1
+  name: air
+  tags: station=LianYunGang
+  time                 sum
+  ----                 ---
+  2022-04-11T08:00:00Z 95514
+  2022-04-11T08:12:00Z 18000
+  2022-04-11T08:24:00Z 18000
+  2022-04-11T08:36:00Z 18000
   ```
-  
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的总和，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`18000`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
+
+  该查询返回measurement `air`中field key `temperature`对应的field value的总和，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`18000`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
+
 
 ## 选择函数
 
@@ -1700,68 +1748,64 @@
   - #### 选择指定field key对应的最小的三个值
 
   ```sql
-  > SELECT BOTTOM("water_level",3) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   bottom
-  ----                   ------
-  2020-08-29T14:30:00Z   -0.61
-  2020-08-29T14:36:00Z   -0.591
-  2020-08-30T15:18:00Z   -0.594
+  > SELECT BOTTOM("temperature",3) FROM "air"
+  name: air
+  time                 bottom
+  ----                 ------
+  2021-08-31T16:18:00Z 50
+  2021-08-31T17:09:00Z 50
+  2021-08-31T18:39:00Z 50
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的最小的三个值。
+  该查询返回measurement `air`中field key `temperature`对应的最小的三个值。
 
   - #### 选择两个tag对应的field key的最小值
 
   ```sql
-  > SELECT BOTTOM("water_level","location",2) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   bottom   location
-  ----                   ------   --------
-  2020-08-29T10:36:00Z   -0.243   santa_monica
-  2020-08-29T14:30:00Z   -0.61    coyote_creek
+  > SELECT BOTTOM("temperature","station",2) FROM "air"
+  name: air
+  time                 bottom station
+  ----                 ------ -------
+  2021-08-31T16:18:00Z 50     XiaoMaiDao
+  2021-08-31T18:39:00Z 50     LianYunGang
   ```
   
-  该查询返回tag key `location`的两个tag value对应的field key `water_level`的最小值。
+  该查询返回tag key `station`的两个tag value对应的field key `temperature`的最小值。
 
   - #### 选择指定field key对应的最小的四个值以及相关的tag和field
 
   ```sql
-  > SELECT BOTTOM("water_level",4),"location","level description" FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  bottom  location      level description
-  ----                  ------  --------      -----------------
-  2020-08-29T14:24:00Z  -0.587  coyote_creek  below 3 feet
-  2020-08-29T14:30:00Z  -0.61   coyote_creek  below 3 feet
-  2020-08-29T14:36:00Z  -0.591  coyote_creek  below 3 feet
-  2020-08-30T15:18:00Z  -0.594  coyote_creek  below 3 feet
+  > SELECT BOTTOM("temperature",4),"station","pressure" FROM "air"
+  name: air
+  time                 bottom station     pressure
+  ----                 ------ -------     --------
+  2021-08-31T16:18:00Z 50     XiaoMaiDao  55
+  2021-08-31T17:09:00Z 50     XiaoMaiDao  63
+  2021-08-31T18:39:00Z 50     LianYunGang 64
+  2021-08-31T19:51:00Z 50     LianYunGang 62
   ```
   
-  该查询返回field key `water_level`对应的最小的四个值，以及相关的tag key `location`和field key `level description`的值。
+  该查询返回field key `temperature`对应的最小的四个值，以及相关的tag key `station`和field key `pressure`的值。
 
   - #### 选择指定field key对应的最小的三个值并包含多个子句
 
   ```sql
-  > SELECT BOTTOM("water_level",3),"location" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(24m) ORDER BY time DESC
-  
-  name: h2o_feet
-  time                  bottom  location
-  ----                  ------  --------
-  2020-08-18T00:48:00Z  1.991   santa_monica
-  2020-08-18T00:54:00Z  2.054   santa_monica
-  2020-08-18T00:54:00Z  6.982   coyote_creek
-  2020-08-18T00:24:00Z  2.041   santa_monica
-  2020-08-18T00:30:00Z  2.051   santa_monica
-  2020-08-18T00:42:00Z  2.057   santa_monica
-  2020-08-18T00:00:00Z  2.064   santa_monica
-  2020-08-18T00:06:00Z  2.116   santa_monica
-  2020-08-18T00:12:00Z  2.028   santa_monica
+  > SELECT BOTTOM("temperature",3),"station" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:54:00Z' GROUP BY time(24m) ORDER BY time DESC
+  name: air
+  time                 bottom station
+  ----                 ------ -------
+  2021-09-18T00:54:00Z 69     LianYunGang
+  2021-09-18T00:51:00Z 65     LianYunGang
+  2021-09-18T00:48:00Z 68     XiaoMaiDao
+  2021-09-18T00:39:00Z 53     XiaoMaiDao
+  2021-09-18T00:36:00Z 52     LianYunGang
+  2021-09-18T00:33:00Z 50     LianYunGang
+  2021-09-18T00:06:00Z 55     LianYunGang
+  2021-09-18T00:03:00Z 53     XiaoMaiDao
+  2021-09-18T00:00:00Z 51     LianYunGang
   ```
   
-  该查询返回在`2020-08-18T00:00:00Z`和`2020-08-18T00:54:00Z`之间的每个24分钟间隔内，field key `water_level`对应的最小的三个值，并且以递减的时间戳顺序返回结果。
+  该查询返回在`2021-09-28T00:00:00Z`和`2020-08-18T00:54:00Z`之间的每个24分钟间隔内，field key `temperature`对应的最小的三个值，并且以递减的时间戳顺序返回结果。
   
   请注意，`GROUP BY time()`子句不会覆盖`point`的原始时间戳。请查看下面章节获得更详细的说明。
 
@@ -1774,56 +1818,52 @@
   以下查询返回每18分钟`GROUP BY time()`间隔对应的两个`point`。请注意，返回的时间戳是`point`的原始时间戳；它们不会被强制要求必须匹配`GROUP BY time()`间隔的开始时间。
   
   ```sql
-  > SELECT BOTTOM("water_level",2) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(18m)
-  
-  name: h2o_feet
+  > SELECT BOTTOM("temperature",2) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(18m)
+  name: air
   time                   bottom
   ----                   ------
                              __
-  2020-08-18T00:00:00Z  2.064 |
-  2020-08-18T00:12:00Z  2.028 | <------- Smallest points for the first time interval
+  2021-09-28T00:00:00Z  2.064 |
+  2021-09-18T00:12:00Z  2.028 | <------- Smallest points for the first time interval
                              --
                              __
-  2020-08-18T00:24:00Z  2.041 |
-  2020-08-18T00:30:00Z  2.051 | <------- Smallest points for the second time interval                      --
+  2021-09-18T00:24:00Z  2.041 |
+  2021-09-18T00:30:00Z  2.051 | <------- Smallest points for the second time interval                      --
   ```
 
   - #### `BOTTOM()`和具有少于N个tag value的tag key
   
   使用语法`SELECT BOTTOM(<field_key>,<tag_key>,<N>)`的查询可以返回比预期少的`point`。如果tag key有`X`个tag value，但是查询指定的是`N`个tag value，如果`X`小于`N`，那么查询将返回`X`个`point`。
   
-  以下查询请求的是tag key `location`的三个tag value对于的`water_level`的最小值。因为tag key `location`只有两个tag value(`santa_monica`和`coyote_creek`)，所以该查询返回两个`point`而不是三个。
+  以下查询请求的是tag key `station`的三个tag value对于的`temperature`的最小值。因为tag key `station`只有两个tag value(`LianYunGang`和`XiaoMaiDao`)，所以该查询返回两个`point`而不是三个。
   
   ```sql
-  > SELECT BOTTOM("water_level","location",3) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   bottom   location
-  ----                   ------   --------
-  2020-08-29T10:36:00Z   -0.243   santa_monica
-  2020-08-29T14:30:00Z   -0.61    coyote_creek
+  > SELECT BOTTOM("temperature","station",3) FROM "air"
+  name: air
+  time                 bottom station
+  ----                 ------ -------
+  2021-08-31T16:18:00Z 50     XiaoMaiDao
+  2021-08-31T18:39:00Z 50     LianYunGang
   ```
   
   - #### `BOTTOM()`、tag和`INTO`子句
   
   当使用`INTO`子句但没有使用`GROUP BY tag`子句时，大多数cnosQL函数将原始数据中的tag转换为新写入数据中的field。这种行为同样适用于`BOTTOM()`函数除非`BOTTOM()`中包含tag key作为参数：`BOTTOM(field_key,tag_key(s),N)`。在这些情况下，系统会将指定的tag保留为新写入数据中的tag。
   
-  下面代码块中的第一个查询返回tag key `location`的两个tag value对应的field key `water_level`的最小值，并且，它这些结果写入measurement `bottom_water_levels`中。第二个查询展示了CnosDB将tag `location`保留为measurement `bottom_water_levels`中的tag。
+  下面代码块中的第一个查询返回tag key `station`的两个tag value对应的field key `temperature`的最小值，并且，它这些结果写入measurement `bottom_temperatures`中。第二个查询展示了CnosDB将tag `station`保留为measurement `bottom_temperatures`中的tag。
   
   ```sql
-  > SELECT BOTTOM("water_level","location",2) INTO "bottom_water_levels" FROM "h2o_feet"
-  
+  > SELECT BOTTOM("temperature","station",2) INTO "bottom_temperatures" FROM "air"
   name: result
   time                 written
   ----                 -------
   1970-01-01T00:00:00Z 2
   
-  > SHOW TAG KEYS FROM "bottom_water_levels"
-  
-  name: bottom_water_levels
+  > SHOW TAG KEYS FROM "air"
+  name: air
   tagKey
   ------
-  location
+  station
   ```
 
 - ### FIRST()
@@ -1853,73 +1893,70 @@
   - #### 选择指定field key对应的具有最早时间戳的field value
   
   ```sql
-  > SELECT FIRST("level description") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   first
-  ----                   -----
-  2020-08-18T00:00:00Z   between 6 and 9 feet
+  > SELECT FIRST("pressure") FROM "air"
+  name: air
+  time                 first
+  ----                 -----
+  2021-08-31T16:00:00Z 78
   ```
   
-  该查询返回measurement `h2o_feet`中field key `level description`对应的具有最早时间戳的field value。
+  该查询返回measurement `air`中field key `pressure`对应的具有最早时间戳的field value。
   
   - #### 选择measurement中每个field key对应的具有最早时间戳的field value
   
   ```sql
-  > SELECT FIRST(*) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   first_level description   first_water_level
-  ----                   -----------------------   -----------------
-  1970-01-01T00:00:00Z   between 6 and 9 feet      8.12
+  > SELECT FIRST(*) FROM "air"
+
+  name: air
+  time                 first_pressure first_temperature first_visibility
+  ----                 -------------- ----------------- ----------------
+  1970-01-01T00:00:00Z 78             79                71
   ```
   
-  该查询返回measurement `h2o_feet`中每个field key对应的具有最早时间戳的field value。measurement `h2o_feet`中有两个field key：`level description`和`water_level`。
+  该查询返回measurement `air`中每个field key对应的具有最早时间戳的field value。measurement `air`中有两个field key：`pressure`和`temperature`。
   
   - #### 选择与正则表达式匹配的每个field key对应的具有最早时间戳的field value
   
   ```sql
-  > SELECT FIRST(/level/) FROM "h2o_feet"
+  > SELECT FIRST(/temp/) FROM "air"
   
-  name: h2o_feet
-  time                   first_level description   first_water_level
-  ----                   -----------------------   -----------------
-  1970-01-01T00:00:00Z   between 6 and 9 feet      8.12
+  name: air
+  time                 first_temperature
+  ----                 -----------------
+  2021-08-31T16:00:00Z 79
   ```
   
-  该查询返回measurement `h2o_feet`中每个包含单词`level`的field key对应的具有最早时间戳的field value。
+  该查询返回measurement `air`中每个包含单词`level`的field key对应的具有最早时间戳的field value。
   
   - #### 选择指定field key对应的具有最早时间戳的field value以及相关的tag和field
   
   ```sql
-  > SELECT FIRST("level description"),"location","water_level" FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  first                 location      water_level
-  ----                  -----                 --------      -----------
-  2020-08-18T00:00:00Z  between 6 and 9 feet  coyote_creek  8.12
+  > SELECT FIRST("pressure"),"station","temperature" FROM "air"
+  name: air
+  time                 first station     temperature
+  ----                 ----- -------     -----------
+  2021-08-31T16:00:00Z 78    LianYunGang 63
   ```
   
-  该查询返回measurement `h2o_feet`中field key `level description`对应的具有最早时间戳的field value，以及相关的tag key `location`和field key `water_level`的值。
+  该查询返回measurement `air`中field key `pressure`对应的具有最早时间戳的field value，以及相关的tag key `station`和field key `temperature`的值。
   
   - #### 选择指定field key对应的具有最早时间戳的field value并包含多个子句
   
   ```sql
-  > SELECT FIRST("water_level") FROM "h2o_feet" WHERE time >= '2020-08-17T23:48:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m),* fill(9.01) LIMIT 4 SLIMIT 1
-  
-  name: h2o_feet
-  tags: location=coyote_creek
-  time                   first
-  ----                   -----
-  2020-08-17T23:48:00Z   9.01
-  2020-08-18T00:00:00Z   8.12
-  2020-08-18T00:12:00Z   7.887
-  2020-08-18T00:24:00Z   7.635
+  > SELECT FIRST("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-28T00:54:00Z' GROUP BY time(12m),* fill(9.01) LIMIT 4 SLIMIT 1
+  name: air
+  tags: station=LianYunGang
+  time                 first
+  ----                 -----
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:36:00Z 52
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的具有最早时间戳的field value，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
+  该查询返回measurement `air`中field key `temperature`对应的具有最早时间戳的field value，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
   
-  请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:48:00Z`和`2020-08-18T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:24:00Z`和`2020-08-18T00:36:00Z`之间。
+  请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:48:00Z`和`2021-09-28T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:24:00Z`和`2020-08-18T00:36:00Z`之间。
 
 - ### LAST()
 
@@ -1946,73 +1983,68 @@
   - #### 选择指定field key对应的具有最新时间戳的field value
   
   ```sql
-  > SELECT LAST("level description") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   last
-  ----                   ----
-  2020-09-18T21:42:00Z   between 3 and 6 feet
+  > SELECT LAST("pressure") FROM "air"
+  name: air
+  time                 last
+  ----                 ----
+  2021-09-30T04:00:00Z 65
   ```
   
-  该查询返回measurement `h2o_feet`中field key `level description`对应的具有最新时间戳的field value。
+  该查询返回measurement `air`中field key `pressure`对应的具有最新时间戳的field value。
   
   - #### 选择measurement中每个field key对应的具有最新时间戳的field value
   
   ```sql
-  > SELECT LAST(*) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   last_level description   last_water_level
-  ----                   -----------------------   -----------------
-  1970-01-01T00:00:00Z   between 3 and 6 feet      4.938
+  > SELECT LAST(*) FROM "air"
+  name: air
+  time                 last_pressure last_temperature last_visibility
+  ----                 ------------- ---------------- ---------------
+  1970-01-01T00:00:00Z 65            59               78
   ```
   
-  该查询返回measurement `h2o_feet`中每个field key对应的具有最新时间戳的field value。measurement `h2o_feet`中有两个field key：`level description`和`water_level`。
+  该查询返回measurement `air`中每个field key对应的具有最新时间戳的field value。measurement `air`中有两个field key：`pressure`和`temperature`。
   
   - #### 选择与正则表达式匹配的每个field key对应的具有最新时间戳的field value
   
   ```sql
-  > SELECT LAST(/level/) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   last_level description   last_water_level
-  ----                   -----------------------   -----------------
-  1970-01-01T00:00:00Z   between 3 and 6 feet      4.938
+  > SELECT LAST(/temp/) FROM "air"
+  name: air
+  time                 last_temperature
+  ----                 ----------------
+  2021-09-30T04:00:00Z 59
   ```
   
-  该查询返回measurement `h2o_feet`中每个包含单词`level`的field key对应的具有最新时间戳的field value。
+  该查询返回measurement `air`中每个包含单词`level`的field key对应的具有最新时间戳的field value。
   
   - #### 选择指定field key对应的具有最新时间戳的field value以及相关的tag和field
   
   ```sql
-  > SELECT LAST("level description"),"location","water_level" FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  last                  location      water_level
-  ----                  ----                  --------      -----------
-  2020-09-18T21:42:00Z  between 3 and 6 feet  santa_monica  4.938
+  > SELECT LAST("pressure"),"station","temperature" FROM "air"
+  name: air
+  time                 last station     temperature
+  ----                 ---- -------     -----------
+  2021-09-30T04:00:00Z 65   LianYunGang 50
   ```
   
-  该查询返回measurement `h2o_feet`中field key `level description`对应的具有最新时间戳的field value，以及相关的tag key `location`和field key `water_level`的值。
+  该查询返回measurement `air`中field key `pressure`对应的具有最新时间戳的field value，以及相关的tag key `station`和field key `temperature`的值。
   
   - #### 选择指定field key对应的具有最新时间戳的field value并包含多个子句
   
   ```sql
-  > SELECT LAST("water_level") FROM "h2o_feet" WHERE time >= '2020-08-17T23:48:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m),* fill(9.01) LIMIT 4 SLIMIT 1
-  
-  name: h2o_feet
-  tags: location=coyote_creek
-  time                   last
-  ----                   ----
-  2020-08-17T23:48:00Z   9.01
-  2020-08-18T00:00:00Z   8.005
-  2020-08-18T00:12:00Z   7.762
-  2020-08-18T00:24:00Z   7.5
+  > SELECT LAST("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-28T00:54:00Z' GROUP BY time(12m),* fill(9.01) LIMIT 4 SLIMIT 1
+  name: air
+  tags: station=LianYunGang
+  time                 last
+  ----                 ----
+  2021-09-18T00:00:00Z 55
+  2021-09-18T00:12:00Z 68
+  2021-09-18T00:24:00Z 50
+  2021-09-18T00:36:00Z 58
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的具有最新时间戳的field value，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
+  该查询返回measurement `air`中field key `temperature`对应的具有最新时间戳的field value，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
   
-  请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:48:00Z`和`2020-08-18T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:24:00Z`和`2020-08-18T00:36:00Z`之间。
+  请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:48:00Z`和`2021-09-28T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:24:00Z`和`2020-08-18T00:36:00Z`之间。
 
 - ### MAX()
 
@@ -2039,73 +2071,68 @@
   - #### 选择指定field key对应的field value的最大值
   
   ```sql
-  > SELECT MAX("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   max
-  ----                   ---
-  2020-08-29T07:24:00Z   9.964
+  > SELECT MAX("temperature") FROM "air"
+  name: air
+  time                 max
+  ----                 ---
+  2021-08-31T18:03:00Z 80
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的最大值。
+  该查询返回measurement `air`中field key `temperature`对应的field value的最大值。
   
   - #### 选择measurement中每个field key对应的field value的最大值
   
   ```sql
-  > SELECT MAX(*) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   max_water_level
-  ----                   ---------------
-  2020-08-29T07:24:00Z   9.964
+  > SELECT MAX(*) FROM "air"
+  name: air
+  time                 max_pressure max_temperature max_visibility
+  ----                 ------------ --------------- --------------
+  1970-01-01T00:00:00Z 80           80              80
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的最大值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的最大值。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
   
   - #### 选择与正则表达式匹配的每个field key对应的field value的最大值
   
   ```sql
-  > SELECT MAX(/level/) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   max_water_level
-  ----                   ---------------
-  2020-08-29T07:24:00Z   9.964
+  > SELECT MAX(/pres/) FROM "air"
+  name: air
+  time                 max_pressure
+  ----                 ------------
+  2021-08-31T17:03:00Z 80
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的最大值。
+  该查询返回measurement `air`中每个存储数值并包含单词`water`的field key对应的field value的最大值。
   
   - #### 选择指定field key对应的field value的最大值以及相关的tag和field
   
   ```sql
-  > SELECT MAX("water_level"),"location","level description" FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  max    location      level description
-  ----                  ---    --------      -----------------
-  2020-08-29T07:24:00Z  9.964  coyote_creek  at or greater than 9 feet
+  > SELECT MAX("temperature"),"station","pressure" FROM "air"
+  name: air
+  time                 max station     pressure
+  ----                 --- -------     --------
+  2021-08-31T18:03:00Z 80  LianYunGang 74
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的最大值，以及相关的tag key `location`和field key `level description`的值。
+  该查询返回measurement `air`中field key `temperature`对应的field value的最大值，以及相关的tag key `station`和field key `pressure`的值。
   
   - #### 选择指定field key对应的field value的最大值并包含多个子句
   
   ```sql
-  > SELECT MAX("water_level") FROM "h2o_feet" WHERE time >= '2020-08-17T23:48:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m),* fill(9.01) LIMIT 4 SLIMIT 1
-  
-  name: h2o_feet
-  tags: location=coyote_creek
-  time                   max
-  ----                   ---
-  2020-08-17T23:48:00Z   9.01
-  2020-08-18T00:00:00Z   8.12
-  2020-08-18T00:12:00Z   7.887
-  2020-08-18T00:24:00Z   7.635
+  > SELECT MAX("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-28T00:54:00Z' GROUP BY time(12m),* fill(9.01) LIMIT 4 SLIMIT 1
+  name: air
+  tags: station=LianYunGang
+  time                 max
+  ----                 ---
+  2021-09-18T00:00:00Z 60
+  2021-09-18T00:12:00Z 79
+  2021-09-18T00:24:00Z 79
+  2021-09-18T00:36:00Z 70
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的最大值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
+  该查询返回measurement `air`中field key `temperature`对应的field value的最大值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
   
-  请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:48:00Z`和`2020-08-18T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:24:00Z`和`2020-08-18T00:36:00Z`之间。
+  请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:48:00Z`和`2021-09-28T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:24:00Z`和`2020-08-18T00:36:00Z`之间。
 
 - ### MIN()
 
@@ -2132,73 +2159,70 @@
   - #### 选择指定field key对应的field value的最小值
   
   ```sql
-  > SELECT MIN("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   min
-  ----                   ---
-  2020-08-29T14:30:00Z   -0.61
+  > SELECT MIN("temperature") FROM "air"
+  name: air
+  time                 min
+  ----                 ---
+  2021-08-31T16:18:00Z 50
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的最小值。
+  该查询返回measurement `air`中field key `temperature`对应的field value的最小值。
   
   - #### 选择measurement中每个field key对应的field value的最小值
   
   ```sql
-  > SELECT MIN(*) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   min_water_level
-  ----                   ---------------
-  2020-08-29T14:30:00Z   -0.61
+  > SELECT MIN(*) FROM "air"
+
+  name: air
+  time                 min_pressure min_temperature min_visibility
+  ----                 ------------ --------------- --------------
+  1970-01-01T00:00:00Z 50           50              50
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的最小值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的最小值。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
   
   - #### 选择与正则表达式匹配的每个field key对应的field value的最小值
   
   ```sql
-  > SELECT MIN(/level/) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   min_water_level
-  ----                   ---------------
-  2020-08-29T14:30:00Z   -0.61
+  > SELECT MIN(/temp/) FROM "air"
+
+  name: air
+  time                 min_temperature
+  ----                 ---------------
+  2021-08-31T16:18:00Z 50
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的最小值。
+  该查询返回measurement `air`中每个存储数值并包含单词`water`的field key对应的field value的最小值。
   
   - #### 选择指定field key对应的field value的最小值以及相关的tag和field
   
   ```sql
-  > SELECT MIN("water_level"),"location","level description" FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  min    location      level description
-  ----                  ---    --------      -----------------
-  2020-08-29T14:30:00Z  -0.61  coyote_creek  below 3 feet
+  > SELECT MIN("temperature"),"station","pressure" FROM "air"
+  name: air
+  time                 min station    pressure
+  ----                 --- -------    --------
+  2021-08-31T16:18:00Z 50  XiaoMaiDao 55
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的最小值，以及相关的tag key `location`和field key `level description`的值。
+  该查询返回measurement `air`中field key `temperature`对应的field value的最小值，以及相关的tag key `station`和field key `pressure`的值。
   
   - #### 选择指定field key对应的field value的最小值并包含多个子句
   
   ```sql
-  > SELECT MIN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-17T23:48:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m),* fill(9.01) LIMIT 4 SLIMIT 1
-  
-  name: h2o_feet
-  tags: location=coyote_creek
-  time                   min
-  ----                   ---
-  2020-08-17T23:48:00Z   9.01
-  2020-08-18T00:00:00Z   8.005
-  2020-08-18T00:12:00Z   7.762
-  2020-08-18T00:24:00Z   7.5
+  > SELECT MIN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-28T00:54:00Z' GROUP BY time(12m),* fill(9.01) LIMIT 4 SLIMIT 1
+  name: air
+  tags: station=LianYunGang
+  time                 min
+  ----                 ---
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:24:00Z 50
+  2021-09-18T00:36:00Z 52
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的最小值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
+  该查询返回measurement `air`中field key `temperature`对应的field value的最小值，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按12分钟的时间间隔和每个tag进行分组，同时，该查询用`9.01`填充没有数据的时间间隔，并将返回的`point`个数和series个数分别限制为4和1。
   
-  请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:48:00Z`和`2020-08-18T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:24:00Z`和`2020-08-18T00:36:00Z`之间。
+  请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每12分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:48:00Z`和`2021-09-28T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:24:00Z`和`2020-08-18T00:36:00Z`之间。
 
 - ### PERCENTILE()
 
@@ -2227,70 +2251,67 @@
   - #### 选择指定field key对应的第五个百分位数的field value
   
   ```sql
-  > SELECT PERCENTILE("water_level",5) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   percentile
-  ----                   ----------
-  2020-08-31T03:42:00Z   1.122
+  > SELECT PERCENTILE("temperature",5) FROM "air"
+
+  name: air
+  time                 percentile
+  ----                 ----------
+  2021-09-03T23:51:00Z 51
   ```
   
-  该查询返回的field value大于measurement `h2o_feet`中field key `water_level`对应的所有field value中的百分之五。
+  该查询返回的field value大于measurement `air`中field key `temperature`对应的所有field value中的百分之五。
   
   - #### 选择measurement中每个field key对应的第五个百分位数的field value
   
   ```sql
-  > SELECT PERCENTILE(*,5) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   percentile_water_level
-  ----                   ----------------------
-  2020-08-31T03:42:00Z   1.122
+  > SELECT PERCENTILE(*,5) FROM "air"
+
+  name: air
+  time                 percentile_pressure percentile_temperature percentile_visibility
+  ----                 ------------------- ---------------------- ---------------------
+  1970-01-01T00:00:00Z 51                  51                     51
   ```
   
-  该查询返回的field value大于measurement `h2o_feet`中每个存储数值的field key对应的所有field value中的百分之五。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回的field value大于measurement `air`中每个存储数值的field key对应的所有field value中的百分之五。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
   
   - #### 选择与正则表达式匹配的每个field key对应的第五个百分位数的field value
   
   ```sql
-  > SELECT PERCENTILE(/level/,5) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   percentile_water_level
-  ----                   ----------------------
-  2020-08-31T03:42:00Z   1.122
+  > SELECT PERCENTILE(/visi/,5) FROM "air"
+  name: air
+  time                 percentile_visibility
+  ----                 ---------------------
+  2021-09-29T09:54:00Z 51
   ```
   
-  该查询返回的field value大于measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的所有field value中的百分之五。
+  该查询返回的field value大于measurement `air`中每个存储数值并包含单词`water`的field key对应的所有field value中的百分之五。
   
   - #### 选择指定field key对应的第五个百分位数的field value以及相关的tag和field
   
   ```sql
-  > SELECT PERCENTILE("water_level",5),"location","level description" FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  percentile  location      level description
-  ----                  ----------  --------      -----------------
-  2020-08-31T03:42:00Z  1.122       coyote_creek  below 3 feet
+  > SELECT PERCENTILE("temperature",5),"station","pressure" FROM "air"
+  name: air
+  time                 percentile station    pressure
+  ----                 ---------- -------    --------
+  2021-09-03T23:51:00Z 51         XiaoMaiDao 65
   ```
   
-  该查询返回的field value大于measurement `h2o_feet`中field key `water_level`对应的所有field value中的百分之五，以及相关的tag key `location`和field key `level description`的值。
+  该查询返回的field value大于measurement `air`中field key `temperature`对应的所有field value中的百分之五，以及相关的tag key `station`和field key `pressure`的值。
   
   - #### 选择指定field key对应的第20个百分位数的field value并包含多个子句
   
   ```sql
-  > SELECT PERCENTILE("water_level",20) FROM "h2o_feet" WHERE time >= '2020-08-17T23:48:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(24m) fill(15) LIMIT 2
-  
-  name: h2o_feet
-  time                   percentile
-  ----                   ----------
-  2020-08-17T23:36:00Z   15
-  2020-08-18T00:00:00Z   2.064
+  > SELECT PERCENTILE("temperature",20) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-28T00:54:00Z' GROUP BY time(24m) fill(15) LIMIT 2
+  name: air
+  time                 percentile
+  ----                 ----------
+  2020-08-17T23:36:00Z 15
+  2020-08-18T00:00:00Z 15
   ```
   
-  该查询返回的field value大于measurement `h2o_feet`中field key `water_level`对应的所有field value中的百分之二十，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按24分钟的时间间隔进行分组，同时，该查询用`15`填充没有数据的时间间隔，并将返回的`point`个数限制为2。
+  该查询返回的field value大于measurement `air`中field key `temperature`对应的所有field value中的百分之二十，它涵盖的时间范围在`2020-08-17T23:48:00Z`和`2020-08-18T00:54:00Z`之间，并将查询结果按24分钟的时间间隔进行分组，同时，该查询用`15`填充没有数据的时间间隔，并将返回的`point`个数限制为2。
   
-  请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每24分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:36:00Z`和`2020-08-18T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2020-08-18T00:00:00Z`和`2020-08-18T00:24:00Z`之间。
+  请注意，`GROUP BY time()`子句会覆盖`point`的原始时间戳。查询结果中的时间戳表示每24分钟时间间隔的开始时间，其中，第一个`point`涵盖的时间间隔在`2020-08-17T23:36:00Z`和`2021-09-28T00:00:00Z`之间，最后一个`point`涵盖的时间间隔在`2021-09-28T00:00:00Z`和`2020-08-18T00:24:00Z`之间。
 
   #### `PERCENTILE()`的常见问题
 
@@ -2327,76 +2348,71 @@
   - #### 选择指定field key对应的field value的随机样本
   
   ```sql
-  > SELECT SAMPLE("water_level",2) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   sample
-  ----                   ------
-  2020-09-09T21:48:00Z   5.659
-  2020-09-18T10:00:00Z   6.939
+  > SELECT SAMPLE("temperature",2) FROM "air"
+  name: air
+  time                 sample
+  ----                 ------
+  2021-09-07T02:18:00Z 77
+  2021-09-13T12:00:00Z 62
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的两个随机选择的`point`。
+  该查询返回measurement `air`中field key `temperature`对应的两个随机选择的`point`。
   
   - #### 选择measurement中每个field key对应的field value的随机样本
   
   ```sql
-  > SELECT SAMPLE(*,2) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   sample_level description   sample_water_level
-  ----                   ------------------------   ------------------
-  2020-08-25T17:06:00Z                              3.284
-  2020-09-03T04:30:00Z   below 3 feet
-  2020-09-03T20:06:00Z   between 3 and 6 feet
-  2020-09-08T21:54:00Z                              3.412
+  > SELECT SAMPLE(*,2) FROM "air"
+  name: air
+  time                 sample_pressure sample_temperature sample_visibility
+  ----                 --------------- ------------------ -----------------
+  2021-08-31T16:18:00Z                 52                 
+  2021-09-03T14:33:00Z 74                                 
+  2021-09-12T19:39:00Z 59                                 
+  2021-09-17T11:33:00Z                 51                 
+  2021-09-20T04:09:00Z                                    50
+  2021-09-22T19:15:00Z                                    80
   ```
   
-  该查询返回measurement `h2o_feet`中每个field key对应的两个随机选择的`point`。measurement `h2o_feet`中有两个field key：`level description`和`water_level`。
+  该查询返回measurement `air`中每个field key对应的两个随机选择的`point`。measurement `air`中有两个field key：`pressure`和`temperature`。
   
   - #### 选择与正则表达式匹配的每个field key对应的field value的随机样本
   
   ```sql
-  > SELECT SAMPLE(/level/,2) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   sample_level description   sample_water_level
-  ----                   ------------------------   ------------------
-  2020-08-30T05:54:00Z   between 6 and 9 feet
-  2020-09-07T01:18:00Z                              7.854
-  2020-09-09T20:30:00Z                              7.32
-  2020-09-13T19:18:00Z   between 3 and 6 feet
+  > SELECT SAMPLE(/pres/,2) FROM "air"
+  name: air
+  time                 sample_pressure
+  ----                 ---------------
+  2021-09-25T20:27:00Z 77
+  2021-09-26T20:33:00Z 52
   ```
   
-  该查询返回measurement `h2o_feet`中每个包含单词`level`的field key对应的两个随机选择的`point`。
+  该查询返回measurement `air`中每个包含单词`level`的field key对应的两个随机选择的`point`。
   
   - #### 选择指定field key对应的field value的随机样本以及相关的tag和field
   
   ```sql
-  > SELECT SAMPLE("water_level",2),"location","level description" FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  sample  location      level description
-  ----                  ------  --------      -----------------
-  2020-08-29T10:54:00Z  5.689   coyote_creek  between 3 and 6 feet
-  2020-09-08T15:48:00Z  6.391   coyote_creek  between 6 and 9 feet
+  > SELECT SAMPLE("temperature",2),"station","pressure" FROM "air"
+  name: air
+  time                 sample station     pressure
+  ----                 ------ -------     --------
+  2021-09-09T00:03:00Z 71     LianYunGang 61
+  2021-09-11T01:39:00Z 53     LianYunGang 51
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的两个随机选择的`point`，以及相关的tag key `location`和field key `level description`的值。
+  该查询返回measurement `air`中field key `temperature`对应的两个随机选择的`point`，以及相关的tag key `station`和field key `pressure`的值。
   
   - #### 选择指定field key对应field value的随机样本并包含多个子句
   
   ```sql
-  > SELECT SAMPLE("water_level",1) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(18m)
-  
-  name: h2o_feet
-  time                   sample
-  ----                   ------
-  2020-08-18T00:12:00Z   2.028
-  2020-08-18T00:30:00Z   2.051
+  > SELECT SAMPLE("temperature",1) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(18m)
+  name: air
+  time                 sample
+  ----                 ------
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:27:00Z 79
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的一个随机选择的`point`，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并将查询结果按18分钟的时间间隔进行分组。
+  该查询返回measurement `air`中field key `temperature`对应的一个随机选择的`point`，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并将查询结果按18分钟的时间间隔进行分组。
   
   请注意，`GROUP BY time()`子句不会覆盖`point`的原始时间戳。请查看下面章节获得更详细的说明。
   
@@ -2409,18 +2425,17 @@
   以下查询返回每18分钟`GROUP BY time()`间隔对应的两个随机选择的`point`。请注意，返回的时间戳是`point`的原始时间戳；它们不会被强制要求必须匹配`GROUP BY time()`间隔的开始时间。
   
   ```sql
-  > SELECT SAMPLE("water_level",2) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(18m)
-  
-  name: h2o_feet
+  > SELECT SAMPLE("temperature",2) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(18m)
+  name: air
   time                   sample
   ----                   ------
                              __
-  2020-08-18T00:06:00Z   2.116 |
-  2020-08-18T00:12:00Z   2.028 | <------- Randomly-selected points for the first time interval
+  2021-09-18T00:09:00Z      55   |
+  2021-09-18T00:12:00Z      63   | <------- Randomly-selected points for the first time interval
                              --
                              __
-  2020-08-18T00:18:00Z   2.126 |
-  2020-08-18T00:30:00Z   2.051 | <------- Randomly-selected points for the second time interval
+  2021-09-18T00:18:00Z      79  |
+  2021-09-18T00:21:00Z      68  | <------- Randomly-selected points for the second time interval
                              --
   ```
 
@@ -2449,69 +2464,65 @@
   - #### 选择指定field key对应的最大的三个值
 
   ```sql
-  > SELECT TOP("water_level",3) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   top
-  ----                   ---
-  2020-08-29T07:18:00Z   9.957
-  2020-08-29T07:24:00Z   9.964
-  2020-08-29T07:30:00Z   9.954
+  > SELECT TOP("temperature",3) FROM "air"
+  name: air
+  time                 top
+  ----                 ---
+  2021-08-31T18:03:00Z 80
+  2021-08-31T18:18:00Z 80
+  2021-08-31T18:57:00Z 80
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的最大的三个值。
+  该查询返回measurement `air`中field key `temperature`对应的最大的三个值。
 
   - #### 选择两个tag对应的field key的最大值
-    ```sql
-    > SELECT TOP("water_level","location",2) FROM "h2o_feet"
-  
-    name: h2o_feet
-    time                   top     location
-    ----                   ---     --------
-    2020-08-29T03:54:00Z   7.205   santa_monica
-    2020-08-29T07:24:00Z   9.964   coyote_creek
-    ```
+  ```sql
+  > SELECT TOP("temperature","station",2) FROM "air"
+  name: air
+  time                 top station
+  ----                 --- -------
+  2021-08-31T18:03:00Z 80  LianYunGang
+  2021-08-31T18:18:00Z 80  XiaoMaiDao
+  ```
 
-    该查询返回tag key `location`的两个tag value对应的field key `water_level`的最大值。
+    该查询返回tag key `station`的两个tag value对应的field key `temperature`的最大值。
 
   - #### 选择指定field key对应的最大的四个值以及相关的tag和field
   
-    ```sql
-    > SELECT TOP("water_level",4),"location","level description" FROM "h2o_feet"
-  
-    name: h2o_feet
-    time                  top    location      level description
-    ----                  ---    --------      -----------------
-    2020-08-29T07:18:00Z  9.957  coyote_creek  at or greater than 9 feet
-    2020-08-29T07:24:00Z  9.964  coyote_creek  at or greater than 9 feet
-    2020-08-29T07:30:00Z  9.954  coyote_creek  at or greater than 9 feet
-    2020-08-29T07:36:00Z  9.941  coyote_creek  at or greater than 9 feet
+  ```sql
+  > SELECT TOP("temperature",4),"station","pressure" FROM "air"
+  name: air
+  time                 top station     pressure
+  ----                 --- -------     --------
+  2021-08-31T18:03:00Z 80  LianYunGang 74
+  2021-08-31T18:18:00Z 80  XiaoMaiDao  53
+  2021-08-31T18:57:00Z 80  LianYunGang 51
+  2021-08-31T20:15:00Z 80  XiaoMaiDao  53
     ```
   
-    该查询返回field key `water_level`对应的最大的四个值，以及相关的tag key `location`和field key `level description`的值。
+    该查询返回field key `temperature`对应的最大的四个值，以及相关的tag key `station`和field key `pressure`的值。
 
   - #### 选择指定field key对应的最大的三个值并包含多个子句
 
-    ```sql
-    > SELECT TOP("water_level",3),"location" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(24m) ORDER BY time DESC
+  ```sql
+  > SELECT TOP("temperature",3),"station" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:54:00Z' GROUP BY time(24m) ORDER BY time DESC
+  name: air
+  time                 top station
+  ----                 --- -------
+  2021-09-18T00:54:00Z 79  XiaoMaiDao
+  2021-09-18T00:51:00Z 71  XiaoMaiDao
+  2021-09-18T00:48:00Z 77  LianYunGang
+  2021-09-18T00:30:00Z 75  LianYunGang
+  2021-09-18T00:27:00Z 79  LianYunGang
+  2021-09-18T00:24:00Z 70  LianYunGang
+  2021-09-18T00:18:00Z 79  LianYunGang
+  2021-09-18T00:09:00Z 80  XiaoMaiDao
+  2021-09-18T00:00:00Z 77  XiaoMaiDao
+  ```
   
-    name: h2o_feet
-    time                  top    location
-    ----                  ---    --------
-    2020-08-18T00:48:00Z  7.11   coyote_creek
-    2020-08-18T00:54:00Z  6.982  coyote_creek
-    2020-08-18T00:54:00Z  2.054  santa_monica
-    2020-08-18T00:24:00Z  7.635  coyote_creek
-    2020-08-18T00:30:00Z  7.5    coyote_creek
-    2020-08-18T00:36:00Z  7.372  coyote_creek
-    2020-08-18T00:00:00Z  8.12   coyote_creek
-    2020-08-18T00:06:00Z  8.005  coyote_creek
-    2020-08-18T00:12:00Z  7.887  coyote_creek
-    ```
+  该查询返回在`2021-09-28T00:00:00Z`和`2020-08-18T00:54:00Z`之间的每个24分钟间隔内，field key `temperature`对应的最大的三个值，并且以递减的时间戳顺序返回结果。
   
-    该查询返回在`2020-08-18T00:00:00Z`和`2020-08-18T00:54:00Z`之间的每个24分钟间隔内，field key `water_level`对应的最大的三个值，并且以递减的时间戳顺序返回结果。
-  
-    请注意，`GROUP BY time()`子句不会覆盖`point`的原始时间戳。请查看下面章节获得更详细的说明。
+  请注意，`GROUP BY time()`子句不会覆盖`point`的原始时间戳。请查看下面章节获得更详细的说明。
 
   #### `TOP()`的常见问题
 
@@ -2522,18 +2533,18 @@
   以下查询返回每18分钟`GROUP BY time()`间隔对应的两个`point`。请注意，返回的时间戳是`point`的原始时间戳；它们不会被强制要求必须匹配`GROUP BY time()`间隔的开始时间。
   
   ```sql
-  > SELECT TOP("water_level",2) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(18m)
+  > SELECT TOP("temperature",2) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(18m)
   
-  name: h2o_feet
+  name: air
   time                   top
   ----                   ------
                           __
-  2020-08-18T00:00:00Z  2.064 |
-  2020-08-18T00:06:00Z  2.116 | <------- Greatest points for the first time interval
+  2021-09-18T00:12:00Z    63   |
+  2021-09-18T00:15:00Z    74   | <------- Greatest points for the first time interval
                           --
                           __
-  2020-08-18T00:18:00Z  2.126 |
-  2020-08-18T00:30:00Z  2.051 | <------- Greatest points for the second time interval
+  2021-09-18T00:18:00Z    79   |
+  2021-09-18T00:27:00Z   79    | <------- Greatest points for the second time interval
                           --
   ```
 
@@ -2541,38 +2552,35 @@
 
   使用语法`SELECT TOP(<field_key>,<tag_key>,<N>)`的查询可以返回比预期少的`point`。如果tag key有`X`个tag value，但是查询指定的是`N`个tag value，如果`X`小于`N`，那么查询将返回`X`个`point`。
   
-  以下查询请求的是tag key `location`的三个tag value对于的`water_level`的最大值。因为tag key `location`只有两个tag value(`santa_monica`和`coyote_creek`)，所以该查询返回两个`point`而不是三个。
+  以下查询请求的是tag key `station`的三个tag value对于的`temperature`的最大值。因为tag key `station`只有两个tag value(`LianYunGang`和`XiaoMaiDao`)，所以该查询返回两个`point`而不是三个。
   
   ```sql
-  > SELECT TOP("water_level","location",3) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  top    location
-  ----                  ---    --------
-  2020-08-29T03:54:00Z  7.205  santa_monica
-  2020-08-29T07:24:00Z  9.964  coyote_creek
+  > SELECT TOP("temperature","station",3) FROM "air"
+  name: air
+  time                 top station
+  ----                 --- -------
+  2021-08-31T18:03:00Z 80  LianYunGang
+  2021-08-31T18:18:00Z 80  XiaoMaiDao
   ```
 
   - #### `TOP()`、tag和`INTO`子句
 
   当使用`INTO`子句但没有使用`GROUP BY tag`子句时，大多数cnosQL函数将原始数据中的tag转换为新写入数据中的field。这种行为同样适用于`TOP()`函数，除非`TOP()`中包含tag key作为参数：`TOP(field_key,tag_key(s),N)`。在这些情况下，系统会将指定的tag保留为新写入数据中的tag。
   
-  下面代码块中的第一个查询返回tag key `location`的两个tag value对应的field key `water_level`的最大值，并且，它这些结果写入measurement `top_water_levels`中。第二个查询展示了cnosDB将tag `location`保留为measurement `top_water_levels`中的tag。
+  下面代码块中的第一个查询返回tag key `station`的两个tag value对应的field key `temperature`的最大值，并且，它这些结果写入measurement `top_temperatures`中。第二个查询展示了CnosDB将tag `station`保留为measurement `top_temperatures`中的tag。
   
   ```sql
-  > SELECT TOP("water_level","location",2) INTO "top_water_levels" FROM "h2o_feet"
-  
+  > SELECT TOP("temperature","station",2) INTO "top_temperatures" FROM "air"
   name: result
   time                 written
   ----                 -------
   1970-01-01T00:00:00Z 2
   
-  > SHOW TAG KEYS FROM "top_water_levels"
-  
-  name: top_water_levels
+  > SHOW TAG KEYS FROM "top_temperatures"
+  name: top_temperatures
   tagKey
   ------
-  location
+  station
   ```
 ### 转换函数
 
@@ -2599,33 +2607,27 @@
   下面的示例将使用[示例数据](https://gist.github.com/sanderson/8f8aec94a60b2c31a61f44a37737bfea)中的如下数据：
 
   ```sql
-  > SELECT * FROM "data" WHERE time >= '2020-06-24T12:00:00Z' AND time <= '2020-06-24T12:05:00Z'
-  
-  name: data
-  time                 a                   b
-  ----                 -                   -
-  1529841600000000000  1.33909108671076    -0.163643058925645
-  1529841660000000000  -0.774984088561186  0.137034364053949
-  1529841720000000000  -0.921037167720451  -0.482943221384294
-  1529841780000000000  -1.73880754843378   -0.0729732928756677
-  1529841840000000000  -0.905980032168252  1.77857552719844
-  1529841900000000000  -0.891164752631417  0.741147445214238
+  > SELECT * FROM "air" WHERE time >= '2021-09-24T12:00:00Z' AND time <= '2021-09-24T12:05:00Z'
+  name: air
+  time                 pressure station     temperature visibility
+  ----                 -------- -------     ----------- ----------
+  2021-09-24T12:00:00Z 76       LianYunGang 61          59
+  2021-09-24T12:00:00Z 58       XiaoMaiDao  52          77
+  2021-09-24T12:03:00Z 64       LianYunGang 57          72
+  2021-09-24T12:03:00Z 50       XiaoMaiDao  70          77
   ```
 
   - #### 计算指定field key对应的field value的绝对值
 
   ```sql
-  > SELECT ABS("a") FROM "data" WHERE time >= '2020-06-24T12:00:00Z' AND time <= '2020-06-24T12:05:00Z'
-  
-  name: data
+  > SELECT ABS("pressure") FROM "air" WHERE time >= '2021-09-24T12:00:00Z' AND time <= '2021-09-24T12:05:00Z'
+  name: air
   time                 abs
   ----                 ---
-  1529841600000000000  1.33909108671076
-  1529841660000000000  0.774984088561186
-  1529841720000000000  0.921037167720451
-  1529841780000000000  1.73880754843378
-  1529841840000000000  0.905980032168252
-  1529841900000000000  0.891164752631417
+  2021-09-24T12:00:00Z 76
+  2021-09-24T12:00:00Z 58
+  2021-09-24T12:03:00Z 64
+  2021-09-24T12:03:00Z 50
   ```
   
   该查询返回measurement `data`中field key `a`对应的field value的绝对值。
@@ -2633,33 +2635,27 @@
 - #### 计算measurement中每个field key对应的field value的绝对值
 
   ```sql
-  > SELECT ABS(*) FROM "data" WHERE time >= '2020-06-24T12:00:00Z' AND time <= '2020-06-24T12:05:00Z'
-  
-  name: data
-  time                 abs_a              abs_b
-  ----                 -----              -----
-  1529841600000000000  1.33909108671076   0.163643058925645
-  1529841660000000000  0.774984088561186  0.137034364053949
-  1529841720000000000  0.921037167720451  0.482943221384294
-  1529841780000000000  1.73880754843378   0.0729732928756677
-  1529841840000000000  0.905980032168252  1.77857552719844
-  1529841900000000000  0.891164752631417  0.741147445214238
+  > SELECT ABS(*) FROM "air" WHERE time >= '2021-09-24T12:00:00Z' AND time <= '2021-09-24T12:05:00Z'
+  name: air
+  time                 abs_pressure abs_temperature abs_visibility
+  ----                 ------------ --------------- --------------
+  2021-09-24T12:00:00Z 76           61              59
+  2021-09-24T12:00:00Z 58           52              77
+  2021-09-24T12:03:00Z 64           57              72
+  2021-09-24T12:03:00Z 50           70              77
   ```
   
-  该查询返回measurement `data`中每个存储数值的field key对应的field value的绝对值。measurement `data`中有两个数值类型的field：`a`和`b`。
+  该查询返回measurement `data`中每个存储数值的field key对应的field value的绝对值。measurement `air`中有三个数值类型的field：`temperature`,`pressure`和`visibility`。
 
 - #### 计算指定field key对应的field value的绝对值并包含多个子句
 
   ```sql
-  > SELECT ABS("a") FROM "data" WHERE time >= '2020-06-24T12:00:00Z' AND time <= '2020-06-24T12:05:00Z' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: data
+  > SELECT ABS("pressure") FROM "air" WHERE time >= '2021-09-24T12:00:00Z' AND time <= '2021-09-24T12:05:00Z' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
   time                 abs
   ----                 ---
-  1529841780000000000  1.73880754843378
-  1529841720000000000  0.921037167720451
-  1529841660000000000  0.774984088561186
-  1529841600000000000  1.33909108671076
+  2021-09-24T12:00:00Z 58
+  2021-09-24T12:00:00Z 76
   ```
   
   该查询返回measurement `data`中field key `a`对应的field value的绝对值，它涵盖的时间范围在`2020-06-24T12:00:00Z`和`2020-06-24T12:05:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
@@ -2674,161 +2670,186 @@
 
   `ABS()`支持以下嵌套函数：
 
-- [`COUNT()`](#count)
-- [`MEAN()`](#mean)
-- [`MEDIAN()`](#median)
-- [`MODE()`](#mode)
-- [`SUM()`](#sum)
-- [`FIRST()`](#first)
-- [`LAST()`](#last)
-- [`MIN()`](#min)
-- [`MAX()`](#max)
-- [`PERCENTILE()`](#percentile)
-
-  ####示例
+  - [`COUNT()`](#count)
+  - [`MEAN()`](#mean)
+  - [`MEDIAN()`](#median)
+  - [`MODE()`](#mode)
+  - [`SUM()`](#sum)
+  - [`FIRST()`](#first)
+  - [`LAST()`](#last)
+  - [`MIN()`](#min)
+  - [`MAX()`](#max)
+  - [`PERCENTILE()`](#percentile)
 
   #### 计算平均值的绝对值
 
   ```sql
-  > SELECT ABS(MEAN("a")) FROM "data" WHERE time >= '2020-06-24T12:00:00Z' AND time <= '2020-06-24T13:00:00Z' GROUP BY time(12m)
-    
-  name: data
+  > SELECT ABS(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-24T12:00:00Z' AND time <= '2021-09-24T13:00:00Z' GROUP BY time(12m)
+  name: air
   time                 abs
   ----                 ---
-  1529841600000000000  0.3960977256302787
-  1529842320000000000  0.0010541018316373302
-  1529843040000000000  0.04494733240283668
-  1529843760000000000  0.2553594777104415
-  1529844480000000000  0.20382988543108413
-  1529845200000000000  0.790836070736962
+  2021-09-24T12:00:00Z 62.75
+  2021-09-24T12:12:00Z 64.25
+  2021-09-24T12:24:00Z 66
+  2021-09-24T12:36:00Z 64.375
+  2021-09-24T12:48:00Z 63.875
+  2021-09-24T13:00:00Z 59.5
   ```
     
   该查询返回field key `a`对应的每12分钟的时间间隔的field value的平均值的绝对值。
     
-  为了得到这些结果，cnosDB首先计算field key `a`对应的每12分钟的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`ABS()`的情形一样：
+  为了得到这些结果，CnosDB首先计算field key `a`对应的每12分钟的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`ABS()`的情形一样：
     
   ```sql
-  > SELECT MEAN("a") FROM "data" WHERE time >= '2020-06-24T12:00:00Z' AND time <= '2020-06-24T13:00:00Z' GROUP BY time(12m)
-    
-  name: data
+  > SELECT MEAN("pressure") FROM "air" WHERE time >= '2021-09-24T12:00:00Z' AND time <= '2021-09-24T13:00:00Z' GROUP BY time(12m)
+  name: air
   time                 mean
   ----                 ----
-  1529841600000000000  -0.3960977256302787
-  1529842320000000000  0.0010541018316373302
-  1529843040000000000  0.04494733240283668
-  1529843760000000000  0.2553594777104415
-  1529844480000000000  0.20382988543108413
-  1529845200000000000  -0.790836070736962
+  2021-09-24T12:00:00Z 61.75
+  2021-09-24T12:12:00Z 68.25
+  2021-09-24T12:24:00Z 66.125
+  2021-09-24T12:36:00Z 58
+  2021-09-24T12:48:00Z 68.625
+  2021-09-24T13:00:00Z 71
   ```
     
   然后，CnosDB计算这些平均值的绝对值。
 
-  - ### ACOS()
+- ### ACOS()
 
-    返回field value的反余弦(以弧度表示)。field value必须在-1和1之间。
+  返回field value的反余弦(以弧度表示)。field value必须在-1和1之间。
 
-    #### 基本语法
+  #### 基本语法
 
-    ```
-    SELECT ACOS( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
-    ```
+  ```
+  SELECT ACOS( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
+  ```
 
-    `ACOS(field_key)`返回field key对应的field value的反余弦。
+  `ACOS(field_key)`返回field key对应的field value的反余弦。
 
-    `ACOS(*)`返回在measurement中每个field key对应的field value的反余弦。
+  `ACOS(*)`返回在measurement中每个field key对应的field value的反余弦。
 
-    `ACOS()`支持数据类型为int64和float64的field value，并且field value必须在-1和1之间。
+  `ACOS()`支持数据类型为int64和float64的field value，并且field value必须在-1和1之间。
 
-    基本语法支持group by tags的`GROUP BY`子句，但是不支持group by time。请查看高级语法章节了解如何使用`ACOS()`和`GROUP BY time()`子句。
+  基本语法支持group by tags的`GROUP BY`子句，但是不支持group by time。请查看高级语法章节了解如何使用`ACOS()`和`GROUP BY time()`子句。
 
-    #### 示例
+  #### 示例
 
-    下面的示例将使用如下模拟的公园占有率(相对于总空间)的数据。需要注意的重要事项是，所有的field value都在`ACOS()`函数的可计算范围里(-1到1)：
+  下面的示例将使用如下模拟的公园占有率(相对于总空间)的数据。需要注意的重要事项是，所有的field value都在`ACOS()`函数的可计算范围里(-1到1)：
   
-    ```sql
-    > SELECT "of_capacity" FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z'
-  
-    name: park_occupancy
-    time                  capacity
-    ----                  --------
-    2020-05-01T00:00:00Z  0.83
-    2020-05-02T00:00:00Z  0.3
-    2020-05-03T00:00:00Z  0.84
-    2020-05-04T00:00:00Z  0.22
-    2020-05-05T00:00:00Z  0.17
-    2020-05-06T00:00:00Z  0.77
-    2020-05-07T00:00:00Z  0.64
-    2020-05-08T00:00:00Z  0.72
-    2020-05-09T00:00:00Z  0.16
-    ```
+  ```sql
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-19T00:00:00Z'
+  name: air
+  time                  capacity
+  ----                  --------
+  2020-05-01T00:00:00Z  0.83
+  2020-05-02T00:00:00Z  0.3
+  2020-05-03T00:00:00Z  0.84
+  2020-05-04T00:00:00Z  0.22
+  2020-05-05T00:00:00Z  0.17
+  2020-05-06T00:00:00Z  0.77
+  2020-05-07T00:00:00Z  0.64
+  2020-05-08T00:00:00Z  0.72
+  2020-05-09T00:00:00Z  0.16
+  ```
 
   - #### 计算指定field key对应的field value的反余弦
 
-    ```sql
-    > SELECT ACOS("of_capacity") FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z'
+  ```sql
+  > SELECT ACOS("temperature") FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-19T00:00:00Z'
+  name: air
+  time                  acos
+  ----                  ----
+  2020-05-01T00:00:00Z  0.591688642426544
+  2020-05-02T00:00:00Z  1.266103672779499
+  2020-05-03T00:00:00Z  0.5735131044230969
+  2020-05-04T00:00:00Z  1.3489818562981022
+  2020-05-05T00:00:00Z  1.399966657665792
+  2020-05-06T00:00:00Z  0.6919551751263169
+  2020-05-07T00:00:00Z  0.8762980611683406
+  2020-05-08T00:00:00Z  0.7669940078618667
+  2020-05-09T00:00:00Z  1.410105673842986
+  ```
   
-    name: park_occupancy
-    time                  acos
-    ----                  ----
-    2020-05-01T00:00:00Z  0.591688642426544
-    2020-05-02T00:00:00Z  1.266103672779499
-    2020-05-03T00:00:00Z  0.5735131044230969
-    2020-05-04T00:00:00Z  1.3489818562981022
-    2020-05-05T00:00:00Z  1.399966657665792
-    2020-05-06T00:00:00Z  0.6919551751263169
-    2020-05-07T00:00:00Z  0.8762980611683406
-    2020-05-08T00:00:00Z  0.7669940078618667
-    2020-05-09T00:00:00Z  1.410105673842986
-    ```
-  
-    该查询返回measurement `park_occupancy`中field key `of_capacity`对应的field value的反余弦。
+  该查询返回measurement `air`中field key `temperature`对应的field value的反余弦。
 
   - #### 计算measurement中每个field key对应的field value的反余弦
 
-    ```sql
-    > SELECT ACOS(*) FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z'
+  ```sql
+  > SELECT ACOS(*) FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-11T01:00:00Z'
+  name: air
+  time                 acos_pressure acos_temperature acos_visibility
+  ----                 ------------- ---------------- ---------------
+  2021-09-11T00:00:00Z                                
+  2021-09-11T00:00:00Z                                
+  2021-09-11T00:03:00Z                                
+  2021-09-11T00:03:00Z                                
+  2021-09-11T00:06:00Z                                
+  2021-09-11T00:06:00Z                                
+  2021-09-11T00:09:00Z                                
+  2021-09-11T00:09:00Z                                
+  2021-09-11T00:12:00Z                                
+  2021-09-11T00:12:00Z                                
+  2021-09-11T00:15:00Z                                
+  2021-09-11T00:15:00Z                                
+  2021-09-11T00:18:00Z                                
+  2021-09-11T00:18:00Z                                
+  2021-09-11T00:21:00Z                                
+  2021-09-11T00:21:00Z                                
+  2021-09-11T00:24:00Z                                
+  2021-09-11T00:24:00Z                                
+  2021-09-11T00:27:00Z                                
+  2021-09-11T00:27:00Z                                
+  2021-09-11T00:30:00Z                                
+  2021-09-11T00:30:00Z                                
+  2021-09-11T00:33:00Z                                
+  2021-09-11T00:33:00Z                                
+  2021-09-11T00:36:00Z                                
+  2021-09-11T00:36:00Z                                
+  2021-09-11T00:39:00Z                                
+  2021-09-11T00:39:00Z                                
+  2021-09-11T00:42:00Z                                
+  2021-09-11T00:42:00Z                                
+  2021-09-11T00:45:00Z                                
+  2021-09-11T00:45:00Z                                
+  2021-09-11T00:48:00Z                                
+  2021-09-11T00:48:00Z                                
+  2021-09-11T00:51:00Z                                
+  2021-09-11T00:51:00Z                                
+  2021-09-11T00:54:00Z                                
+  2021-09-11T00:54:00Z                                
+  2021-09-11T00:57:00Z                                
+  2021-09-11T00:57:00Z                                
+  2021-09-11T01:00:00Z                                
+  2021-09-11T01:00:00Z
+  ```
   
-    name: park_occupancy
-    time                  acos_of_capacity
-    ----                  -------------
-    2020-05-01T00:00:00Z  0.591688642426544
-    2020-05-02T00:00:00Z  1.266103672779499
-    2020-05-03T00:00:00Z  0.5735131044230969
-    2020-05-04T00:00:00Z  1.3489818562981022
-    2020-05-05T00:00:00Z  1.399966657665792
-    2020-05-06T00:00:00Z  0.6919551751263169
-    2020-05-07T00:00:00Z  0.8762980611683406
-    2020-05-08T00:00:00Z  0.7669940078618667
-    2020-05-09T00:00:00Z  1.410105673842986
-    ```
-  
-    该查询返回measurement `park_occupancy`中每个存储数值的field key对应的field value的反余弦。measurement `park_occupancy`中只有一个数值类型的field：`of_capacity`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的反余弦。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。但由于这三个field key对应的field value超过余弦函数的范围，因此其反余弦值并不存在。
   
   - #### 计算指定field key对应的field value的反余弦并包含多个子句
 
-    ```sql
-    > SELECT ACOS("of_capacity") FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z' ORDER BY time DESC LIMIT 4 OFFSET 2
+  ```sql
+  > SELECT ACOS(temperature/100) FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-19T00:00:00Z' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 acos
+  ----                 ----
+  2021-09-18T23:57:00Z 0.6435011087932843
+  2021-09-18T23:57:00Z 0.6599873293874983
+  2021-09-18T23:54:00Z 0.7669940078618667
+  2021-09-18T23:54:00Z 1.0003592173949745
+  ```
   
-    name: park_occupancy
-    time                  acos
-    ----                  ----
-    2020-05-07T00:00:00Z  0.8762980611683406
-    2020-05-06T00:00:00Z  0.6919551751263169
-    2020-05-05T00:00:00Z  1.399966657665792
-    2020-05-04T00:00:00Z  1.3489818562981022
-    ```
-  
-    该查询返回measurement `park_occupancy`中field key `of_capacity`对应的field value的反余弦，它涵盖的时间范围在`2020-05-01T00:00:00Z`和`2020-05-09T00:00:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value的反余弦，它涵盖的时间范围在`2020-05-01T00:00:00Z`和`2020-05-09T00:00:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
 
-    #### 高级语法
+  #### 高级语法
 
-    ```sql
-    SELECT ACOS(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
-    ```
+  ```sql
+  SELECT ACOS(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
+  ```
 
-    高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的反余弦。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的反余弦。
 
-    ACOS()支持以下嵌套函数：
+  ACOS()支持以下嵌套函数：
 
     - [`COUNT()`](#count)
     - [`MEAN()`](#mean)
@@ -2841,191 +2862,279 @@
     - [`MAX()`](#max)
     - [`PERCENTILE()`](#percentile)
 
-    ####示例
+  ####示例
 
-      #### 计算平均值的反余弦
+  -  #### 计算平均值的反余弦
 
-    ```sql
-    > SELECT ACOS(MEAN("of_capacity")) FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z' GROUP BY time(3d)
+  ```sql
+  > SELECT ACOS(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-19T00:00:00Z' GROUP BY time(3d)
+  name: air
+  time                 acos
+  ----                 ----
+  2021-09-09T00:00:00Z
+  2021-09-12T00:00:00Z
+  2021-09-15T00:00:00Z
+  2021-09-18T00:00:00Z  、
+  ```
   
-    name: park_occupancy
-    time                  acos
-    ----                  ----
-    2020-04-30T00:00:00Z  0.9703630732143733
-    2020-05-03T00:00:00Z  1.1483422646081407
-    2020-05-06T00:00:00Z  0.7812981174487247
-    2020-05-09T00:00:00Z  1.410105673842986
-    ```
+  该查询返回field key `temperature`对应的每三天的时间间隔的field value的平均值的反余弦。
   
-    该查询返回field key `of_capacity`对应的每三天的时间间隔的field value的平均值的反余弦。
+  为了得到这些结果，CnosDB首先计算field key `temperature`对应的每三天的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`ACOS()`的情形一样：
   
-    为了得到这些结果，cnosDB首先计算field key `of_capacity`对应的每三天的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`ACOS()`的情形一样：
+  ```sql
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-19T00:00:00Z' GROUP BY time(3d)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-09T00:00:00Z 65.26041666666667
+  2021-09-12T00:00:00Z 64.96944444444445
+  2021-09-15T00:00:00Z 65.00902777777777
+  2021-09-18T00:00:00Z 65.32952182952182
+  ```
   
-    ```sql
-    > SELECT MEAN("of_capacity") FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z' GROUP BY time(3d)
-  
-    name: park_occupancy
-    time                  mean
-    ----                  ----
-    2020-04-30T00:00:00Z  0.565
-    2020-05-03T00:00:00Z  0.41
-    2020-05-06T00:00:00Z  0.71
-    2020-05-09T00:00:00Z  0.16
-    ```
-  
-    然后，cnosDB计算这些平均值的反余弦。
+  然后，CnosDB计算这些平均值的反余弦。
 
-    - ### ASIN()
+- ### ASIN()
 
-      返回field value的反正弦(以弧度表示)。field value必须在-1和1之间。
+  返回field value的反正弦(以弧度表示)。field value必须在-1和1之间。
 
-      #### 基本语法
+  #### 基本语法
 
-      ```
-      SELECT ASIN( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
-      ```
+  ```
+  SELECT ASIN( [ * | <field_key> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
+  ```
   
-      `ASIN(field_key)`返回field key对应的field value的反正弦。
+  `ASIN(field_key)`返回field key对应的field value的反正弦。
   
-      `ASIN(*)`返回在measurement中每个field key对应的field value的反正弦。
+  `ASIN(*)`返回在measurement中每个field key对应的field value的反正弦。
   
-      `ASIN()`支持数据类型为int64和float64的field value，并且field value必须在-1和1之间。
+  `ASIN()`支持数据类型为int64和float64的field value，并且field value必须在-1和1之间。
   
-      基本语法支持group by tags的`GROUP BY`子句，但是不支持group by time。请查看高级语法章节了解如何使用`ASIN()`和`GROUP BY time()`子句。
+  基本语法支持group by tags的`GROUP BY`子句，但是不支持group by time。请查看高级语法章节了解如何使用`ASIN()`和`GROUP BY time()`子句。
 
-      #### 示例
+  #### 示例
 
-      下面的示例将使用如下模拟的公园占有率(相对于总空间)的数据。需要注意的重要事项是，所有的field value都在`ASIN()`函数的可计算范围里(-1到1)：
+  ```sql
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-11T01:00:00Z'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-11T00:00:00Z 74
+  2021-09-11T00:00:00Z 79
+  2021-09-11T00:03:00Z 61
+  2021-09-11T00:03:00Z 73
+  2021-09-11T00:06:00Z 72
+  2021-09-11T00:06:00Z 61
+  2021-09-11T00:09:00Z 61
+  2021-09-11T00:09:00Z 72
+  2021-09-11T00:12:00Z 52
+  2021-09-11T00:12:00Z 58
+  2021-09-11T00:15:00Z 74
+  2021-09-11T00:15:00Z 78
+  2021-09-11T00:18:00Z 67
+  2021-09-11T00:18:00Z 74
+  2021-09-11T00:21:00Z 71
+  2021-09-11T00:21:00Z 55
+  2021-09-11T00:24:00Z 66
+  2021-09-11T00:24:00Z 67
+  2021-09-11T00:27:00Z 72
+  2021-09-11T00:27:00Z 66
+  2021-09-11T00:30:00Z 61
+  2021-09-11T00:30:00Z 54
+  2021-09-11T00:33:00Z 55
+  2021-09-11T00:33:00Z 75
+  2021-09-11T00:36:00Z 65
+  2021-09-11T00:36:00Z 66
+  2021-09-11T00:39:00Z 68
+  2021-09-11T00:39:00Z 58
+  2021-09-11T00:42:00Z 59
+  2021-09-11T00:42:00Z 58
+  2021-09-11T00:45:00Z 69
+  2021-09-11T00:45:00Z 71
+  2021-09-11T00:48:00Z 69
+  2021-09-11T00:48:00Z 57
+  2021-09-11T00:51:00Z 55
+  2021-09-11T00:51:00Z 73
+  2021-09-11T00:54:00Z 69
+  2021-09-11T00:54:00Z 64
+  2021-09-11T00:57:00Z 73
+  2021-09-11T00:57:00Z 52
+  2021-09-11T01:00:00Z 59
+  2021-09-11T01:00:00Z 68
+  ```
 
-      ```sql
-      > SELECT "of_capacity" FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z'
-  
-      name: park_occupancy
-      time                  capacity
-      ----                  --------
-      2020-05-01T00:00:00Z  0.83
-      2020-05-02T00:00:00Z  0.3
-      2020-05-03T00:00:00Z  0.84
-      2020-05-04T00:00:00Z  0.22
-      2020-05-05T00:00:00Z  0.17
-      2020-05-06T00:00:00Z  0.77
-      2020-05-07T00:00:00Z  0.64
-      2020-05-08T00:00:00Z  0.72
-      2020-05-09T00:00:00Z  0.16
-      ```
+  - #### 计算指定field key对应的field value的反正弦
 
-    - #### 计算指定field key对应的field value的反正弦
+  ```sql
+  > SELECT ASIN(temperature/100) FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-11T01:00:00Z'
+  name: air
+  time                 asin
+  ----                 ----
+  2021-09-11T00:00:00Z 0.8330703583416478
+  2021-09-11T00:00:00Z 0.9108089974073983
+  2021-09-11T00:03:00Z 0.6560605909249226
+  2021-09-11T00:03:00Z 0.8183219506315597
+  2021-09-11T00:06:00Z 0.8038023189330299
+  2021-09-11T00:06:00Z 0.6560605909249226
+  2021-09-11T00:09:00Z 0.6560605909249226
+  2021-09-11T00:09:00Z 0.8038023189330299
+  2021-09-11T00:12:00Z 0.546850950695944
+  2021-09-11T00:12:00Z 0.618728690672251
+  2021-09-11T00:15:00Z 0.8330703583416478
+  2021-09-11T00:15:00Z 0.8946658172342352
+  2021-09-11T00:18:00Z 0.7342087874533589
+  2021-09-11T00:18:00Z 0.8330703583416478
+  2021-09-11T00:21:00Z 0.7894982093461719
+  2021-09-11T00:21:00Z 0.5823642378687435
+  2021-09-11T00:24:00Z 0.7208187608700896
+  2021-09-11T00:24:00Z 0.7342087874533589
+  2021-09-11T00:27:00Z 0.8038023189330299
+  2021-09-11T00:27:00Z 0.7208187608700896
+  2021-09-11T00:30:00Z 0.6560605909249226
+  2021-09-11T00:30:00Z 0.570437109399922
+  2021-09-11T00:33:00Z 0.5823642378687435
+  2021-09-11T00:33:00Z 0.848062078981481
+  2021-09-11T00:36:00Z 0.7075844367253555
+  2021-09-11T00:36:00Z 0.7208187608700896
+  2021-09-11T00:39:00Z 0.7477626346599205
+  2021-09-11T00:39:00Z 0.618728690672251
+  2021-09-11T00:42:00Z 0.6310588407780212
+  2021-09-11T00:42:00Z 0.618728690672251
+  2021-09-11T00:45:00Z 0.7614890527476331
+  2021-09-11T00:45:00Z 0.7894982093461719
+  2021-09-11T00:48:00Z 0.7614890527476331
+  2021-09-11T00:48:00Z 0.6065058552130869
+  2021-09-11T00:51:00Z 0.5823642378687435
+  2021-09-11T00:51:00Z 0.8183219506315597
+  2021-09-11T00:54:00Z 0.7614890527476331
+  2021-09-11T00:54:00Z 0.6944982656265559
+  2021-09-11T00:57:00Z 0.8183219506315597
+  2021-09-11T00:57:00Z 0.546850950695944
+  2021-09-11T01:00:00Z 0.6310588407780212
+  2021-09-11T01:00:00Z 0.7477626346599205    
+  ```
+  
+  该查询返回measurement `air`中field key `temperature`对应的field value的反正弦。
 
-      ```sql
-      > SELECT ASIN("of_capacity") FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z'
-  
-      name: park_occupancy
-      time                  asin
-      ----                  ----
-      2020-05-01T00:00:00Z  0.9791076843683526
-      2020-05-02T00:00:00Z  0.3046926540153975
-      2020-05-03T00:00:00Z  0.9972832223717997
-      2020-05-04T00:00:00Z  0.22181447049679442
-      2020-05-05T00:00:00Z  0.1708296691291045
-      2020-05-06T00:00:00Z  0.8788411516685797
-      2020-05-07T00:00:00Z  0.6944982656265559
-      2020-05-08T00:00:00Z  0.8038023189330299
-      2020-05-09T00:00:00Z  0.1606906529519106
-      ```
-  
-      该查询返回measurement `park_occupancy`中field key `of_capacity`对应的field value的反正弦。
+  - #### 计算measurement中每个field key对应的field value的反正弦
 
-    - #### 计算measurement中每个field key对应的field value的反正弦
+  ```sql
+  > SELECT ASIN(*) FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-11T01:00:00Z'
+  name: air
+  time                 asin_pressure asin_temperature asin_visibility
+  ----                 ------------- ---------------- ---------------
+  2021-09-11T00:00:00Z                                
+  2021-09-11T00:00:00Z                                
+  2021-09-11T00:03:00Z                                
+  2021-09-11T00:03:00Z                                
+  2021-09-11T00:06:00Z                                
+  2021-09-11T00:06:00Z                                
+  2021-09-11T00:09:00Z                                
+  2021-09-11T00:09:00Z                                
+  2021-09-11T00:12:00Z                                
+  2021-09-11T00:12:00Z                                
+  2021-09-11T00:15:00Z                                
+  2021-09-11T00:15:00Z                                
+  2021-09-11T00:18:00Z                                
+  2021-09-11T00:18:00Z                                
+  2021-09-11T00:21:00Z                                
+  2021-09-11T00:21:00Z                                
+  2021-09-11T00:24:00Z                                
+  2021-09-11T00:24:00Z                                
+  2021-09-11T00:27:00Z                                
+  2021-09-11T00:27:00Z                                
+  2021-09-11T00:30:00Z                                
+  2021-09-11T00:30:00Z                                
+  2021-09-11T00:33:00Z                                
+  2021-09-11T00:33:00Z                                
+  2021-09-11T00:36:00Z                                
+  2021-09-11T00:36:00Z                                
+  2021-09-11T00:39:00Z                                
+  2021-09-11T00:39:00Z                                
+  2021-09-11T00:42:00Z                                
+  2021-09-11T00:42:00Z                                
+  2021-09-11T00:45:00Z                                
+  2021-09-11T00:45:00Z                                
+  2021-09-11T00:48:00Z                                
+  2021-09-11T00:48:00Z                                
+  2021-09-11T00:51:00Z                                
+  2021-09-11T00:51:00Z                                
+  2021-09-11T00:54:00Z                                
+  2021-09-11T00:54:00Z                                
+  2021-09-11T00:57:00Z                                
+  2021-09-11T00:57:00Z                                
+  2021-09-11T01:00:00Z                                
+  2021-09-11T01:00:00Z
+  ```
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的反正弦。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。但是由于这三个field value全部大于1，因此其反正弦值不存在。
 
-      ```sql
-      > SELECT ASIN(*) FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z'
-  
-      name: park_occupancy
-      time                  asin_of_capacity
-      ----                  -------------
-      2020-05-01T00:00:00Z  0.9791076843683526
-      2020-05-02T00:00:00Z  0.3046926540153975
-      2020-05-03T00:00:00Z  0.9972832223717997
-      2020-05-04T00:00:00Z  0.22181447049679442
-      2020-05-05T00:00:00Z  0.1708296691291045
-      2020-05-06T00:00:00Z  0.8788411516685797
-      2020-05-07T00:00:00Z  0.6944982656265559
-      2020-05-08T00:00:00Z  0.8038023189330299
-      2020-05-09T00:00:00Z  0.1606906529519106
-      ```
-  
-      该查询返回measurement `park_occupancy`中每个存储数值的field key对应的field value的反正弦。measurement `park_occupancy`中只有一个数值类型的field：`of_capacity`。
+  - #### 计算指定field key对应的field value的反正弦并包含多个子句
 
-    - #### 计算指定field key对应的field value的反正弦并包含多个子句
+  ```sql
+  > SELECT ASIN(temperature/100) FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-19T00:00:00Z' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 asin
+  ----                 ----
+  2021-09-18T23:57:00Z 0.9272952180016123
+  2021-09-18T23:57:00Z 0.9108089974073983
+  2021-09-18T23:54:00Z 0.8038023189330299
+  2021-09-18T23:54:00Z 0.570437109399922
+  ```
+  
+  该查询返回measurement `air`中field key `temperature`对应的field value的反正弦，它涵盖的时间范围在`2020-05-01T00:00:00Z`和`2020-05-09T00:00:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
 
-      ```sql
-      > SELECT ASIN("of_capacity") FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-      name: park_occupancy
-      time                  asin
-      ----                  ----
-      2020-05-07T00:00:00Z  0.6944982656265559
-      2020-05-06T00:00:00Z  0.8788411516685797
-      2020-05-05T00:00:00Z  0.1708296691291045
-      2020-05-04T00:00:00Z  0.22181447049679442
-      ```
-  
-      该查询返回measurement `park_occupancy`中field key `of_capacity`对应的field value的反正弦，它涵盖的时间范围在`2020-05-01T00:00:00Z`和`2020-05-09T00:00:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
+  #### 高级语法
 
-      #### 高级语法
+  ```sql
+  SELECT ASIN(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
+  ```
+  
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的反正弦。
+  
+  ASIN()支持以下嵌套函数：
+  
+    [`COUNT()`](#count),
+    [`MEAN()`](#mean),
+    [`MEDIAN()`](#median),
+    [`MODE()`](#mode),
+    [`SUM()`](#sum),
+    [`FIRST()`](#first),
+    [`LAST()`](#last),
+    [`MIN()`](#min),
+    [`MAX()`](#max),
+    [`PERCENTILE()`](#percentile).
 
-      ```sql
-      SELECT ASIN(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
-      ```
-  
-      高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的反正弦。
-  
-      ASIN()支持以下嵌套函数：
-  
-      [`COUNT()`](#count),
-      [`MEAN()`](#mean),
-      [`MEDIAN()`](#median),
-      [`MODE()`](#mode),
-      [`SUM()`](#sum),
-      [`FIRST()`](#first),
-      [`LAST()`](#last),
-      [`MIN()`](#min),
-      [`MAX()`](#max),
-      [`PERCENTILE()`](#percentile).
+  #### 示例
 
-      #### 示例
+  - #### 计算平均值的反正弦
+  
+  ```sql
+  > SELECT ASIN(MEAN("speed")) FROM "wind" WHERE time >= '2021-09-01T00:00:00Z' AND time <= '2021-09-30T00:00:00Z' GROUP BY time(1d)
+  name: air
+  time                  asin
+  ----                  ----
+  2020-04-30T00:00:00Z  0.6004332535805232
+  2020-05-03T00:00:00Z  0.42245406218675574
+  2020-05-06T00:00:00Z  0.7894982093461719
+  2020-05-09T00:00:00Z  0.1606906529519106
+  ```
 
-    - #### 计算平均值的反正弦
+  该查询返回field key `temperature`对应的每三天的时间间隔的field value的平均值的反正弦。
   
-    ```sql
-    > SELECT ASIN(MEAN("of_capacity")) FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z' GROUP BY time(3d)
+  为了得到这些结果，CnosDB首先计算field key `temperature`对应的每三天的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`ASIN()`的情形一样：
   
-    name: park_occupancy
-    time                  asin
-    ----                  ----
-    2020-04-30T00:00:00Z  0.6004332535805232
-    2020-05-03T00:00:00Z  0.42245406218675574
-    2020-05-06T00:00:00Z  0.7894982093461719
-    2020-05-09T00:00:00Z  0.1606906529519106
-      ```
-
-    该查询返回field key `of_capacity`对应的每三天的时间间隔的field value的平均值的反正弦。
+  ```sql
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-19T00:00:00Z' GROUP BY time(3d)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-09T00:00:00Z 65.26041666666667
+  2021-09-12T00:00:00Z 64.96944444444445
+  2021-09-15T00:00:00Z 65.00902777777777
+  2021-09-18T00:00:00Z 65.32952182952182
+  ```
   
-    为了得到这些结果，cnosDB首先计算field key `of_capacity`对应的每三天的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`ASIN()`的情形一样：
-  
-    ```sql
-    > SELECT MEAN("of_capacity") FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z' GROUP BY time(3d)
-  
-    name: park_occupancy
-    time                  mean
-    ----                  ----
-    2020-04-30T00:00:00Z  0.565
-    2020-05-03T00:00:00Z  0.41
-    2020-05-06T00:00:00Z  0.71
-    2020-05-09T00:00:00Z  0.16
-    ```
-  
-    然后，cnosDB计算这些平均值的反正弦。
+  然后，CnosDB计算这些平均值的反正弦。
 
 - ### ATAN()
 
@@ -3050,79 +3159,174 @@
   下面的示例将使用如下模拟的公园占有率(相对于总空间)的数据。需要注意的重要事项是，所有的field value都在`ATAN()`函数的可计算范围里(-1到1)：
   
   ```sql
-  > SELECT "of_capacity" FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z'
-  
-  name: park_occupancy
-  time                  capacity
-  ----                  --------
-  2020-05-01T00:00:00Z  0.83
-  2020-05-02T00:00:00Z  0.3
-  2020-05-03T00:00:00Z  0.84
-  2020-05-04T00:00:00Z  0.22
-  2020-05-05T00:00:00Z  0.17
-  2020-05-06T00:00:00Z  0.77
-  2020-05-07T00:00:00Z  0.64
-  2020-05-08T00:00:00Z  0.72
-  2020-05-09T00:00:00Z  0.16
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-11T01:00:00Z'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-11T00:00:00Z 74
+  2021-09-11T00:00:00Z 79
+  2021-09-11T00:03:00Z 61
+  2021-09-11T00:03:00Z 73
+  2021-09-11T00:06:00Z 72
+  2021-09-11T00:06:00Z 61
+  2021-09-11T00:09:00Z 61
+  2021-09-11T00:09:00Z 72
+  2021-09-11T00:12:00Z 52
+  2021-09-11T00:12:00Z 58
+  2021-09-11T00:15:00Z 74
+  2021-09-11T00:15:00Z 78
+  2021-09-11T00:18:00Z 67
+  2021-09-11T00:18:00Z 74
+  2021-09-11T00:21:00Z 71
+  2021-09-11T00:21:00Z 55
+  2021-09-11T00:24:00Z 66
+  2021-09-11T00:24:00Z 67
+  2021-09-11T00:27:00Z 72
+  2021-09-11T00:27:00Z 66
+  2021-09-11T00:30:00Z 61
+  2021-09-11T00:30:00Z 54
+  2021-09-11T00:33:00Z 55
+  2021-09-11T00:33:00Z 75
+  2021-09-11T00:36:00Z 65
+  2021-09-11T00:36:00Z 66
+  2021-09-11T00:39:00Z 68
+  2021-09-11T00:39:00Z 58
+  2021-09-11T00:42:00Z 59
+  2021-09-11T00:42:00Z 58
+  2021-09-11T00:45:00Z 69
+  2021-09-11T00:45:00Z 71
+  2021-09-11T00:48:00Z 69
+  2021-09-11T00:48:00Z 57
+  2021-09-11T00:51:00Z 55
+  2021-09-11T00:51:00Z 73
+  2021-09-11T00:54:00Z 69
+  2021-09-11T00:54:00Z 64
+  2021-09-11T00:57:00Z 73
+  2021-09-11T00:57:00Z 52
+  2021-09-11T01:00:00Z 59
+  2021-09-11T01:00:00Z 68
   ```
 
   - #### 计算指定field key对应的field value的反正切
 
   ```sql
-  > SELECT ATAN("of_capacity") FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z'
-  
-  name: park_occupancy
-  time                  atan
-  ----                  ----
-  2020-05-01T00:00:00Z  0.6927678353971222
-  2020-05-02T00:00:00Z  0.2914567944778671
-  2020-05-03T00:00:00Z  0.6986598247214632
-  2020-05-04T00:00:00Z  0.2165503049760893
-  2020-05-05T00:00:00Z  0.16839015714752992
-  2020-05-06T00:00:00Z  0.6561787179913948
-  2020-05-07T00:00:00Z  0.5693131911006619
-  2020-05-08T00:00:00Z  0.6240230529767568
-  2020-05-09T00:00:00Z  0.1586552621864014
+  > SELECT ATAN("temperature") FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-11T01:00:00Z'
+  name: air
+  time                 atan
+  ----                 ----
+  2021-09-11T00:00:00Z 1.5572836357815683
+  2021-09-11T00:00:00Z 1.5581387749608446
+  2021-09-11T00:03:00Z 1.5544043524868913
+  2021-09-11T00:03:00Z 1.5570985534220307
+  2021-09-11T00:06:00Z 1.5569083308639295
+  2021-09-11T00:06:00Z 1.5544043524868913
+  2021-09-11T00:09:00Z 1.5544043524868913
+  2021-09-11T00:09:00Z 1.5569083308639295
+  2021-09-11T00:12:00Z 1.5515679276951893
+  2021-09-11T00:12:00Z 1.5535566556003668
+  2021-09-11T00:15:00Z 1.5572836357815683
+  2021-09-11T00:15:00Z 1.557976516321996
+  2021-09-11T00:18:00Z 1.5558720618048116
+  2021-09-11T00:18:00Z 1.5572836357815683
+  2021-09-11T00:21:00Z 1.5567127509720364
+  2021-09-11T00:21:00Z 1.5526165117219182
+  2021-09-11T00:24:00Z 1.5556459709201267
+  2021-09-11T00:24:00Z 1.5558720618048116
+  2021-09-11T00:27:00Z 1.5569083308639295
+  2021-09-11T00:27:00Z 1.5556459709201267
+  2021-09-11T00:30:00Z 1.5544043524868913
+  2021-09-11T00:30:00Z 1.5522799247268875
+  2021-09-11T00:33:00Z 1.5526165117219182
+  2021-09-11T00:33:00Z 1.557463783500751
+  2021-09-11T00:36:00Z 1.5554129250143014
+  2021-09-11T00:36:00Z 1.5556459709201267
+  2021-09-11T00:39:00Z 1.5560915044170451
+  2021-09-11T00:39:00Z 1.5535566556003668
+  2021-09-11T00:42:00Z 1.5538487969884915
+  2021-09-11T00:42:00Z 1.5535566556003668
+  2021-09-11T00:45:00Z 1.5563045877293966
+  2021-09-11T00:45:00Z 1.5567127509720364
+  2021-09-11T00:48:00Z 1.5563045877293966
+  2021-09-11T00:48:00Z 1.553254266737494
+  2021-09-11T00:51:00Z 1.5526165117219182
+  2021-09-11T00:51:00Z 1.5570985534220307
+  2021-09-11T00:54:00Z 1.5563045877293966
+  2021-09-11T00:54:00Z 1.5551725981744198
+  2021-09-11T00:57:00Z 1.5570985534220307
+  2021-09-11T00:57:00Z 1.5515679276951893
+  2021-09-11T01:00:00Z 1.5538487969884915
+  2021-09-11T01:00:00Z 1.5560915044170451
   ```
   
-  该查询返回measurement `park_occupancy`中field key `of_capacity`对应的field value的反正切。
+  该查询返回measurement `air`中field key `temperature`对应的field value的反正切。
 
   - #### 计算measurement中每个field key对应的field value的反正切
 
   ```sql
-  > SELECT ATAN(*) FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z'
-  
-  name: park_occupancy
-  time                  atan_of_capacity
-  ----                  -------------
-  2020-05-01T00:00:00Z  0.6927678353971222
-  2020-05-02T00:00:00Z  0.2914567944778671
-  2020-05-03T00:00:00Z  0.6986598247214632
-  2020-05-04T00:00:00Z  0.2165503049760893
-  2020-05-05T00:00:00Z  0.16839015714752992
-  2020-05-06T00:00:00Z  0.6561787179913948
-  2020-05-07T00:00:00Z  0.5693131911006619
-  2020-05-08T00:00:00Z  0.6240230529767568
-  2020-05-09T00:00:00Z  0.1586552621864014
+  > SELECT ATAN(*) FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-11T01:00:00Z'
+  name: air
+  time                 atan_pressure      atan_temperature   atan_visibility
+  ----                 -------------      ----------------   ---------------
+  2021-09-11T00:00:00Z 1.5544043524868913 1.5572836357815683 1.5526165117219182
+  2021-09-11T00:00:00Z 1.5576391913221408 1.5581387749608446 1.550798992821746
+  2021-09-11T00:03:00Z 1.5535566556003668 1.5544043524868913 1.551190995937692
+  2021-09-11T00:03:00Z 1.5541312030809558 1.5570985534220307 1.5581387749608446
+  2021-09-11T00:06:00Z 1.5549246438031066 1.5569083308639295 1.5556459709201267
+  2021-09-11T00:06:00Z 1.557976516321996  1.5544043524868913 1.5541312030809558
+  2021-09-11T00:09:00Z 1.553254266737494  1.5544043524868913 1.5560915044170451
+  2021-09-11T00:09:00Z 1.5556459709201267 1.5569083308639295 1.557463783500751
+  2021-09-11T00:12:00Z 1.5541312030809558 1.5515679276951893 1.5563045877293966
+  2021-09-11T00:12:00Z 1.550798992821746  1.5535566556003668 1.5565115842075
+  2021-09-11T00:15:00Z 1.5554129250143014 1.5572836357815683 1.5535566556003668
+  2021-09-11T00:15:00Z 1.5572836357815683 1.557976516321996  1.557976516321996
+  2021-09-11T00:18:00Z 1.557463783500751  1.5558720618048116 1.5526165117219182
+  2021-09-11T00:18:00Z 1.557810043874724  1.5572836357815683 1.551190995937692
+  2021-09-11T00:21:00Z 1.5544043524868913 1.5567127509720364 1.552941081655344
+  2021-09-11T00:21:00Z 1.5576391913221408 1.5526165117219182 1.5570985534220307
+  2021-09-11T00:24:00Z 1.552941081655344  1.5556459709201267 1.5541312030809558
+  2021-09-11T00:24:00Z 1.5570985534220307 1.5558720618048116 1.550798992821746
+  2021-09-11T00:27:00Z 1.550798992821746  1.5569083308639295 1.552941081655344
+  2021-09-11T00:27:00Z 1.5582969777755349 1.5556459709201267 1.5551725981744198
+  2021-09-11T00:30:00Z 1.5582969777755349 1.5544043524868913 1.5567127509720364
+  2021-09-11T00:30:00Z 1.5549246438031066 1.5522799247268875 1.5546686929512603
+  2021-09-11T00:33:00Z 1.5576391913221408 1.5526165117219182 1.5560915044170451
+  2021-09-11T00:33:00Z 1.5519306407732258 1.557463783500751  1.5560915044170451
+  2021-09-11T00:36:00Z 1.5558720618048116 1.5554129250143014 1.5519306407732258
+  2021-09-11T00:36:00Z 1.5560915044170451 1.5556459709201267 1.5563045877293966
+  2021-09-11T00:39:00Z 1.5526165117219182 1.5560915044170451 1.5567127509720364
+  2021-09-11T00:39:00Z 1.5563045877293966 1.5535566556003668 1.557810043874724
+  2021-09-11T00:42:00Z 1.5569083308639295 1.5538487969884915 1.5565115842075
+  2021-09-11T00:42:00Z 1.5522799247268875 1.5535566556003668 1.5549246438031066
+  2021-09-11T00:45:00Z 1.557810043874724  1.5563045877293966 1.5576391913221408
+  2021-09-11T00:45:00Z 1.5560915044170451 1.5567127509720364 1.557810043874724
+  2021-09-11T00:48:00Z 1.5535566556003668 1.5563045877293966 1.5551725981744198
+  2021-09-11T00:48:00Z 1.5546686929512603 1.553254266737494  1.5560915044170451
+  2021-09-11T00:51:00Z 1.5526165117219182 1.5526165117219182 1.5570985534220307
+  2021-09-11T00:51:00Z 1.557463783500751  1.5570985534220307 1.5572836357815683
+  2021-09-11T00:54:00Z 1.5563045877293966 1.5563045877293966 1.5558720618048116
+  2021-09-11T00:54:00Z 1.5538487969884915 1.5551725981744198 1.5544043524868913
+  2021-09-11T00:57:00Z 1.5565115842075    1.5570985534220307 1.5572836357815683
+  2021-09-11T00:57:00Z 1.5576391913221408 1.5515679276951893 1.5572836357815683
+  2021-09-11T01:00:00Z 1.5522799247268875 1.5538487969884915 1.5522799247268875
+  2021-09-11T01:00:00Z 1.557810043874724  1.5560915044170451 1.5551725981744198
   ```
   
-  该查询返回measurement `park_occupancy`中每个存储数值的field key对应的field value的反正切。measurement `park_occupancy`中只有一个数值类型的field：`of_capacity`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的反正切。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算指定field key对应的field value的反正切并包含多个子句
 
   ```sql
-  > SELECT ATAN("of_capacity") FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: park_occupancy
-  time                  atan
-  ----                  ----
-  2020-05-07T00:00:00Z  0.5693131911006619
-  2020-05-06T00:00:00Z  0.6561787179913948
-  2020-05-05T00:00:00Z  0.16839015714752992
-  2020-05-04T00:00:00Z  0.2165503049760893
+  > SELECT ATAN("temperature") FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-19T00:00:00Z' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 atan
+  ----                 ----
+  2021-09-18T23:57:00Z 1.5582969777755349
+  2021-09-18T23:57:00Z 1.5581387749608446
+  2021-09-18T23:54:00Z 1.5569083308639295
+  2021-09-18T23:54:00Z 1.5522799247268875
   ```
   
-  该查询返回measurement `park_occupancy`中field key `of_capacity`对应的field value的反正切，它涵盖的时间范围在`2020-05-01T00:00:00Z`和`2020-05-09T00:00:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value的反正切，它涵盖的时间范围在`2020-05-01T00:00:00Z`和`2020-05-09T00:00:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -3150,34 +3354,32 @@
   - #### 计算平均值的反正切
 
   ```sql
-  > SELECT ATAN(MEAN("of_capacity")) FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z' GROUP BY time(3d)
-  
-  name: park_occupancy
+  > SELECT ATAN(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-19T00:00:00Z' GROUP BY time(3d)
+  name: air
   time                 atan
   ----                 ----
-  2020-04-30T00:00:00Z 0.5142865412694495
-  2020-05-03T00:00:00Z 0.3890972310552784
-  2020-05-06T00:00:00Z 0.6174058917515726
-  2020-05-09T00:00:00Z 0.1586552621864014
+  2021-09-09T00:00:00Z 1.5554743016680184
+  2021-09-12T00:00:00Z 1.5554056912417906
+  2021-09-15T00:00:00Z 1.555415060964228
+  2021-09-18T00:00:00Z 1.555490506678637
   ```
   
-  该查询返回field key `of_capacity`对应的每三天的时间间隔的field value的平均值的反正切。
+  该查询返回field key `temperature`对应的每三天的时间间隔的field value的平均值的反正切。
   
-  为了得到这些结果，cnosDB首先计算field key `of_capacity`对应的每三天的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`ATAN()`的情形一样：
+  为了得到这些结果，CnosDB首先计算field key `temperature`对应的每三天的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`ATAN()`的情形一样：
   
   ```sql
-  > SELECT MEAN("of_capacity") FROM "park_occupancy" WHERE time >= '2020-05-01T00:00:00Z' AND time <= '2020-05-09T00:00:00Z' GROUP BY time(3d)
-  
-  name: park_occupancy
-  time                  mean
-  ----                  ----
-  2020-04-30T00:00:00Z  0.565
-  2020-05-03T00:00:00Z  0.41
-  2020-05-06T00:00:00Z  0.71
-  2020-05-09T00:00:00Z  0.16
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-11T00:00:00Z' AND time <= '2021-09-19T00:00:00Z' GROUP BY time(3d)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-09T00:00:00Z 65.26041666666667
+  2021-09-12T00:00:00Z 64.96944444444445
+  2021-09-15T00:00:00Z 65.00902777777777
+  2021-09-18T00:00:00Z 65.32952182952182
   ```
   
-  然后，cnosDB计算这些平均值的反正切。
+  然后，CnosDB计算这些平均值的反正切。
 
 - ### ATAN2()
 
@@ -3202,82 +3404,102 @@
   下面的示例将使用如下模拟的飞行数据：
   
   ```sql
-  > SELECT "altitude_ft", "distance_ft" FROM "flight_data" WHERE time >= '2020-05-16T12:01:00Z' AND time <= '2020-05-16T12:10:00Z'
-  
-  name: flight_data
-  time                  altitude_ft  distance_ft
-  ----                  -----------  -----------
-  2020-05-16T12:01:00Z  1026         50094
-  2020-05-16T12:02:00Z  2549         53576
-  2020-05-16T12:03:00Z  4033         55208
-  2020-05-16T12:04:00Z  5579         58579
-  2020-05-16T12:05:00Z  7065         61213
-  2020-05-16T12:06:00Z  8589         64807
-  2020-05-16T12:07:00Z  10180        67707
-  2020-05-16T12:08:00Z  11777        69819
-  2020-05-16T12:09:00Z  13321        72452
-  2020-05-16T12:10:00Z  14885        75881
+  > SELECT "temperature", "pressure" FROM "air" WHERE time >= '2021-09-06T12:01:00Z' AND time <= '2021-09-06T12:15:00Z'
+  name: air
+  time                 temperature pressure
+  ----                 ----------- --------
+  2021-09-06T12:03:00Z 53          78
+  2021-09-06T12:03:00Z 72          71
+  2021-09-06T12:06:00Z 69          58
+  2021-09-06T12:06:00Z 59          76
+  2021-09-06T12:09:00Z 71          55
+  2021-09-06T12:09:00Z 57          76
+  2021-09-06T12:12:00Z 53          75
+  2021-09-06T12:12:00Z 65          52
+  2021-09-06T12:15:00Z 69          67
+  2021-09-06T12:15:00Z 64          56
   ```
 
   - #### 计算field_key_y除以field_key_x的反正切
 
   ```sql
-  > SELECT ATAN2("altitude_ft", "distance_ft") FROM "flight_data" WHERE time >= '2020-05-16T12:01:00Z' AND time <= '2020-05-16T12:10:00Z'
-  
-  name: flight_data
-  time                  atan2
-  ----                  -----
-  2020-05-16T12:01:00Z  0.020478631571881498
-  2020-05-16T12:02:00Z  0.04754142349303296
-  2020-05-16T12:03:00Z  0.07292147724575364
-  2020-05-16T12:04:00Z  0.09495251193874832
-  2020-05-16T12:05:00Z  0.11490822875441563
-  2020-05-16T12:06:00Z  0.13176409347584003
-  2020-05-16T12:07:00Z  0.14923587589682233
-  2020-05-16T12:08:00Z  0.1671059946640312
-  2020-05-16T12:09:00Z  0.18182893717409565
-  2020-05-16T12:10:00Z  0.1937028631495223
+  > SELECT ATAN2("temperature", "pressure") FROM "air" WHERE time >= '2021-09-06T12:01:00Z' AND time <= '2021-09-06T13:01:00Z'
+  name: air
+  time                 atan2
+  ----                 -----
+  2021-09-06T12:03:00Z 0.5968259039857009
+  2021-09-06T12:03:00Z 0.7923910564027816
+  2021-09-06T12:06:00Z 0.8717967127558954
+  2021-09-06T12:06:00Z 0.6601315920749263
+  2021-09-06T12:09:00Z 0.9117062804606886
+  2021-09-06T12:09:00Z 0.6435011087932844
+  2021-09-06T12:12:00Z 0.6151862381119739
+  2021-09-06T12:12:00Z 0.8960553845713439
+  2021-09-06T12:15:00Z 0.8001029857752997
+  2021-09-06T12:15:00Z 0.851966327173272
+  2021-09-06T12:18:00Z 0.6960841704042261
+  2021-09-06T12:18:00Z 0.8010218920179252
+  2021-09-06T12:21:00Z 0.7594299761858918
+  2021-09-06T12:21:00Z 0.7028792089644667
+  2021-09-06T12:24:00Z 0.812418612584713
+  2021-09-06T12:24:00Z 0.7309067071567171
+  2021-09-06T12:27:00Z 0.9948777271765435
+  2021-09-06T12:27:00Z 0.7546386373269791
+  2021-09-06T12:30:00Z 0.7785017210090998
+  2021-09-06T12:30:00Z 0.6435011087932844
+  2021-09-06T12:33:00Z 0.8960553845713439
+  2021-09-06T12:33:00Z 0.8007815651780434
+  2021-09-06T12:36:00Z 0.8498250028230019
+  2021-09-06T12:36:00Z 0.8736040677941312
+  2021-09-06T12:39:00Z 0.7168036599431737
+  2021-09-06T12:39:00Z 0.9296875579351908
+  2021-09-06T12:42:00Z 0.8633647972289906
+  2021-09-06T12:42:00Z 0.9437256642058782
+  2021-09-06T12:45:00Z 0.6215266244966218
+  2021-09-06T12:45:00Z 0.8152400480645576
+  2021-09-06T12:48:00Z 0.7378150601204648
+  2021-09-06T12:48:00Z 0.7638187798309181
+  2021-09-06T12:51:00Z 0.9179496956941223
+  2021-09-06T12:51:00Z 0.7935280655773922
+  2021-09-06T12:54:00Z 0.9572401812829798
+  2021-09-06T12:54:00Z 0.6593100683328579
+  2021-09-06T12:57:00Z 0.8674056089236339
+  2021-09-06T12:57:00Z 0.8674056089236339
+  2021-09-06T13:00:00Z 0.8187191592756955
+  2021-09-06T13:00:00Z 0.8134282033572947
   ```
   
-  该查询返回field key `altitude_ft`对应的field value除以field key `distance_ft`对应的field value的反正切。这两个field key都在measurement `flight_data`中。
+  该查询返回field key `temperature`对应的field value除以field key `pressure`对应的field value的反正切。这两个field key都在measurement `wind`中。
 
   - #### 计算measurement中每个field key除以field_key_x的反正切
 
   ```sql
-  > SELECT ATAN2(*, "distance_ft") FROM "flight_data" WHERE time >= '2020-05-16T12:01:00Z' AND time <= '2020-05-16T12:10:00Z'
-  
-  name: flight_data
-  time                  atan2_altitude_ft     atan2_distance_ft
-  ----                  -----------------     -----------------
-  2020-05-16T12:01:00Z  0.020478631571881498  0.7853981633974483
-  2020-05-16T12:02:00Z  0.04754142349303296   0.7853981633974483
-  2020-05-16T12:03:00Z  0.07292147724575364   0.7853981633974483
-  2020-05-16T12:04:00Z  0.09495251193874832   0.7853981633974483
-  2020-05-16T12:05:00Z  0.11490822875441563   0.7853981633974483
-  2020-05-16T12:06:00Z  0.13176409347584003   0.7853981633974483
-  2020-05-16T12:07:00Z  0.14923587589682233   0.7853981633974483
-  2020-05-16T12:08:00Z  0.1671059946640312    0.7853981633974483
-  2020-05-16T12:09:00Z  0.18182893717409565   0.7853981633974483
-  2020-05-16T12:10:00Z  0.19370286314952234   0.7853981633974483
+  > SELECT ATAN2(*, "pressure") FROM "air" WHERE time >= '2021-09-06T12:01:00Z' AND time <= '2021-09-06T12:06:00Z'
+  name: air
+  time                 atan2_pressure     atan2_temperature  atan2_visibility
+  ----                 --------------     -----------------  ----------------
+  2021-09-06T12:03:00Z 0.7853981633974483 0.5968259039857009 0.60554466360497
+  2021-09-06T12:03:00Z 0.7853981633974483 0.7923910564027816 0.7257674502662789
+  2021-09-06T12:06:00Z 0.7853981633974483 0.8717967127558954 0.8645972343668997
+  2021-09-06T12:06:00Z 0.7853981633974483 0.6601315920749263 0.6435011087932844
   ```
   
-  该查询返回measurement `flight_data`中每个存储数值的field key对应的field value除以field key `distance_ft`对应的field value的反正切。measurement `flight_data`中有两个数值类型的field：`altitude_ft`和`distance_ft`。
+  该查询返回measurement `wind`中每个存储数值的field key对应的field value除以field key `pressure`对应的field value的反正切。measurement `wind`中有两个数值类型的field：`temperature`和`pressure`。
 
   - #### 计算field value的反正切并包含多个子句
 
   ```sql
-  > SELECT ATAN2("altitude_ft", "distance_ft") FROM "flight_data" WHERE time >= '2020-05-16T12:01:00Z' AND time <= '2020-05-16T12:10:00Z' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: flight_data
-  time                  atan2
-  ----                  -----
-  2020-05-16T12:08:00Z  0.1671059946640312
-  2020-05-16T12:07:00Z  0.14923587589682233
-  2020-05-16T12:06:00Z  0.13176409347584003
-  2020-05-16T12:05:00Z  0.11490822875441563
+  > SELECT ATAN2("temperature", "pressure") FROM "air" WHERE time >= '2021-09-06T12:01:00Z' AND time <= '2021-09-16T13:01:00Z' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 atan2
+  ----                 -----
+  2021-09-16T12:57:00Z 0.8773368222796695
+  2021-09-16T12:57:00Z 0.8114792046882006
+  2021-09-16T12:54:00Z 0.8007815651780434
+  2021-09-16T12:54:00Z 1.003258702010146
   ```
   
-  该查询返回field key `altitude_ft`对应的field value除以field key `distance_ft`对应的field value的反正切，它涵盖的时间范围在`2020-05-16T12:10:00Z`和`2020-05-16T12:10:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+  该查询返回field key `temperature`对应的field value除以field key `pressure`对应的field value的反正切，它涵盖的时间范围在`2020-05-16T12:10:00Z`和`2020-05-16T12:10:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -3305,38 +3527,46 @@
   - #### 计算平均值的反正切
 
   ```sql
-  > SELECT ATAN2(MEAN("altitude_ft"), MEAN("distance_ft")) FROM "flight_data" WHERE time >= '2020-05-16T12:01:00Z' AND time <= '2020-05-16T13:01:00Z' GROUP BY time(12m)
-  
-  name: flight_data
-  time                  atan2
-  ----                  -----
-  2020-05-16T12:00:00Z  0.133815587896842
-  2020-05-16T12:12:00Z  0.2662716308351908
-  2020-05-16T12:24:00Z  0.2958845306108965
-  2020-05-16T12:36:00Z  0.23783439588429497
-  2020-05-16T12:48:00Z  0.1906803720242831
-  2020-05-16T13:00:00Z  0.17291511946158172
+  > SELECT ATAN2(MEAN("temperature"), MEAN("pressure")) FROM "air" WHERE time >= '2021-09-16T12:01:00Z' AND time <= '2021-09-16T14:02:00Z' GROUP BY time(12m)
+  name: air
+  time                 atan2
+  ----                 -----
+  2021-09-16T12:00:00Z 0.7916716068182019
+  2021-09-16T12:12:00Z 0.7687819020057319
+  2021-09-16T12:24:00Z 0.8293469014295621
+  2021-09-16T12:36:00Z 0.7483094274728471
+  2021-09-16T12:48:00Z 0.8579805385837196
+  2021-09-16T13:00:00Z 0.7640815957515122
+  2021-09-16T13:12:00Z 0.7660813391498594
+  2021-09-16T13:24:00Z 0.7595170787800846
+  2021-09-16T13:36:00Z 0.781755192263569
+  2021-09-16T13:48:00Z 0.8137459550765823
+  2021-09-16T14:00:00Z 0.7572931159369924
   ```
   
-  该查询返回field key `altitude_ft`对应的field value的平均值除以field key `distance_ft`对应的field value的平均值的反正切。平均值是按每12分钟的时间间隔计算的。
+  该查询返回field key `temperature`对应的field value的平均值除以field key `pressure`对应的field value的平均值的反正切。平均值是按每12分钟的时间间隔计算的。
   
-  为了得到这些结果，cnosDB首先计算field key `altitude_ft`和`distance_ft`对应的每12分钟的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`ATAN2()`的情形一样：
+  为了得到这些结果，CnosDB首先计算field key `temperature`和`pressure`对应的每12分钟的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`ATAN2()`的情形一样：
   
   ```sql
-  > SELECT MEAN("altitude_ft"), MEAN("distance_ft") FROM "flight_data" WHERE time >= '2020-05-16T12:01:00Z' AND time <= '2020-05-16T13:01:00Z' GROUP BY time(12m)
-  
-  name: flight_data
-  time                  mean                mean_1
-  ----                  ----                ------
-  2020-05-16T12:00:00Z  8674                64433.181818181816
-  2020-05-16T12:12:00Z  26419.833333333332  96865.25
-  2020-05-16T12:24:00Z  40337.416666666664  132326.41666666666
-  2020-05-16T12:36:00Z  41149.583333333336  169743.16666666666
-  2020-05-16T12:48:00Z  41230.416666666664  213600.91666666666
-  2020-05-16T13:00:00Z  41184.5             235799
+  > SELECT MEAN("temperature"), MEAN("pressure") FROM "air" WHERE time >= '2021-09-16T12:01:00Z' AND time <= '2021-09-16T14:02:00Z' GROUP BY time(12m)
+  name: air
+  time                 mean              mean_1
+  ----                 ----              ------
+  2021-09-16T12:00:00Z 66.83333333333333 66
+  2021-09-16T12:12:00Z 62.875            65
+  2021-09-16T12:24:00Z 68.25             62.5
+  2021-09-16T12:36:00Z 64.875            69.875
+  2021-09-16T12:48:00Z 71                61.375
+  2021-09-16T13:00:00Z 60.25             62.875
+  2021-09-16T13:12:00Z 66.625            69.25
+  2021-09-16T13:24:00Z 63.5              66.875
+  2021-09-16T13:36:00Z 68.375            68.875
+  2021-09-16T13:48:00Z 68                64.25
+  2021-09-16T14:00:00Z 60.5              64
   ```
   
-  然后，cnosDB计算这些平均值的反正切。
+  然后，CnosDB计算这些平均值的反正切。
 
 - ### CEIL()
 
@@ -3358,73 +3588,84 @@
 
   #### 示例
 
-  下面的示例将使用[`NOAA_water_database`数据集](NOAA_water_database.txt)的如下数据：
+  下面的示例将使用[`oceanic_station`数据集](oceanic_station.txt)的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  water_level
-  ----                  -----------
-  2020-08-18T00:00:00Z  2.064
-  2020-08-18T00:06:00Z  2.116
-  2020-08-18T00:12:00Z  2.028
-  2020-08-18T00:18:00Z  2.126
-  2020-08-18T00:24:00Z  2.041
-  2020-08-18T00:30:00Z  2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的大于field value的最小整数
 
   ```sql
-  > SELECT CEIL("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  ceil
-  ----                  ----
-  2020-08-18T00:00:00Z  3
-  2020-08-18T00:06:00Z  3
-  2020-08-18T00:12:00Z  3
-  2020-08-18T00:18:00Z  3
-  2020-08-18T00:24:00Z  3
-  2020-08-18T00:30:00Z  3
+  > SELECT CEIL("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 ceil
+  ----                 ----
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的大于field value的最小整数。
+  该查询返回measurement `air`中field key `temperature`对应的大于field value的最小整数。
 
   - #### 计算measurement中每个field key对应的大于field value的最小整数
 
   ```sql
-  > SELECT CEIL(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  ceil_water_level
-  ----                  ----------------
-  2020-08-18T00:00:00Z  3
-  2020-08-18T00:06:00Z  3
-  2020-08-18T00:12:00Z  3
-  2020-08-18T00:18:00Z  3
-  2020-08-18T00:24:00Z  3
-  2020-08-18T00:30:00Z  3
+  > SELECT CEIL(*) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 ceil_pressure ceil_temperature ceil_visibility
+  ----                 ------------- ---------------- ---------------
+  2021-09-18T00:00:00Z 64            51               68
+  2021-09-18T00:03:00Z 72            60               74
+  2021-09-18T00:06:00Z 54            55               77
+  2021-09-18T00:09:00Z 66            55               55
+  2021-09-18T00:12:00Z 64            63               70
+  2021-09-18T00:15:00Z 58            74               62
+  2021-09-18T00:18:00Z 55            79               54
+  2021-09-18T00:21:00Z 64            68               58
+  2021-09-18T00:24:00Z 66            70               69
+  2021-09-18T00:27:00Z 77            79               78
+  2021-09-18T00:30:00Z 62            75               80
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的大于field value的最小整数。measurement `h2o_feet`只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的大于field value的最小整数。measurement `air`只有一个数值类型的field：`temperature`。
 
   - #### 计算指定field key对应的大于field value的最小整数并包含多个子句
 
   ```sql
-  > SELECT CEIL("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  ceil
-  ----                  ----
-  2020-08-18T00:18:00Z  3
-  2020-08-18T00:12:00Z  3
-  2020-08-18T00:06:00Z  3
-  2020-08-18T00:00:00Z  3
+  > SELECT CEIL("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 ceil
+  ----                 ----
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:15:00Z 74
   ```
   
-  该查询返回field key `water_level`对应的大于field value的最小整数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回)。
+  该查询返回field key `temperature`对应的大于field value的最小整数，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回)。
 
   #### 高级语法
 
@@ -3452,32 +3693,30 @@
   - #### 计算大于平均值的最小整数
 
   ```sql
-  > SELECT CEIL(MEAN("water_level")) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  ceil
-  ----                  ----
-  2020-08-18T00:00:00Z  3
-  2020-08-18T00:12:00Z  3
-  2020-08-18T00:24:00Z  3
+  > SELECT CEIL(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 ceil
+  ----                 ----
+  2021-09-18T00:00:00Z 56
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 75
   ```
   
-  该查询返回每12分钟的时间间隔对应的大于`water_level`平均值的最小整数。
+  该查询返回每12分钟的时间间隔对应的大于`temperature`平均值的最小整数。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔对应的大于`water_level`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`CEIL()`的情形一样：
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔对应的大于`temperature`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`CEIL()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算大于这些平均值的最小整数。
+  然后，CnosDB计算大于这些平均值的最小整数。
 
 - ### COS()
 
@@ -3499,73 +3738,84 @@
 
   #### 示例
 
-  - #### 下面的示例将使用`NOAA_water_database`数据集的如下数据：
+  - #### 下面的示例将使用`oceanic_station`数据集的如下数据：
 
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  water_level
-  ----                  -----------
-  2020-08-18T00:00:00Z  2.064
-  2020-08-18T00:06:00Z  2.116
-  2020-08-18T00:12:00Z  2.028
-  2020-08-18T00:18:00Z  2.126
-  2020-08-18T00:24:00Z  2.041
-  2020-08-18T00:30:00Z  2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的余弦值
 
   ```sql
-  > SELECT COS("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  cos
-  ----                  ---
-  2020-08-18T00:00:00Z  -0.47345017433543124
-  2020-08-18T00:06:00Z  -0.5185922462666872
-  2020-08-18T00:12:00Z  -0.4414407189100776
-  2020-08-18T00:18:00Z  -0.5271163912192579
-  2020-08-18T00:24:00Z  -0.45306786455514825
-  2020-08-18T00:30:00Z  -0.4619598230611262
+  > SELECT COS("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 cos
+  ----                 ---
+  2021-09-18T00:00:00Z 0.7421541968137826
+  2021-09-18T00:03:00Z -0.9524129804151563
+  2021-09-18T00:06:00Z 0.022126756261955732
+  2021-09-18T00:09:00Z 0.022126756261955732
+  2021-09-18T00:12:00Z 0.9858965815825497
+  2021-09-18T00:15:00Z 0.17171734183077755
+  2021-09-18T00:18:00Z -0.8959709467909631
+  2021-09-18T00:21:00Z 0.4401430224960407
+  2021-09-18T00:24:00Z 0.6333192030862999
+  2021-09-18T00:27:00Z -0.8959709467909631
+  2021-09-18T00:30:00Z 0.9217512697247493
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的余弦值。
+  该查询返回measurement `air`中field key `temperature`对应的field value的余弦值。
 
   - #### 计算measurement中每个field key对应的field value的余弦值
 
   ```sql
-  > SELECT COS(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  cos_water_level
-  ----                  ---------------
-  2020-08-18T00:00:00Z  -0.47345017433543124
-  2020-08-18T00:06:00Z  -0.5185922462666872
-  2020-08-18T00:12:00Z  -0.4414407189100776
-  2020-08-18T00:18:00Z  -0.5271163912192579
-  2020-08-18T00:24:00Z  -0.45306786455514825
-  2020-08-18T00:30:00Z  -0.4619598230611262
+  > SELECT COS(*) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 cos_pressure          cos_temperature      cos_visibility
+  ----                 ------------          ---------------      --------------
+  2021-09-18T00:00:00Z 0.39185723042955      0.7421541968137826   0.4401430224960407
+  2021-09-18T00:03:00Z -0.9672505882738824   -0.9524129804151563  0.17171734183077755
+  2021-09-18T00:06:00Z -0.8293098328631501   0.022126756261955732 -0.030975031731216456
+  2021-09-18T00:09:00Z -0.9996474559663501   0.022126756261955732 0.022126756261955732
+  2021-09-18T00:12:00Z 0.39185723042955      0.9858965815825497   0.6333192030862999
+  2021-09-18T00:15:00Z 0.11918013544881928   0.17171734183077755  0.6735071623235862
+  2021-09-18T00:18:00Z 0.022126756261955732  -0.8959709467909631  -0.8293098328631501
+  2021-09-18T00:21:00Z 0.39185723042955      0.4401430224960407   0.11918013544881928
+  2021-09-18T00:24:00Z -0.9996474559663501   0.6333192030862999   0.9933903797222716
+  2021-09-18T00:27:00Z -0.030975031731216456 -0.8959709467909631  -0.8578030932449878
+  2021-09-18T00:30:00Z 0.6735071623235862    0.9217512697247493   -0.11038724383904756
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的余弦值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的余弦值。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算指定field key对应的field value的余弦值并包含多个子句
 
   ```sql
-  > SELECT COS("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  cos
-  ----                  ---
-  2020-08-18T00:18:00Z  -0.5271163912192579
-  2020-08-18T00:12:00Z  -0.4414407189100776
-  2020-08-18T00:06:00Z  -0.5185922462666872
-  2020-08-18T00:00:00Z  -0.47345017433543124
+  > SELECT COS("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 cos
+  ----                 ---
+  2021-09-18T00:24:00Z 0.6333192030862999
+  2021-09-18T00:21:00Z 0.4401430224960407
+  2021-09-18T00:18:00Z -0.8959709467909631
+  2021-09-18T00:15:00Z 0.17171734183077755
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的余弦值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value的余弦值，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -3593,32 +3843,30 @@
   - #### 计算平均值的余弦值
 
   ```sql
-  > SELECT COS(MEAN("water_level")) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  cos
-  ----                  ---
-  2020-08-18T00:00:00Z  -0.49618891270599885
-  2020-08-18T00:12:00Z  -0.4848605136571181
-  2020-08-18T00:24:00Z  -0.4575195627907578
+  > SELECT COS(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 cos
+  ----                 ---
+  2021-09-18T00:00:00Z 0.2687822771684872
+  2021-09-18T00:12:00Z -0.3090227281660707
+  2021-09-18T00:24:00Z 0.7441351704799297
   ```
   
-  该查询返回field key `water_level`对应的每12分钟的时间间隔的field value的平均值的余弦值。
+  该查询返回field key `temperature`对应的每12分钟的时间间隔的field value的平均值的余弦值。
   
-  为了得到这些结果，cnosDB首先计算field key `water_level`对应的每12分钟的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`COS()`的情形一样：
+  为了得到这些结果，CnosDB首先计算field key `temperature`对应的每12分钟的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`COS()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算这些平均值的余弦值。
+  然后，CnosDB计算这些平均值的余弦值。
 
 - ### CUMULATIVE_SUM()
 
@@ -3642,91 +3890,105 @@
 
   #### 示例
 
-  下面的示例将使用`NOAA_water_database`数据集的如下数据：
+  下面的示例将使用`oceanic_station`数据集的如下数据：
 
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                   water_level
-  ----                   -----------
-  2020-08-18T00:00:00Z   2.064
-  2020-08-18T00:06:00Z   2.116
-  2020-08-18T00:12:00Z   2.028
-  2020-08-18T00:18:00Z   2.126
-  2020-08-18T00:24:00Z   2.041
-  2020-08-18T00:30:00Z   2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的累积总和
 
   ```sql
-  > SELECT CUMULATIVE_SUM("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                   cumulative_sum
-  ----                   --------------
-  2020-08-18T00:00:00Z   2.064
-  2020-08-18T00:06:00Z   4.18
-  2020-08-18T00:12:00Z   6.208
-  2020-08-18T00:18:00Z   8.334
-  2020-08-18T00:24:00Z   10.375
-  2020-08-18T00:30:00Z   12.426
+  > SELECT CUMULATIVE_SUM("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 cumulative_sum
+  ----                 --------------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 111
+  2021-09-18T00:06:00Z 166
+  2021-09-18T00:09:00Z 221
+  2021-09-18T00:12:00Z 284
+  2021-09-18T00:15:00Z 358
+  2021-09-18T00:18:00Z 437
+  2021-09-18T00:21:00Z 505
+  2021-09-18T00:24:00Z 575
+  2021-09-18T00:27:00Z 654
+  2021-09-18T00:30:00Z 729
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的累积总和。
+  该查询返回measurement `air`中field key `temperature`对应的field value的累积总和。
 
   - #### 计算measurement中每个field key对应的field value的累积总和
 
   ```sql
-  > SELECT CUMULATIVE_SUM(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                   cumulative_sum_water_level
-  ----                   --------------------------
-  2020-08-18T00:00:00Z   2.064
-  2020-08-18T00:06:00Z   4.18
-  2020-08-18T00:12:00Z   6.208
-  2020-08-18T00:18:00Z   8.334
-  2020-08-18T00:24:00Z   10.375
-  2020-08-18T00:30:00Z   12.426
+  > SELECT CUMULATIVE_SUM(*) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 cumulative_sum_pressure cumulative_sum_temperature cumulative_sum_visibility
+  ----                 ----------------------- -------------------------- -------------------------
+  2021-09-18T00:00:00Z 64                      51                         68
+  2021-09-18T00:03:00Z 136                     111                        142
+  2021-09-18T00:06:00Z 190                     166                        219
+  2021-09-18T00:09:00Z 256                     221                        274
+  2021-09-18T00:12:00Z 320                     284                        344
+  2021-09-18T00:15:00Z 378                     358                        406
+  2021-09-18T00:18:00Z 433                     437                        460
+  2021-09-18T00:21:00Z 497                     505                        518
+  2021-09-18T00:24:00Z 563                     575                        587
+  2021-09-18T00:27:00Z 640                     654                        665
+  2021-09-18T00:30:00Z 702                     729                        745
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的累积总和。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的累积总和。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算与正则表达式匹配的每个field key对应的field value的累积总和
 
   ```sql
-  > SELECT CUMULATIVE_SUM(/water/) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                   cumulative_sum_water_level
-  ----                   --------------------------
-  2020-08-18T00:00:00Z   2.064
-  2020-08-18T00:06:00Z   4.18
-  2020-08-18T00:12:00Z   6.208
-  2020-08-18T00:18:00Z   8.334
-  2020-08-18T00:24:00Z   10.375
-  2020-08-18T00:30:00Z   12.426
+  > SELECT CUMULATIVE_SUM(/temp/) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  time                 cumulative_sum_temperature
+  ----                 --------------------------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 111
+  2021-09-18T00:06:00Z 166
+  2021-09-18T00:09:00Z 221
+  2021-09-18T00:12:00Z 284
+  2021-09-18T00:15:00Z 358
+  2021-09-18T00:18:00Z 437
+  2021-09-18T00:21:00Z 505
+  2021-09-18T00:24:00Z 575
+  2021-09-18T00:27:00Z 654
+  2021-09-18T00:30:00Z 729
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的累积总和。
+  该查询返回measurement `air`中每个存储数值并包含单词`water`的field key对应的field value的累积总和。
 
   - #### 计算指定field key对应的field value的累积总和并包含多个子句
   
   ```sql
-  > SELECT CUMULATIVE_SUM("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  cumulative_sum
-  ----                  --------------
-  2020-08-18T00:18:00Z  6.218
-  2020-08-18T00:12:00Z  8.246
-  2020-08-18T00:06:00Z  10.362
-  2020-08-18T00:00:00Z  12.426
+  > SELECT CUMULATIVE_SUM("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 cumulative_sum
+  ----                 --------------
+  2021-09-18T00:24:00Z 224
+  2021-09-18T00:21:00Z 292
+  2021-09-18T00:18:00Z 371
+  2021-09-18T00:15:00Z 445
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的累积总和，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value的累积总和，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个（即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -3754,32 +4016,30 @@
   - #### 计算平均值的累积总和
 
   ```sql
-  > SELECT CUMULATIVE_SUM(MEAN("water_level")) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   cumulative_sum
-  ----                   --------------
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   4.167
-  2020-08-18T00:24:00Z   6.213
+  > SELECT CUMULATIVE_SUM(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 cumulative_sum
+  ----                 --------------
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 126.25
+  2021-09-18T00:24:00Z 200.91666666666669
   ```
   
-  该查询返回field key `water_level`对应的每12分钟的时间间隔的field value的平均值的累积总和。
+  该查询返回field key `temperature`对应的每12分钟的时间间隔的field value的平均值的累积总和。
   
-  为了得到这些结果，cnosDB首先计算field key `water_level`对应的每12分钟的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`CUMULATIVE_SUM()`的情形一样：
+  为了得到这些结果，CnosDB首先计算field key `temperature`对应的每12分钟的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`CUMULATIVE_SUM()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算这些平均值的累积总和。最终查询结果中的第二个`point`(`4.167`)是`2.09`和`2.077`的总和，第三个`point`(`6.213`)是`2.09`、`2.077`和`2.0460000000000003`的总和。
+  然后，CnosDB计算这些平均值的累积总和。最终查询结果中的第二个`point`(`4.167`)是`2.09`和`2.077`的总和，第三个`point`(`6.213`)是`2.09`、`2.077`和`2.0460000000000003`的总和。
 
 - ### DERIVATIVE()
 
@@ -3791,7 +4051,7 @@
   SELECT DERIVATIVE( [ * | <field_key> | /<regular_expression>/ ] [ , <unit> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
   
-  cnosDB计算field value之间的差值，并将这些结果转换为每个`unit`的变化率。参数`unit`的值是一个整数，后跟一个时间单位。这个参数是可选的，不是必须要有的。如果查询没有指定`unit`的值，那么`unit`默认为一秒(`1s`)。
+  CnosDB计算field value之间的差值，并将这些结果转换为每个`unit`的变化率。参数`unit`的值是一个整数，后跟一个时间单位。这个参数是可选的，不是必须要有的。如果查询没有指定`unit`的值，那么`unit`默认为一秒(`1s`)。
   
   `DERIVATIVE(field_key)`返回field key对应的field value的变化率。
   
@@ -3805,67 +4065,72 @@
 
   #### 示例
 
-  下面的示例将使用`NOAA_water_database`数据集的如下数据：
+  下面的示例将使用`oceanic_station`数据集的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
-  
-  name: h2o_feet
-  time                   water_level
-  ----                   -----------
-  2020-08-18T00:00:00Z   2.064
-  2020-08-18T00:06:00Z   2.116
-  2020-08-18T00:12:00Z   2.028
-  2020-08-18T00:18:00Z   2.126
-  2020-08-18T00:24:00Z   2.041
-  2020-08-18T00:30:00Z   2.051
+  > SELECT "temperature" FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的导数
 
   ```sql
-  > SELECT DERIVATIVE("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
-  
-  name: h2o_feet
-  time                   derivative
-  ----                   ----------
-  2020-08-18T00:06:00Z   0.00014444444444444457
-  2020-08-18T00:12:00Z   -0.00024444444444444465
-  2020-08-18T00:18:00Z   0.0002722222222222218
-  2020-08-18T00:24:00Z   -0.000236111111111111
-  2020-08-18T00:30:00Z   2.777777777777842e-05
+  > SELECT DERIVATIVE("temperature") FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z'
+  name: air
+  time                 derivative
+  ----                 ----------
+  2021-09-18T00:03:00Z 0.05
+  2021-09-18T00:06:00Z -0.027777777777777776
+  2021-09-18T00:09:00Z 0
+  2021-09-18T00:12:00Z 0.044444444444444446
+  2021-09-18T00:15:00Z 0.06111111111111111
+  2021-09-18T00:18:00Z 0.027777777777777776
+  2021-09-18T00:21:00Z -0.06111111111111111
+  2021-09-18T00:24:00Z 0.011111111111111112
+  2021-09-18T00:27:00Z 0.05
+  2021-09-18T00:30:00Z -0.022222222222222223
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的每秒变化率。
+  该查询返回measurement `air`中field key `temperature`对应的field value的每秒变化率。
   
-  第一个结果(`0.00014444444444444457`)是原始数据中前两个field value在一秒内的变化率。cnosDB计算两个field value之间的差值，并将该值标准化为一秒的变化率：
-  
-  ```
-  (2.116 - 2.064) / (360s / 1s)
-  --------------    ----------
-         |               |
-         |          the difference between the field values' timestamps / the default unit
-  second field value - first field value
-  ```
+  第一个结果(`0.05`)是原始数据中前两个field value在一秒内的变化率。CnosDB计算两个field value之间的差值，并将该值标准化为一秒的变化率。
+
 
   - #### 计算指定field key对应的field value的导数并指定`unit`
 
   ```sql
-  > SELECT DERIVATIVE("water_level",6m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
-  
-  name: h2o_feet
-  time			derivative
-  ----			----------
-  2020-08-18T00:06:00Z	0.052000000000000046
-  2020-08-18T00:12:00Z	-0.08800000000000008
-  2020-08-18T00:18:00Z	0.09799999999999986
-  2020-08-18T00:24:00Z	-0.08499999999999996
-  2020-08-18T00:30:00Z	0.010000000000000231
+  > SELECT DERIVATIVE("temperature",6m) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z'
+  name: air
+  time                 derivative
+  ----                 ----------
+  2021-09-18T00:03:00Z 18
+  2021-09-18T00:06:00Z -10
+  2021-09-18T00:09:00Z 0
+  2021-09-18T00:12:00Z 16
+  2021-09-18T00:15:00Z 22
+  2021-09-18T00:18:00Z 10
+  2021-09-18T00:21:00Z -22
+  2021-09-18T00:24:00Z 4
+  2021-09-18T00:27:00Z 18
+  2021-09-18T00:30:00Z -8
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的每六分钟的变化率。
+  该查询返回measurement `air`中field key `temperature`对应的field value的每六分钟的变化率。
   
-  第一个结果(`0.052000000000000046`)是原始数据中前两个field value在六分钟内的变化率。cnosDB计算两个field value之间的差值，并将该值标准化为六分钟的变化率：
+  第一个结果(`0.052000000000000046`)是原始数据中前两个field value在六分钟内的变化率。CnosDB计算两个field value之间的差值，并将该值标准化为六分钟的变化率：
   
   ```
   (2.116 - 2.064) / (6m / 6m)
@@ -3878,80 +4143,69 @@
   - #### 计算measurement中每个field key对应的field value的导数并指定`unit`
 
   ```sql
-  > SELECT DERIVATIVE(*,3m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
-  
-  
-  name: h2o_feet
-  time                   derivative_water_level
-  ----                   ----------------------
-  2020-08-18T00:06:00Z   0.026000000000000023
-  2020-08-18T00:12:00Z   -0.04400000000000004
-  2020-08-18T00:18:00Z   0.04899999999999993
-  2020-08-18T00:24:00Z   -0.04249999999999998
-  2020-08-18T00:30:00Z   0.0050000000000001155
+  > SELECT DERIVATIVE(*,3m) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z'
+  name: air
+  time                 derivative_pressure derivative_temperature derivative_visibility
+  ----                 ------------------- ---------------------- ---------------------
+  2021-09-18T00:03:00Z 8                   9                      6
+  2021-09-18T00:06:00Z -18                 -5                     3
+  2021-09-18T00:09:00Z 12                  0                      -22
+  2021-09-18T00:12:00Z -2                  8                      15
+  2021-09-18T00:15:00Z -6                  11                     -8
+  2021-09-18T00:18:00Z -3                  5                      -8
+  2021-09-18T00:21:00Z 9                   -11                    4
+  2021-09-18T00:24:00Z 2                   2                      11
+  2021-09-18T00:27:00Z 11                  9                      9
+  2021-09-18T00:30:00Z -15                 -4                     2
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的每三分钟的变化率。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
-  
-  第一个结果(`0.026000000000000023`)是原始数据中前两个field value在三分钟内的变化率。cnosDB计算两个field value之间的差值，并将该值标准化为三分钟的变化率：
-  
-  ```
-  (2.116 - 2.064) / (6m / 3m)
-  --------------    ----------
-         |              |
-         |          the difference between the field values' timestamps / the specified unit
-  second field value - first field value
-  ```
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的每三分钟的变化率。measurement `air`中数值类型的field：`temperature`,`pressure`,`visibility`。
+
 
   - #### 计算与正则表达式匹配的每个field key对应的field value的导数并指定`unit`
 
   ```sql
-  > SELECT DERIVATIVE(/water/,2m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
-  
-  name: h2o_feet
-  time                   derivative_water_level
-  ----                   ----------------------
-  2020-08-18T00:06:00Z   0.01733333333333335
-  2020-08-18T00:12:00Z   -0.02933333333333336
-  2020-08-18T00:18:00Z   0.03266666666666662
-  2020-08-18T00:24:00Z   -0.02833333333333332
-  2020-08-18T00:30:00Z   0.0033333333333334103
+  > SELECT DERIVATIVE(/temp/,2m) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z'
+  name: air
+  time                 derivative_temperature
+  ----                 ----------------------
+  2021-09-18T00:03:00Z 6
+  2021-09-18T00:06:00Z -3.3333333333333335
+  2021-09-18T00:09:00Z 0
+  2021-09-18T00:12:00Z 5.333333333333333
+  2021-09-18T00:15:00Z 7.333333333333333
+  2021-09-18T00:18:00Z 3.3333333333333335
+  2021-09-18T00:21:00Z -7.333333333333333
+  2021-09-18T00:24:00Z 1.3333333333333333
+  2021-09-18T00:27:00Z 6
+  2021-09-18T00:30:00Z -2.6666666666666665
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value的每两分钟的变化率。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中的对应field key"temperature"对应的field value的每两分钟的变化率。
   
-  第一个结果(`0.01733333333333335`)是原始数据中前两个field value在两分钟内的变化率。cnosDB计算两个field value之间的差值，并将该值标准化为两分钟的变化率：
+  第一个结果(`6`)是原始数据中前两个field value在两分钟内的变化率。CnosDB计算两个field value之间的差值，并将该值标准化为两分钟的变化率：
   
   ```
-  (2.116 - 2.064) / (6m / 2m)
-  --------------    ----------
-         |              |
-         |          the difference between the field values' timestamps / the specified unit
+  (-3.3333333333333335 6) / (6m / 2m)
+  --------------            ----------
+         |                      |
+         |                the difference between the field values' timestamps / the specified unit
   second field value - first field value
   ```
 
   - #### 计算指定field key对应的field value的导数并包含多个子句
 
   ```sql
-  > SELECT DERIVATIVE("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' ORDER BY time DESC LIMIT 1 OFFSET 2
-  
-  name: h2o_feet
-  time                   derivative
-  ----                   ----------
-  2020-08-18T00:12:00Z   -0.0002722222222222218
+  > SELECT DERIVATIVE("temperature") FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' ORDER BY time DESC LIMIT 1 OFFSET 2
+  name: air
+  time                 derivative
+  ----                 ----------
+  2021-09-18T00:21:00Z -0.011111111111111112
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的每秒变化率，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为1，并将返回的`point`偏移两个(即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value的每秒变化率，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为1，并将返回的`point`偏移两个(即前两个`point`不返回）。
   
-  唯一的结果(`-0.0002722222222222218`)是原始数据中前两个field value在一秒内的变化率。cnosDB计算两个field value之间的差值，并将该值标准化为一秒的变化率：
-  
-  ```
-  (2.126 - 2.028) / (360s / 1s)
-  --------------    ----------
-         |              |
-         |          the difference between the field values' timestamps / the default unit
-  second field value - first field value
-  ```
+  唯一的结果(`-0.011111111111111112`)是原始数据中前两个field value在一秒内的变化率。CnosDB计算两个field value之间的差值，并将该值标准化为一秒的变化率。
 
   #### 高级语法
 
@@ -3981,74 +4235,73 @@
   - #### 计算平均值的导数
 
   ```sql
-  > SELECT DERIVATIVE(MEAN("water_level")) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   derivative
-  ----                   ----------
-  2020-08-18T00:12:00Z   -0.0129999999999999
-  2020-08-18T00:24:00Z   -0.030999999999999694
+  > SELECT DERIVATIVE(MEAN("temperature")) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' GROUP BY time(12m)
+  name: air
+  time                 derivative
+  ----                 ----------
+  2021-09-18T00:00:00Z -14.25
+  2021-09-18T00:12:00Z 15.75
+  2021-09-18T00:24:00Z 3.6666666666666714
   ```
   
-  该查询返回field key `water_level`对应的每12分钟的时间间隔的field value的平均值的每12分钟变化率。
+  该查询返回field key `temperature`对应的每12分钟的时间间隔的field value的平均值的每12分钟变化率。
   
-  为了得到这些结果，cnosDB首先计算field key `water_level`对应的每12分钟的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`DERIVATIVE()`的情形一样：
+  为了得到这些结果，CnosDB首先计算field key `temperature`对应的每12分钟的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`DERIVATIVE()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算这些平均值的每12分钟的变化率。第一个结果(`-0.0129999999999999`)是原始数据中前两个field value在12分钟内的变化率。cnosDB计算两个field value之间的差值，并将该值标准化为12分钟的变化率：
+  然后，CnosDB计算这些平均值的每12分钟的变化率。第一个结果(`55.25`)是原始数据中前两个field value在12分钟内的变化率。CnosDB计算两个field value之间的差值，并将该值标准化为12分钟的变化率：
   
   ```
-  (2.077 - 2.09) / (12m / 12m)
-  -------------    ----------
-         |               |
-         |          the difference between the field values' timestamps / the default unit
+  (71 - 74.66666666666667)  / (12m / 12m)
+  -------------                   ----------
+         |                           |
+         |                     the difference between the field values' timestamps / the default unit
   second field value - first field value
   ```
 
   - #### 计算平均值的导数并指定`unit`
 
   ```sql
-  > SELECT DERIVATIVE(MEAN("water_level"),6m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   derivative
-  ----                   ----------
-  2020-08-18T00:12:00Z   -0.00649999999999995
-  2020-08-18T00:24:00Z   -0.015499999999999847
+  > SELECT DERIVATIVE(MEAN("temperature"),6m) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' GROUP BY time(12m)
+  name: air
+  time                 derivative
+  ----                 ----------
+  2021-09-18T00:00:00Z -7.125
+  2021-09-18T00:12:00Z 7.875
+  2021-09-18T00:24:00Z 1.8333333333333357
   ```
   
-  该查询返回field key `water_level`对应的每12分钟的时间间隔的field value的平均值的每六分钟变化率。
+  该查询返回field key `temperature`对应的每12分钟的时间间隔的field value的平均值的每六分钟变化率。
   
-  为了得到这些结果，cnosDB首先计算field key `water_level`对应的每12分钟的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`DERIVATIVE()`的情形一样：
+  为了得到这些结果，CnosDB首先计算field key `temperature`对应的每12分钟的时间间隔的field value的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`DERIVATIVE()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' GROUP BY time(12m)
+  > SELECT MEAN("temperature") FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' GROUP BY time(12m)
   
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算这些平均值的每六分钟的变化率。第一个结果(`-0.00649999999999995`)是原始数据中前两个field value在六分钟内的变化率。cnosDB计算两个field value之间的差值，并将该值标准化为六分钟的变化率：
+  然后，CnosDB计算这些平均值的每六分钟的变化率。第一个结果(`-55.25`)是原始数据中前两个field value在六分钟内的变化率。CnosDB计算两个field value之间的差值，并将该值标准化为六分钟的变化率：
   
   ```sql
-  (2.077 - 2.09) / (12m / 6m)
+  (71 - 74.66666666666667) / (12m / 6m)
   -------------    ----------
-         |               |
-         |          the difference between the field values' timestamps / the specified unit
+         |                         |
+         |                    the difference between the field values' timestamps / the specified unit
   second field value - first field value
   ```
 
@@ -4074,86 +4327,101 @@
 
   #### 示例
 
-  下面的示例将使用`NOAA_water_database`数据集的如下数据：
+  下面的示例将使用`oceanic_station`数据集的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                   water_level
-  ----                   -----------
-  2020-08-18T00:00:00Z   2.064
-  2020-08-18T00:06:00Z   2.116
-  2020-08-18T00:12:00Z   2.028
-  2020-08-18T00:18:00Z   2.126
-  2020-08-18T00:24:00Z   2.041
-  2020-08-18T00:30:00Z   2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的差值
 
   ```sql
-  > SELECT DIFFERENCE("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                   difference
-  ----                   ----------
-  2020-08-18T00:06:00Z   0.052000000000000046
-  2020-08-18T00:12:00Z   -0.08800000000000008
-  2020-08-18T00:18:00Z   0.09799999999999986
-  2020-08-18T00:24:00Z   -0.08499999999999996
-  2020-08-18T00:30:00Z   0.010000000000000231
+  > SELECT DIFFERENCE("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 difference
+  ----                 ----------
+  2021-09-18T00:03:00Z 9
+  2021-09-18T00:06:00Z -5
+  2021-09-18T00:09:00Z 0
+  2021-09-18T00:12:00Z 8
+  2021-09-18T00:15:00Z 11
+  2021-09-18T00:18:00Z 5
+  2021-09-18T00:21:00Z -11
+  2021-09-18T00:24:00Z 2
+  2021-09-18T00:27:00Z 9
+  2021-09-18T00:30:00Z -4
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value之间的差值。
+  该查询返回measurement `air`中field key `temperature`对应的field value之间的差值。
 
   - #### 计算measurement中每个field key对应的field value的差值
 
   ```sql
-  > SELECT DIFFERENCE(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                   difference_water_level
-  ----                   ----------------------
-  2020-08-18T00:06:00Z   0.052000000000000046
-  2020-08-18T00:12:00Z   -0.08800000000000008
-  2020-08-18T00:18:00Z   0.09799999999999986
-  2020-08-18T00:24:00Z   -0.08499999999999996
-  2020-08-18T00:30:00Z   0.010000000000000231
+  > SELECT DIFFERENCE(*) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 difference_pressure difference_temperature difference_visibility
+  ----                 ------------------- ---------------------- ---------------------
+  2021-09-18T00:03:00Z 8                   9                      6
+  2021-09-18T00:06:00Z -18                 -5                     3
+  2021-09-18T00:09:00Z 12                  0                      -22
+  2021-09-18T00:12:00Z -2                  8                      15
+  2021-09-18T00:15:00Z -6                  11                     -8
+  2021-09-18T00:18:00Z -3                  5                      -8
+  2021-09-18T00:21:00Z 9                   -11                    4
+  2021-09-18T00:24:00Z 2                   2                      11
+  2021-09-18T00:27:00Z 11                  9                      9
+  2021-09-18T00:30:00Z -15                 -4                     2
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value之间的差值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value之间的差值。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算与正则表达式匹配的每个field key对应的field value的差值
 
   ```sql
-  > SELECT DIFFERENCE(/water/) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                   difference_water_level
-  ----                   ----------------------
-  2020-08-18T00:06:00Z   0.052000000000000046
-  2020-08-18T00:12:00Z   -0.08800000000000008
-  2020-08-18T00:18:00Z   0.09799999999999986
-  2020-08-18T00:24:00Z   -0.08499999999999996
-  2020-08-18T00:30:00Z   0.010000000000000231
+  > SELECT DIFFERENCE(/visi/) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 difference_visibility
+  ----                 ----------
+  2021-09-18T00:03:00Z 6
+  2021-09-18T00:06:00Z 3
+  2021-09-18T00:09:00Z -22
+  2021-09-18T00:12:00Z 15
+  2021-09-18T00:15:00Z -8
+  2021-09-18T00:18:00Z -8
+  2021-09-18T00:21:00Z 4
+  2021-09-18T00:24:00Z 11
+  2021-09-18T00:27:00Z 9
+  2021-09-18T00:30:00Z 2
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值并包含单词`water`的field key对应的field value之间的差值。
+  该查询返回measurement `air`中每个存储数值并包含单词`water`的field key对应的field value之间的差值。
 
   - #### 计算指定field key对应的field value的差值并包含多个子句
 
   ```sql
-  > SELECT DIFFERENCE("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 2 OFFSET 2
-  
-  name: h2o_feet
-  time                   difference
-  ----                   ----------
-  2020-08-18T00:12:00Z   -0.09799999999999986
-  2020-08-18T00:06:00Z   0.08800000000000008
+  > SELECT DIFFERENCE("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 2 OFFSET 2
+  name: air
+  time                 difference
+  ----                 ----------
+  2021-09-18T00:21:00Z -2
+  2021-09-18T00:18:00Z 11
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value之间的差值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为2，并将返回的`point`偏移两个（即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value之间的差值，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为2，并将返回的`point`偏移两个（即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -4180,31 +4448,30 @@
   - #### 计算最大值之间的差值
 
   ```sql
-  > SELECT DIFFERENCE(MAX("water_level")) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   difference
-  ----                   ----------
-  2020-08-18T00:12:00Z   0.009999999999999787
-  2020-08-18T00:24:00Z   -0.07499999999999973
+  > SELECT DIFFERENCE(MAX("temperature")) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 difference
+  ----                 ----------
+  2021-09-18T00:00:00Z -19
+  2021-09-18T00:12:00Z 19
+  2021-09-18T00:24:00Z 0
   ```
   
-  该查询返回field key `water_level`对应的每12分钟的时间间隔的field value的最大值之间的差值。
+  该查询返回field key `temperature`对应的每12分钟的时间间隔的field value的最大值之间的差值。
   
-  为了得到这些结果，cnosDB首先计算field key `water_level`对应的每12分钟的时间间隔的field value的最大值。这一步跟同时使用`MAX()`函数和`GROUP BY time()`子句、但不使用`DIFFERENCE()`的情形一样：
+  为了得到这些结果，CnosDB首先计算field key `temperature`对应的每12分钟的时间间隔的field value的最大值。这一步跟同时使用`MAX()`函数和`GROUP BY time()`子句、但不使用`DIFFERENCE()`的情形一样：
 
   ```sql
-  > SELECT MAX("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   max
-  ----                   ---
-  2020-08-18T00:00:00Z   2.116
-  2020-08-18T00:12:00Z   2.126
-  2020-08-18T00:24:00Z   2.051
+  > SELECT MAX("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 max
+  ----                 ---
+  2021-09-18T00:00:00Z 60
+  2021-09-18T00:12:00Z 79
+  2021-09-18T00:24:00Z 79
   ```
   
-  然后，cnosDB计算这些最大值之间的差值。最终查询结果中的第一个`point`(`0.009999999999999787`)是`2.126`和`2.116`的差，第二个`point`(`-0.07499999999999973`)是`2.051`和`2.126`的差。
+  然后，CnosDB计算这些最大值之间的差值。最终查询结果中的第一个`point`(`0.009999999999999787`)是`2.126`和`2.116`的差，第二个`point`(`-0.07499999999999973`)是`2.051`和`2.126`的差。
 
 - ### ELAPSED()
 
@@ -4216,7 +4483,7 @@
   SELECT ELAPSED( [ * | <field_key> | /<regular_expression>/ ] [ , <unit> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
   
-  cnosDB计算时间戳之间的差值。参数`unit`的值是一个整数，后跟一个时间单位，它决定了返回的差值的单位。这个参数是可选的，不是必须要有的。如果没有指定`unit`的值，那么查询将返回以纳秒为单位的两个时间戳之间的差值。
+  CnosDB计算时间戳之间的差值。参数`unit`的值是一个整数，后跟一个时间单位，它决定了返回的差值的单位。这个参数是可选的，不是必须要有的。如果没有指定`unit`的值，那么查询将返回以纳秒为单位的两个时间戳之间的差值。
   
   `ELAPSED(field_key)`返回field key对应的时间戳之间的差值。
   
@@ -4228,87 +4495,92 @@
   
   #### 示例
 
-  下面的示例将使用`NOAA_water_database`数据集的如下数据：
+  下面的示例将使用`oceanic_station`数据集的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:12:00Z'
-  
-  name: h2o_feet
-  time                   water_level
-  ----                   -----------
-  2020-08-18T00:00:00Z   2.064
-  2020-08-18T00:06:00Z   2.116
-  2020-08-18T00:12:00Z   2.028
+  > SELECT "temperature" FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:24:00Z'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
   ```
 
   - #### 计算指定field key对应的field value之间的时间间隔
 
   ```sql
-  > SELECT ELAPSED("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:12:00Z'
-  
-  name: h2o_feet
-  time                   elapsed
-  ----                   -------
-  2020-08-18T00:06:00Z   360000000000
-  2020-08-18T00:12:00Z   360000000000
+  > SELECT ELAPSED("temperature") FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:24:00Z'
+  name: air
+  time                 elapsed
+  ----                 -------
+  2021-09-18T00:03:00Z 180000000000
+  2021-09-18T00:06:00Z 180000000000
+  2021-09-18T00:09:00Z 180000000000
+  2021-09-18T00:12:00Z 180000000000
+  2021-09-18T00:15:00Z 180000000000
+  2021-09-18T00:18:00Z 180000000000
+  2021-09-18T00:21:00Z 180000000000
+  2021-09-18T00:24:00Z 180000000000
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的时间戳之间的差值(以纳秒为单位)。
+  该查询返回measurement `air`中field key `temperature`对应的时间戳之间的差值(以纳秒为单位)。
 
   - #### 计算指定field key对应的field value之间的时间间隔并指定`unit`
 
   ```sql
-  > SELECT ELAPSED("water_level",1m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:12:00Z'
-  
-  name: h2o_feet
-  time                   elapsed
-  ----                   -------
-  2020-08-18T00:06:00Z   6
-  2020-08-18T00:12:00Z   6
+  > SELECT ELAPSED("temperature",1m) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:24:00Z'
+  name: air
+  time                 elapsed
+  ----                 -------
+  2021-09-18T00:03:00Z 3
+  2021-09-18T00:06:00Z 3
+  2021-09-18T00:09:00Z 3
+  2021-09-18T00:12:00Z 3
+  2021-09-18T00:15:00Z 3
+  2021-09-18T00:18:00Z 3
+  2021-09-18T00:21:00Z 3
+  2021-09-18T00:24:00Z 3
   ```
   
-  该查询返回measurement `h2o_feet`中每个field key对应的时间戳之间的差值(以分钟为单位)。measurement `h2o_feet`中有两个field key：`level description`和`water_level`。
+  该查询返回measurement `air`中每个field key对应的时间戳之间的差值(以分钟为单位)。measurement `air`中有两个field key：`pressure`和`temperature`。
 
   - #### 计算与正则表达式匹配的每个field key对应的field value之间的时间间隔并指定`unit`
 
   ```sql
-  > SELECT ELAPSED(*,1m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:12:00Z'
-  
-  name: h2o_feet
-  time                   elapsed_level description   elapsed_water_level
-  ----                   -------------------------   -------------------
-  2020-08-18T00:06:00Z   6                           6
-  2020-08-18T00:12:00Z   6                           6
+  > SELECT ELAPSED(/press/,1m) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:24:00Z'
+  name: air
+  time                 elapsed_pressure
+  ----                 ----------------
+  2021-09-18T00:03:00Z 3
+  2021-09-18T00:06:00Z 3
+  2021-09-18T00:09:00Z 3
+  2021-09-18T00:12:00Z 3
+  2021-09-18T00:15:00Z 3
+  2021-09-18T00:18:00Z 3
+  2021-09-18T00:21:00Z 3
+  2021-09-18T00:24:00Z 3
   ```
   
-  该查询返回measurement `h2o_feet`中每个包含单词`level`的field key对应的时间戳之间的差值(以秒为单位)。
-
-  - #### 计算与正则表达式匹配的每个field key对应的field value之间的时间间隔并指定`unit`
-
-  ```sql
-  > SELECT ELAPSED(/level/,1s) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:12:00Z'
-  
-  name: h2o_feet
-  time                   elapsed_level description   elapsed_water_level
-  ----                   -------------------------   -------------------
-  2020-08-18T00:06:00Z   360                         360
-  2020-08-18T00:12:00Z   360                         360
-  ```
-  
-  该查询返回measurement `h2o_feet`中每个包含单词`level`的field key对应的时间戳之间的差值(以秒为单位)。
+  该查询返回measurement `air`中每个包含单词`level`的field key对应的时间戳之间的差值(以秒为单位)。
 
   - #### 计算指定field key对应的field value之间的时间间隔并包含多个子句
 
   ```sql
-  > SELECT ELAPSED("water_level",1ms) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:12:00Z' ORDER BY time DESC LIMIT 1 OFFSET 1
-  
-  name: h2o_feet
-  time                   elapsed
-  ----                   -------
-  2020-08-18T00:00:00Z   -360000
+  > SELECT ELAPSED("temperature",1ms) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:24:00Z' ORDER BY time DESC LIMIT 1 OFFSET 1
+  name: air
+  time                 elapsed
+  ----                 -------
+  2021-09-18T00:18:00Z -180000
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的时间戳之间的差值(以毫秒为单位)，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:12:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为1，并将返回的`point`偏移一个（即前一个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的时间戳之间的差值(以毫秒为单位)，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2020-08-18T00:12:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为1，并将返回的`point`偏移一个（即前一个`point`不返回）。
   
   请注意，查询结果是负数；因为`ORDER BY time DESC`子句按递减的顺序对时间戳进行排序，所以`ELAPSED()`以相反的顺序计算时间戳的差值。
 
@@ -4316,18 +4588,19 @@
 
   - #### `ELAPSED()`和大于经过时间的单位
 
-  I如果`unit`的值大于时间戳之间的差值，那么cnosDB将会返回`0`。
+  I如果`unit`的值大于时间戳之间的差值，那么CnosDB将会返回`0`。
 
-  measurement `h2o_feet`中每六分钟有一个`point`。如果查询将`unit`设置为一小时，cnosDB将会返回`0`：
+  measurement `air`中每六分钟有一个`point`。如果查询将`unit`设置为一小时，CnosDB将会返回`0`：
 
   ```sql
-  > SELECT ELAPSED("water_level",1h) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:12:00Z'
-  
-  name: h2o_feet
-  time                   elapsed
-  ----                   -------
-  2020-08-18T00:06:00Z   0
-  2020-08-18T00:12:00Z   0
+  > SELECT ELAPSED("temperature",1h) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:12:00Z'
+  name: air
+  time                 elapsed
+  ----                 -------
+  2021-09-18T00:03:00Z 0
+  2021-09-18T00:06:00Z 0
+  2021-09-18T00:09:00Z 0
+  2021-09-18T00:12:00Z 0
   ```
 
   - #### `ELAPSED()`和`GROUP BY time()`子句同时使用
@@ -4336,26 +4609,24 @@
   
   `GROUP BY time()`子句决定了查询结果中的时间戳：每个时间戳表示时间间隔的开始时间。该行为也适用于嵌套的selector函数(例如`FIRST()`或`MAX()`)，而在其它的所有情况下，这些函数返回的是原始数据的特定时间戳。因为`GROUP BY time()`子句会覆盖原始时间戳，所以`ELAPSED()`始终返回与`GROUP BY time()`的时间间隔相同的时间戳。
   
-  下面代码块中的第一个查询尝试使用`ELAPSED()`和`GROUP BY time()`子句来查找最小的`water_level`的值之间经过的时间(以分钟为单位)。查询的两个时间间隔都返回了12分钟。
+  下面代码块中的第一个查询尝试使用`ELAPSED()`和`GROUP BY time()`子句来查找最小的`temperature`的值之间经过的时间(以分钟为单位)。查询的两个时间间隔都返回了12分钟。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔的`water_level`的最小值。代码块中的第二个查询展示了这一步的结果。这一步跟同时使用`MIN()`函数和`GROUP BY time()`子句、但不使用`ELAPSED()`的情形一样。请注意，第二个查询返回的时间戳间隔12分钟。在原始数据中，第一个结果(`2.057`)发生在`2020-08-18T00:42:00Z`，但是`GROUP BY time()`子句覆盖了原始的时间戳。因为时间戳由`GROUP BY time()`的时间间隔(而不是原始数据)决定，所以`ELAPSED()`始终返回与GROUP BY time()的时间间隔相同的时间戳。
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔的`temperature`的最小值。代码块中的第二个查询展示了这一步的结果。这一步跟同时使用`MIN()`函数和`GROUP BY time()`子句、但不使用`ELAPSED()`的情形一样。请注意，第二个查询返回的时间戳间隔12分钟。在原始数据中，第一个结果(`2.057`)发生在`2020-08-18T00:42:00Z`，但是`GROUP BY time()`子句覆盖了原始的时间戳。因为时间戳由`GROUP BY time()`的时间间隔(而不是原始数据)决定，所以`ELAPSED()`始终返回与GROUP BY time()的时间间隔相同的时间戳。
   
   ```sql
-  > SELECT ELAPSED(MIN("water_level"),1m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:36:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m)
+  > SELECT ELAPSED(MIN("temperature"),1m) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-08T00:36:00Z' AND time <= '2021-09-08T00:54:00Z' GROUP BY time(12m)
+  name: air
+  time                 elapsed
+  ----                 -------
+  2021-09-08T00:36:00Z 12
+  2021-09-08T00:48:00Z 12
   
-  name: h2o_feet
-  time                   elapsed
-  ----                   -------
-  2020-08-18T00:36:00Z   12
-  2020-08-18T00:48:00Z   12
-  
-  > SELECT MIN("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:36:00Z' AND time <= '2020-08-18T00:54:00Z' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   min
-  ----                   ---
-  2020-08-18T00:36:00Z   2.057    <--- Actually occurs at 2020-08-18T00:42:00Z
-  2020-08-18T00:48:00Z   1.991
+  > SELECT MIN("temperature") FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-08T00:36:00Z' AND time <= '2021-09-08T00:54:00Z' GROUP BY time(12m)
+  name: air
+  time                 min
+  ----                 ---
+  2021-09-08T00:36:00Z 50
+  2021-09-08T00:48:00Z 73  <--- Actually occurs at 2021-09-08T00:48:00Z
   ```
 
 - ### EXP()
@@ -4381,70 +4652,81 @@
   下面的示例将使用[示例数据](https://gist.github.com/sanderson/8f8aec94a60b2c31a61f44a37737bfea?spm=a2c4g.11186623.2.85.41fc3ee27HC1R6)中的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  water_level
-  ----                  -----------
-  2020-08-18T00:00:00Z  2.064
-  2020-08-18T00:06:00Z  2.116
-  2020-08-18T00:12:00Z  2.028
-  2020-08-18T00:18:00Z  2.126
-  2020-08-18T00:24:00Z  2.041
-  2020-08-18T00:30:00Z  2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的指数
 
   ```sql
-  > SELECT EXP("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  exp
-  ----                  ---
-  2020-08-18T00:00:00Z  7.877416541092307
-  2020-08-18T00:06:00Z  8.297879498060171
-  2020-08-18T00:12:00Z  7.598873404088091
-  2020-08-18T00:18:00Z  8.381274573459967
-  2020-08-18T00:24:00Z  7.6983036546645645
-  2020-08-18T00:30:00Z  7.775672892658607
+  > SELECT EXP("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 exp
+  ----                 ---
+  2021-09-18T00:00:00Z 1.4093490824269389e+22
+  2021-09-18T00:03:00Z 1.1420073898156842e+26
+  2021-09-18T00:06:00Z 7.694785265142018e+23
+  2021-09-18T00:09:00Z 7.694785265142018e+23
+  2021-09-18T00:12:00Z 2.29378315946961e+27
+  2021-09-18T00:15:00Z 1.3733829795401763e+32
+  2021-09-18T00:18:00Z 2.0382810665126688e+34
+  2021-09-18T00:21:00Z 3.404276049931741e+29
+  2021-09-18T00:24:00Z 2.515438670919167e+30
+  2021-09-18T00:27:00Z 2.0382810665126688e+34
+  2021-09-18T00:30:00Z 3.7332419967990015e+32
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的指数。
+  该查询返回measurement `air`中field key `temperature`对应的field value的指数。
 
   - #### 计算measurement中每个field key对应的field value的指数
 
   ```sql
-  > SELECT EXP(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  exp_water_level
-  ----                  ---------------
-  2020-08-18T00:00:00Z  7.877416541092307
-  2020-08-18T00:06:00Z  8.297879498060171
-  2020-08-18T00:12:00Z  7.598873404088091
-  2020-08-18T00:18:00Z  8.381274573459967
-  2020-08-18T00:24:00Z  7.6983036546645645
-  2020-08-18T00:30:00Z  7.775672892658607
+  > SELECT EXP(*) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 exp_pressure           exp_temperature        exp_visibility
+  ----                 ------------           ---------------        --------------
+  2021-09-18T00:00:00Z 6.235149080811617e+27  1.4093490824269389e+22 3.404276049931741e+29
+  2021-09-18T00:03:00Z 1.8586717452841279e+31 1.1420073898156842e+26 1.3733829795401763e+32
+  2021-09-18T00:06:00Z 2.830753303274694e+23  7.694785265142018e+23  2.7585134545231703e+33
+  2021-09-18T00:09:00Z 4.607186634331292e+28  7.694785265142018e+23  7.694785265142018e+23
+  2021-09-18T00:12:00Z 6.235149080811617e+27  2.29378315946961e+27   2.515438670919167e+30
+  2021-09-18T00:15:00Z 1.545538935590104e+25  1.3733829795401763e+32 8.438356668741455e+26
+  2021-09-18T00:18:00Z 7.694785265142018e+23  2.0382810665126688e+34 2.830753303274694e+23
+  2021-09-18T00:21:00Z 6.235149080811617e+27  3.404276049931741e+29  1.545538935590104e+25
+  2021-09-18T00:24:00Z 4.607186634331292e+28  2.515438670919167e+30  9.253781725587789e+29
+  2021-09-18T00:27:00Z 2.7585134545231703e+33 2.0382810665126688e+34 7.49841699699012e+33
+  2021-09-18T00:30:00Z 8.438356668741455e+26  3.7332419967990015e+32 5.54062238439351e+34
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的指数。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的指数。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算指定field key对应的field value的指数并包含多个子句
 
   ```sql
-  > SELECT EXP("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  exp
-  ----                  ---
-  2020-08-18T00:18:00Z  8.381274573459967
-  2020-08-18T00:12:00Z  7.598873404088091
-  2020-08-18T00:06:00Z  8.297879498060171
-  2020-08-18T00:00:00Z  7.877416541092307
+  > SELECT EXP("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 exp
+  ----                 ---
+  2021-09-18T00:24:00Z 2.515438670919167e+30
+  2021-09-18T00:21:00Z 3.404276049931741e+29
+  2021-09-18T00:18:00Z 2.0382810665126688e+34
+  2021-09-18T00:15:00Z 1.3733829795401763e+32
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的指数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回)。
+  该查询返回measurement `air`中field key `temperature`对应的field value的指数，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回)。
 
   #### 高级语法
 
@@ -4472,32 +4754,30 @@
   - #### 计算平均值的指数
 
   ```sql
-  > SELECT EXP(MEAN("water_level")) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  exp
-  ----                  ---
-  2020-08-18T00:00:00Z  8.084915164305059
-  2020-08-18T00:12:00Z  7.980491491670466
-  2020-08-18T00:24:00Z  7.736891562315577
+  > SELECT EXP(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 exp
+  ----                 ---
+  2021-09-18T00:00:00Z 9.880299856396672e+23
+  2021-09-18T00:12:00Z 6.837671229762744e+30
+  2021-09-18T00:24:00Z 2.674984780655511e+32
   ```
   
-  该查询返回每12分钟的时间间隔对应的`water_level`的平均值的绝对值。
+  该查询返回每12分钟的时间间隔对应的`temperature`的平均值的绝对值。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔对应的`water_level`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`EXP()`的情形一样：
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔对应的`temperature`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`EXP()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  .然后，cnosDB计算这些平均值的指数。
+  .然后，CnosDB计算这些平均值的指数。
 
   ### FLOOR()
 
@@ -4519,73 +4799,84 @@
 
   #### 示例
 
-  下面的示例将使用`NOAA_water_database`数据集的如下数据：
+  下面的示例将使用`oceanic_station`数据集的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  water_level
-  ----                  -----------
-  2020-08-18T00:00:00Z  2.064
-  2020-08-18T00:06:00Z  2.116
-  2020-08-18T00:12:00Z  2.028
-  2020-08-18T00:18:00Z  2.126
-  2020-08-18T00:24:00Z  2.041
-  2020-08-18T00:30:00Z  2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的小于field value的最大整数
 
   ```sql
-  > SELECT FLOOR("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  floor
-  ----                  -----
-  2020-08-18T00:00:00Z  2
-  2020-08-18T00:06:00Z  2
-  2020-08-18T00:12:00Z  2
-  2020-08-18T00:18:00Z  2
-  2020-08-18T00:24:00Z  2
-  2020-08-18T00:30:00Z  2
+  > SELECT FLOOR("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 floor
+  ----                 -----
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的小于field value的最大整数。
+  该查询返回measurement `air`中field key `temperature`对应的小于field value的最大整数。
 
   - #### 计算measurement中每个field key对应的小于field value的最大整数
 
   ```sql
-  > SELECT FLOOR(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  floor_water_level
-  ----                  -----------------
-  2020-08-18T00:00:00Z  2
-  2020-08-18T00:06:00Z  2
-  2020-08-18T00:12:00Z  2
-  2020-08-18T00:18:00Z  2
-  2020-08-18T00:24:00Z  2
-  2020-08-18T00:30:00Z  2
+  > SELECT FLOOR(*) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 floor_pressure floor_temperature floor_visibility
+  ----                 -------------- ----------------- ----------------
+  2021-09-18T00:00:00Z 64             51                68
+  2021-09-18T00:03:00Z 72             60                74
+  2021-09-18T00:06:00Z 54             55                77
+  2021-09-18T00:09:00Z 66             55                55
+  2021-09-18T00:12:00Z 64             63                70
+  2021-09-18T00:15:00Z 58             74                62
+  2021-09-18T00:18:00Z 55             79                54
+  2021-09-18T00:21:00Z 64             68                58
+  2021-09-18T00:24:00Z 66             70                69
+  2021-09-18T00:27:00Z 77             79                78
+  2021-09-18T00:30:00Z 62             75                80
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的小于field value的最大整数。measurement `h2o_feet`只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的小于field value的最大整数。measurement `air`只有一个数值类型的field：`temperature`。
 
   - #### 计算指定field key对应的小于field value的最大整数并包含多个子句
 
   ```sql
-  > SELECT FLOOR("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  floor
-  ----                  -----
-  2020-08-18T00:18:00Z  2
-  2020-08-18T00:12:00Z  2
-  2020-08-18T00:06:00Z  2
-  2020-08-18T00:00:00Z  2
+  > SELECT FLOOR("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 floor
+  ----                 -----
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:15:00Z 74
   ```
   
-  该查询返回field key `water_level`对应的小于field value的最大整数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回)。
+  该查询返回field key `temperature`对应的小于field value的最大整数，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回)。
 
   #### 高级语法
 
@@ -4613,32 +4904,30 @@
   - #### 计算小于平均值的最大整数
 
   ```sql
-  > SELECT FLOOR(MEAN("water_level")) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  floor
-  ----                  -----
-  2020-08-18T00:00:00Z  2
-  2020-08-18T00:12:00Z  2
-  2020-08-18T00:24:00Z  2
+  > SELECT FLOOR(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 floor
+  ----                 -----
+  2021-09-18T00:00:00Z 55
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74
   ```
   
-  该查询返回每12分钟的时间间隔对应的小于`water_level`平均值的最大整数。
+  该查询返回每12分钟的时间间隔对应的小于`temperature`平均值的最大整数。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔对应的`water_level`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`FLOOR()`的情形一样：
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔对应的`temperature`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`FLOOR()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算小于这些平均值的最大整数。
+  然后，CnosDB计算小于这些平均值的最大整数。
 
 - ### LN()
 
@@ -4663,70 +4952,81 @@
   下面的示例将使用[示例数据](https://gist.github.com/sanderson/8f8aec94a60b2c31a61f44a37737bfea?spm=a2c4g.11186623.2.86.41fc3ee27HC1R6)中的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  water_level
-  ----                  -----------
-  2020-08-18T00:00:00Z  2.064
-  2020-08-18T00:06:00Z  2.116
-  2020-08-18T00:12:00Z  2.028
-  2020-08-18T00:18:00Z  2.126
-  2020-08-18T00:24:00Z  2.041
-  2020-08-18T00:30:00Z  2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的自然对数
 
   ```sql
-  > SELECT LN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  ln
-  ----                  --
-  2020-08-18T00:00:00Z  0.7246458476193163
-  2020-08-18T00:06:00Z  0.749527513996053
-  2020-08-18T00:12:00Z  0.7070500857289368
-  2020-08-18T00:18:00Z  0.7542422799197561
-  2020-08-18T00:24:00Z  0.7134398838277077
-  2020-08-18T00:30:00Z  0.7183274790902436
+  > SELECT LN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 ln
+  ----                 --
+  2021-09-18T00:00:00Z 3.9318256327243257
+  2021-09-18T00:03:00Z 4.0943445622221
+  2021-09-18T00:06:00Z 4.007333185232471
+  2021-09-18T00:09:00Z 4.007333185232471
+  2021-09-18T00:12:00Z 4.143134726391533
+  2021-09-18T00:15:00Z 4.304065093204169
+  2021-09-18T00:18:00Z 4.3694478524670215
+  2021-09-18T00:21:00Z 4.219507705176107
+  2021-09-18T00:24:00Z 4.248495242049359
+  2021-09-18T00:27:00Z 4.3694478524670215
+  2021-09-18T00:30:00Z 4.31748811353631
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的自然对数。
+  该查询返回measurement `air`中field key `temperature`对应的field value的自然对数。
 
   - #### 计算measurement中每个field key对应的field value的自然对数
 
   ```sql
-  > SELECT LN(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  ln_water_level
-  ----                  --------------
-  2020-08-18T00:00:00Z  0.7246458476193163
-  2020-08-18T00:06:00Z  0.749527513996053
-  2020-08-18T00:12:00Z  0.7070500857289368
-  2020-08-18T00:18:00Z  0.7542422799197561
-  2020-08-18T00:24:00Z  0.7134398838277077
-  2020-08-18T00:30:00Z  0.7183274790902436
+  > SELECT LN(*) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 ln_pressure        ln_temperature     ln_visibility
+  ----                 -----------        --------------     -------------
+  2021-09-18T00:00:00Z 4.1588830833596715 3.9318256327243257 4.219507705176107
+  2021-09-18T00:03:00Z 4.276666119016055  4.0943445622221    4.304065093204169
+  2021-09-18T00:06:00Z 3.9889840465642745 4.007333185232471  4.343805421853684
+  2021-09-18T00:09:00Z 4.189654742026425  4.007333185232471  4.007333185232471
+  2021-09-18T00:12:00Z 4.1588830833596715 4.143134726391533  4.248495242049359
+  2021-09-18T00:15:00Z 4.060443010546419  4.304065093204169  4.127134385045092
+  2021-09-18T00:18:00Z 4.007333185232471  4.3694478524670215 3.9889840465642745
+  2021-09-18T00:21:00Z 4.1588830833596715 4.219507705176107  4.060443010546419
+  2021-09-18T00:24:00Z 4.189654742026425  4.248495242049359  4.23410650459726
+  2021-09-18T00:27:00Z 4.343805421853684  4.3694478524670215 4.356708826689592
+  2021-09-18T00:30:00Z 4.127134385045092  4.31748811353631   4.382026634673881
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的自然对数。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的自然对数。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算指定field key对应的field value的自然对数并包含多个子句
 
   ```sql
-  > SELECT LN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  ln
-  ----                  --
-  2020-08-18T00:18:00Z  0.7542422799197561
-  2020-08-18T00:12:00Z  0.7070500857289368
-  2020-08-18T00:06:00Z  0.749527513996053
-  2020-08-18T00:00:00Z  0.7246458476193163
+  > SELECT LN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 ln
+  ----                 --
+  2021-09-18T00:24:00Z 4.248495242049359
+  2021-09-18T00:21:00Z 4.219507705176107
+  2021-09-18T00:18:00Z 4.3694478524670215
+  2021-09-18T00:15:00Z 4.304065093204169
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的自然对数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value的自然对数，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -4756,32 +5056,30 @@
   - #### 计算平均值的自然对数
 
   ```sql
-  > SELECT LN(MEAN("water_level")) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  ln
-  ----                  --
-  2020-08-18T00:00:00Z  0.7371640659767196
-  2020-08-18T00:12:00Z  0.7309245448939752
-  2020-08-18T00:24:00Z  0.7158866675294349
+  > SELECT LN(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 ln
+  ----                 --
+  2021-09-18T00:00:00Z 4.0118683403978626
+  2021-09-18T00:12:00Z 4.2626798770413155
+  2021-09-18T00:24:00Z 4.31303376318693
   ```
   
-  该查询返回每12分钟的时间间隔对应的`water_level`的平均值的自然对数。
+  该查询返回每12分钟的时间间隔对应的`temperature`的平均值的自然对数。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔对应的`water_level`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`LN()`的情形一样：
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔对应的`temperature`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`LN()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算这些平均值的自然对数。
+  然后，CnosDB计算这些平均值的自然对数。
 
 - ### LOG()
 
@@ -4806,69 +5104,80 @@
   下面的示例将使用[示例数据](https://gist.github.com/sanderson/8f8aec94a60b2c31a61f44a37737bfea?spm=a2c4g.11186623.2.87.41fc3ee27HC1R6)中的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  water_level
-  ----                  -----------
-  2020-08-18T00:00:00Z  2.064
-  2020-08-18T00:06:00Z  2.116
-  2020-08-18T00:12:00Z  2.028
-  2020-08-18T00:18:00Z  2.126
-  2020-08-18T00:24:00Z  2.041
-  2020-08-18T00:30:00Z  2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的以4为底数的对数
 
   ```sql
-  > SELECT LOG("water_level", 4) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  log
-  ----                  ---
-  2020-08-18T00:00:00Z  0.5227214853805835
-  2020-08-18T00:06:00Z  0.5406698137259695
-  2020-08-18T00:12:00Z  0.5100288261706268
-  2020-08-18T00:18:00Z  0.5440707984345088
-  2020-08-18T00:24:00Z  0.5146380911853161
-  2020-08-18T00:30:00Z  0.5181637459088826
+  > SELECT LOG("temperature", 4) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 log
+  ----                 ---
+  2021-09-18T00:00:00Z 2.836212670985748
+  2021-09-18T00:03:00Z 2.9534452978042594
+  2021-09-18T00:06:00Z 2.89067985676233
+  2021-09-18T00:09:00Z 2.89067985676233
+  2021-09-18T00:12:00Z 2.9886399617499584
+  2021-09-18T00:15:00Z 3.1047266828144746
+  2021-09-18T00:18:00Z 3.1518903740885515
+  2021-09-18T00:21:00Z 3.04373142062517
+  2021-09-18T00:24:00Z 3.0646415084724836
+  2021-09-18T00:27:00Z 3.1518903740885515
+  2021-09-18T00:30:00Z 3.11440934524794
   ```
 
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的以4为底数的对数。
+  该查询返回measurement `air`中field key `temperature`对应的field value的以4为底数的对数。
 
   - #### 计算measurement中每个field key对应的field value的以4为底数的对数
   ```sql
-  > SELECT LOG(*, 4) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  log_water_level
-  ----                  ---------------
-  2020-08-18T00:00:00Z  0.5227214853805835
-  2020-08-18T00:06:00Z  0.5406698137259695
-  2020-08-18T00:12:00Z  0.5100288261706268
-  2020-08-18T00:18:00Z  0.5440707984345088
-  2020-08-18T00:24:00Z  0.5146380911853161
-  2020-08-18T00:30:00Z  0.5181637459088826
+  > SELECT LOG(*, 4) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 log_pressure       log_temperature    log_visibility
+  ----                 ------------       ---------------    --------------
+  2021-09-18T00:00:00Z 3                  2.836212670985748  3.04373142062517
+  2021-09-18T00:03:00Z 3.084962500721156  2.9534452978042594 3.1047266828144746
+  2021-09-18T00:06:00Z 2.8774437510817346 2.89067985676233   3.133393270347451
+  2021-09-18T00:09:00Z 3.0221970596792267 2.89067985676233   2.89067985676233
+  2021-09-18T00:12:00Z 3                  2.9886399617499584 3.0646415084724836
+  2021-09-18T00:15:00Z 2.928990497563786  3.1047266828144746 2.977098155193438
+  2021-09-18T00:18:00Z 2.89067985676233   3.1518903740885515 2.8774437510817346
+  2021-09-18T00:21:00Z 3                  3.04373142062517   2.928990497563786
+  2021-09-18T00:24:00Z 3.0221970596792267 3.0646415084724836 3.054262228389085
+  2021-09-18T00:27:00Z 3.133393270347451  3.1518903740885515 3.1427011094311244
+  2021-09-18T00:30:00Z 2.977098155193438  3.11440934524794   3.160964047443681
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的以4为底数的对数。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的以4为底数的对数。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算指定field key对应的field value的以4为底数的对数并包含多个子句
 
   ```sql
-  > SELECT LOG("water_level", 4) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  log
-  ----                  ---
-  2020-08-18T00:18:00Z  0.5440707984345088
-  2020-08-18T00:12:00Z  0.5100288261706268
-  2020-08-18T00:06:00Z  0.5406698137259695
-  2020-08-18T00:00:00Z  0.5227214853805835
+  > SELECT LOG("temperature", 4) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 log
+  ----                 ---
+  2021-09-18T00:24:00Z 3.0646415084724836
+  2021-09-18T00:21:00Z 3.04373142062517
+  2021-09-18T00:18:00Z 3.1518903740885515
+  2021-09-18T00:15:00Z 3.1047266828144746
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的以4为底数的对数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value的以4为底数的对数，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -4896,32 +5205,30 @@
   - #### 计算平均值的以4为底数的对数
 
   ```sql
-  > SELECT LOG(MEAN("water_level"), 4) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  log
-  ----                  ---
-  2020-08-18T00:00:00Z  0.531751471153079
-  2020-08-18T00:12:00Z  0.5272506080912802
-  2020-08-18T00:24:00Z  0.5164030725416209
+  > SELECT LOG(MEAN("temperature"), 4) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 log
+  ----                 ---
+  2021-09-18T00:00:00Z 2.8939512796957163
+  2021-09-18T00:12:00Z 3.074873559752341
+  2021-09-18T00:24:00Z 3.1111962106682243
   ```
   
-  该查询返回每12分钟的时间间隔对应的`water_level`的平均值的以4为底数的对数。
+  该查询返回每12分钟的时间间隔对应的`temperature`的平均值的以4为底数的对数。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔对应的`water_level`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`LOG()`的情形一样：
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔对应的`temperature`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`LOG()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算这些平均值的以4为底数的对数。
+  然后，CnosDB计算这些平均值的以4为底数的对数。
 
 - ### LOG2()
 
@@ -4946,70 +5253,81 @@
   下面的示例将使用[示例数据](https://gist.github.com/sanderson/8f8aec94a60b2c31a61f44a37737bfea?spm=a2c4g.11186623.2.88.41fc3ee27HC1R6)中的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  water_level
-  ----                  -----------
-  2020-08-18T00:00:00Z  2.064
-  2020-08-18T00:06:00Z  2.116
-  2020-08-18T00:12:00Z  2.028
-  2020-08-18T00:18:00Z  2.126
-  2020-08-18T00:24:00Z  2.041
-  2020-08-18T00:30:00Z  2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的以2为底数的对数
 
   ```sql
-  > SELECT LOG2("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  log2
-  ----                  ----
-  2020-08-18T00:00:00Z  1.045442970761167
-  2020-08-18T00:06:00Z  1.081339627451939
-  2020-08-18T00:12:00Z  1.0200576523412537
-  2020-08-18T00:18:00Z  1.0881415968690176
-  2020-08-18T00:24:00Z  1.0292761823706322
-  2020-08-18T00:30:00Z  1.0363274918177652
+  > SELECT LOG2("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 log2
+  ----                 ----
+  2021-09-18T00:00:00Z 5.672425341971495
+  2021-09-18T00:03:00Z 5.906890595608519
+  2021-09-18T00:06:00Z 5.78135971352466
+  2021-09-18T00:09:00Z 5.78135971352466
+  2021-09-18T00:12:00Z 5.977279923499917
+  2021-09-18T00:15:00Z 6.20945336562895
+  2021-09-18T00:18:00Z 6.303780748177103
+  2021-09-18T00:21:00Z 6.087462841250339
+  2021-09-18T00:24:00Z 6.129283016944966
+  2021-09-18T00:27:00Z 6.303780748177103
+  2021-09-18T00:30:00Z 6.22881869049588
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的以2为底数的对数。
+  该查询返回measurement `air`中field key `temperature`对应的field value的以2为底数的对数。
 
   - #### 计算measurement中每个field key对应的field value的以2为底数的对数
 
   ```sql
-  > SELECT LOG2(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  log2_water_level
-  ----                  ----------------
-  2020-08-18T00:00:00Z  1.045442970761167
-  2020-08-18T00:06:00Z  1.081339627451939
-  2020-08-18T00:12:00Z  1.0200576523412537
-  2020-08-18T00:18:00Z  1.0881415968690176
-  2020-08-18T00:24:00Z  1.0292761823706322
-  2020-08-18T00:30:00Z  1.0363274918177652
+  > SELECT LOG2(*) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 log2_pressure     log2_temperature  log2_visibility
+  ----                 -------------     ----------------  ---------------
+  2021-09-18T00:00:00Z 6                 5.672425341971495 6.087462841250339
+  2021-09-18T00:03:00Z 6.169925001442312 5.906890595608519 6.20945336562895
+  2021-09-18T00:06:00Z 5.754887502163468 5.78135971352466  6.266786540694901
+  2021-09-18T00:09:00Z 6.044394119358453 5.78135971352466  5.78135971352466
+  2021-09-18T00:12:00Z 6                 5.977279923499917 6.129283016944966
+  2021-09-18T00:15:00Z 5.857980995127572 6.20945336562895  5.954196310386875
+  2021-09-18T00:18:00Z 5.78135971352466  6.303780748177103 5.754887502163468
+  2021-09-18T00:21:00Z 6                 6.087462841250339 5.857980995127572
+  2021-09-18T00:24:00Z 6.044394119358453 6.129283016944966 6.108524456778169
+  2021-09-18T00:27:00Z 6.266786540694901 6.303780748177103 6.285402218862249
+  2021-09-18T00:30:00Z 5.954196310386875 6.22881869049588  6.321928094887363
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的以2为底数的对数。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的以2为底数的对数。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算指定field key对应的field value的以2为底数的对数并包含多个子句
 
   ```sql
-  > SELECT LOG2("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  log2
-  ----                  ----
-  2020-08-18T00:18:00Z  1.0881415968690176
-  2020-08-18T00:12:00Z  1.0200576523412537
-  2020-08-18T00:06:00Z  1.081339627451939
-  2020-08-18T00:00:00Z  1.045442970761167
+  > SELECT LOG2("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 log2
+  ----                 ----
+  2021-09-18T00:24:00Z 6.129283016944966
+  2021-09-18T00:21:00Z 6.087462841250339
+  2021-09-18T00:18:00Z 6.303780748177103
+  2021-09-18T00:15:00Z 6.20945336562895
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的以2为底数的对数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value的以2为底数的对数，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -5037,32 +5355,30 @@
   - #### 计算平均值的以2为底数的对数
 
   ```sql
-  > SELECT LOG2(MEAN("water_level")) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  log2
-  ----                  ----
-  2020-08-18T00:00:00Z  1.063502942306158
-  2020-08-18T00:12:00Z  1.0545012161825604
-  2020-08-18T00:24:00Z  1.0328061450832418
+  > SELECT LOG2(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 log2
+  ----                 ----
+  2021-09-18T00:00:00Z 5.787902559391432
+  2021-09-18T00:12:00Z 6.149747119504682
+  2021-09-18T00:24:00Z 6.222392421336448
   ```
   
-  该查询返回每12分钟的时间间隔对应的`water_level`的平均值的以2为底数的对数。
+  该查询返回每12分钟的时间间隔对应的`temperature`的平均值的以2为底数的对数。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔对应的`water_level`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`LOG2()`的情形一样：
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔对应的`temperature`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`LOG2()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算这些平均值的以2为底数的对数。
+  然后，CnosDB计算这些平均值的以2为底数的对数。
 
 - ### LOG10()
 
@@ -5087,70 +5403,81 @@
   下面的示例将使用[示例数据](https://gist.github.com/sanderson/8f8aec94a60b2c31a61f44a37737bfea?spm=a2c4g.11186623.2.89.41fc3ee27HC1R6)中的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  water_level
-  ----                  -----------
-  2020-08-18T00:00:00Z  2.064
-  2020-08-18T00:06:00Z  2.116
-  2020-08-18T00:12:00Z  2.028
-  2020-08-18T00:18:00Z  2.126
-  2020-08-18T00:24:00Z  2.041
-  2020-08-18T00:30:00Z  2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的以10为底数的对数
 
   ```sql
-  > SELECT LOG10("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  log10
-  ----                  -----
-  2020-08-18T00:00:00Z  0.3147096929551737
-  2020-08-18T00:06:00Z  0.32551566336314813
-  2020-08-18T00:12:00Z  0.3070679506612984
-  2020-08-18T00:18:00Z  0.32756326018727794
-  2020-08-18T00:24:00Z  0.3098430047160705
-  2020-08-18T00:30:00Z  0.3119656603683663
+  > SELECT LOG10("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 log10
+  ----                 -----
+  2021-09-18T00:00:00Z 1.7075701760979363
+  2021-09-18T00:03:00Z 1.7781512503836434
+  2021-09-18T00:06:00Z 1.7403626894942439
+  2021-09-18T00:09:00Z 1.7403626894942439
+  2021-09-18T00:12:00Z 1.7993405494535817
+  2021-09-18T00:15:00Z 1.869231719730976
+  2021-09-18T00:18:00Z 1.8976270912904414
+  2021-09-18T00:21:00Z 1.8325089127062364
+  2021-09-18T00:24:00Z 1.845098040014257
+  2021-09-18T00:27:00Z 1.8976270912904414
+  2021-09-18T00:30:00Z 1.8750612633916999
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的以10为底数的对数。
+  该查询返回measurement `air`中field key `temperature`对应的field value的以10为底数的对数。
 
   - #### 计算measurement中每个field key对应的field value的以10为底数的对数
 
   ```sql
-  > SELECT LOG10(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  log10_water_level
-  ----                  -----------------
-  2020-08-18T00:00:00Z  0.3147096929551737
-  2020-08-18T00:06:00Z  0.32551566336314813
-  2020-08-18T00:12:00Z  0.3070679506612984
-  2020-08-18T00:18:00Z  0.32756326018727794
-  2020-08-18T00:24:00Z  0.3098430047160705
-  2020-08-18T00:30:00Z  0.3119656603683663
+  > SELECT LOG10(*) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 log10_pressure     log10_temperature  log10_visibility
+  ----                 --------------     -----------------  ----------------
+  2021-09-18T00:00:00Z 1.806179973983887  1.7075701760979363 1.8325089127062364
+  2021-09-18T00:03:00Z 1.8573324964312685 1.7781512503836434 1.869231719730976
+  2021-09-18T00:06:00Z 1.7323937598229686 1.7403626894942439 1.8864907251724818
+  2021-09-18T00:09:00Z 1.8195439355418686 1.7403626894942439 1.7403626894942439
+  2021-09-18T00:12:00Z 1.806179973983887  1.7993405494535817 1.845098040014257
+  2021-09-18T00:15:00Z 1.7634279935629371 1.869231719730976  1.792391689498254
+  2021-09-18T00:18:00Z 1.7403626894942439 1.8976270912904414 1.7323937598229686
+  2021-09-18T00:21:00Z 1.806179973983887  1.8325089127062364 1.7634279935629371
+  2021-09-18T00:24:00Z 1.8195439355418686 1.845098040014257  1.8388490907372554
+  2021-09-18T00:27:00Z 1.8864907251724818 1.8976270912904414 1.8920946026904804
+  2021-09-18T00:30:00Z 1.792391689498254  1.8750612633916999 1.9030899869919433
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的以10为底数的对数。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的以10为底数的对数。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算指定field key对应的field value的以10为底数的对数并包含多个子句
 
   ```sql
-  > SELECT LOG10("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  log10
-  ----                  -----
-  2020-08-18T00:18:00Z  0.32756326018727794
-  2020-08-18T00:12:00Z  0.3070679506612984
-  2020-08-18T00:06:00Z  0.32551566336314813
-  2020-08-18T00:00:00Z  0.3147096929551737
+  > SELECT LOG10("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 log10
+  ----                 -----
+  2021-09-18T00:24:00Z 1.845098040014257
+  2021-09-18T00:21:00Z 1.8325089127062364
+  2021-09-18T00:18:00Z 1.8976270912904414
+  2021-09-18T00:15:00Z 1.869231719730976
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的以10为底数的对数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value的以10为底数的对数，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -5178,32 +5505,30 @@
   - #### 计算平均值的以10为底数的对数
 
   ```sql
-  > SELECT LOG10(MEAN("water_level")) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  log10
-  ----                  -----
-  2020-08-18T00:00:00Z  0.32014628611105395
-  2020-08-18T00:12:00Z  0.3174364965350991
-  2020-08-18T00:24:00Z  0.3109056293761414
+  > SELECT LOG10(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 log10
+  ----                 -----
+  2021-09-18T00:00:00Z 1.7423322823571483
+  2021-09-18T00:12:00Z 1.8512583487190752
+  2021-09-18T00:24:00Z 1.8731267636145004
   ```
   
-  该查询返回每12分钟的时间间隔对应的`water_level`的平均值的以10为底数的对数。
+  该查询返回每12分钟的时间间隔对应的`temperature`的平均值的以10为底数的对数。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔对应的`water_level`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`LOG10()`的情形一样：
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔对应的`temperature`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`LOG10()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算这些平均值的以10为底数的对数。
+  然后，CnosDB计算这些平均值的以10为底数的对数。
 
 - ### MOVING_AVERAGE()
 
@@ -5229,84 +5554,99 @@
 
   ####示例
 
-  下面的示例将使用`NOAA_water_database`数据集的如下数据：
+  下面的示例将使用`oceanic_station`数据集的如下数据：
   
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
-  
-  name: h2o_feet
-  time                   water_level
-  ----                   -----------
-  2020-08-18T00:00:00Z   2.064
-  2020-08-18T00:06:00Z   2.116
-  2020-08-18T00:12:00Z   2.028
-  2020-08-18T00:18:00Z   2.126
-  2020-08-18T00:24:00Z   2.041
-  2020-08-18T00:30:00Z   2.051
+  > SELECT "temperature" FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的滚动平均值
 
+  ```sql
+  > SELECT MOVING_AVERAGE("temperature",2) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z'
+  name: air
+  time                 moving_average
+  ----                 --------------
+  2021-09-18T00:03:00Z 55.5
+  2021-09-18T00:06:00Z 57.5
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 59
+  2021-09-18T00:15:00Z 68.5
+  2021-09-18T00:18:00Z 76.5
+  2021-09-18T00:21:00Z 73.5
+  2021-09-18T00:24:00Z 69
+  2021-09-18T00:27:00Z 74.5
+  2021-09-18T00:30:00Z 77
   ```
-  > SELECT MOVING_AVERAGE("water_level",2) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
   
-  name: h2o_feet
-  time                   moving_average
-  ----                   --------------
-  2020-08-18T00:06:00Z   2.09
-  2020-08-18T00:12:00Z   2.072
-  2020-08-18T00:18:00Z   2.077
-  2020-08-18T00:24:00Z   2.0835
-  2020-08-18T00:30:00Z   2.0460000000000003
-  ```
-  
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的窗口大小为两个field value的滚动平均值。第一个结果(`2.09`)是原始数据中前两个field value的平均值：(2.064 + 2.116) / 2。第二个结果(`2.072`)是原始数据中第二和第三个field value的平均值：(2.116 + 2.028) / 2。
+  该查询返回measurement `air`中field key `temperature`对应的窗口大小为两个field value的滚动平均值。第一个结果(`2.09`)是原始数据中前两个field value的平均值：(2.064 + 2.116) / 2。第二个结果(`2.072`)是原始数据中第二和第三个field value的平均值：(2.116 + 2.028) / 2。
 
   - #### 计算measurement中每个field key对应的field value的滚动平均值
 
   ```sql
-  > SELECT MOVING_AVERAGE(*,3) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
-  
-  name: h2o_feet
-  time                   moving_average_water_level
-  ----                   --------------------------
-  2020-08-18T00:12:00Z   2.0693333333333332
-  2020-08-18T00:18:00Z   2.09
-  2020-08-18T00:24:00Z   2.065
-  2020-08-18T00:30:00Z   2.0726666666666667
+  > SELECT MOVING_AVERAGE(*,3) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z'
+  name: air
+  time                 moving_average_pressure moving_average_temperature moving_average_visibility
+  ----                 ----------------------- -------------------------- -------------------------
+  2021-09-18T00:06:00Z 63.333333333333336      55.333333333333336         73
+  2021-09-18T00:09:00Z 64                      56.666666666666664         68.66666666666667
+  2021-09-18T00:12:00Z 61.333333333333336      57.666666666666664         67.33333333333333
+  2021-09-18T00:15:00Z 62.666666666666664      64                         62.333333333333336
+  2021-09-18T00:18:00Z 59                      72                         62
+  2021-09-18T00:21:00Z 59                      73.66666666666667          58
+  2021-09-18T00:24:00Z 61.666666666666664      72.33333333333333          60.333333333333336
+  2021-09-18T00:27:00Z 69                      72.33333333333333          68.33333333333333
+  2021-09-18T00:30:00Z 68.33333333333333       74.66666666666667          75.66666666666667
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的窗口大小为三个field value的滚动平均值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的窗口大小为三个field value的滚动平均值。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算与正则表达式匹配的每个field key对应的field value的滚动平均值
 
   ```
-  > SELECT MOVING_AVERAGE(/level/,4) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z'
-  
-  name: h2o_feet
-  time                    moving_average_water_level
-  ----                    --------------------------
-  2020-08-18T00:18:00Z    2.0835
-  2020-08-18T00:24:00Z    2.07775
-  2020-08-18T00:30:00Z    2.0615
+  > SELECT MOVING_AVERAGE(/press/,4) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z'
+  name: air
+  time                 moving_average_pressure
+  ----                 -----------------------
+  2021-09-18T00:09:00Z 64
+  2021-09-18T00:12:00Z 64
+  2021-09-18T00:15:00Z 60.5
+  2021-09-18T00:18:00Z 60.75
+  2021-09-18T00:21:00Z 60.25
+  2021-09-18T00:24:00Z 60.75
+  2021-09-18T00:27:00Z 65.5
+  2021-09-18T00:30:00Z 67.25
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值并包含单词`level`的field key对应的窗口大小为四个field value的滚动平均值。
+  该查询返回measurement `air`中每个存储数值并包含单词`level`的field key对应的窗口大小为四个field value的滚动平均值。
 
   - #### 计算指定field key对应的field value的滚动平均值并包含多个子句
 
   ```sql
-  > SELECT MOVING_AVERAGE("water_level",2) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' ORDER BY time DESC LIMIT 2 OFFSET 3
-  
-  name: h2o_feet
-  time                   moving_average
-  ----                   --------------
-  2020-08-18T00:06:00Z   2.072
-  2020-08-18T00:00:00Z   2.09
+  > SELECT MOVING_AVERAGE("temperature",2) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' ORDER BY time DESC LIMIT 2 OFFSET 3
+  name: air
+  time                 moving_average
+  ----                 --------------
+  2021-09-18T00:18:00Z 73.5
+  2021-09-18T00:15:00Z 76.5
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的窗口大小为两个field value的滚动平均值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为2，并将返回的`point`偏移三个(即前三个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的窗口大小为两个field value的滚动平均值，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为2，并将返回的`point`偏移三个(即前三个`point`不返回）。
 
  #### 高级语法
 
@@ -5334,31 +5674,30 @@
   - #### 计算最大值的滚动平均值
 
   ```sql
-  > SELECT MOVING_AVERAGE(MAX("water_level"),2) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   moving_average
-  ----                   --------------
-  2020-08-18T00:12:00Z   2.121
-  2020-08-18T00:24:00Z   2.0885
+  > SELECT MOVING_AVERAGE(MAX("temperature"),2) FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' GROUP BY time(12m)
+  name: air
+  time                 moving_average
+  ----                 --------------
+  2021-09-18T00:00:00Z 69.5
+  2021-09-18T00:12:00Z 69.5
+  2021-09-18T00:24:00Z 79
   ```
 
-  该查询返回每12分钟的时间间隔对应的`water_level`的最大值的窗口大小为两个值的滚动平均值。
+  该查询返回每12分钟的时间间隔对应的`temperature`的最大值的窗口大小为两个值的滚动平均值。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔对应的`water_level`的最大值。这一步跟同时使用`MAX()`函数和`GROUP BY time()`子句、但不使用`MOVING_AVERAGE()`的情形一样：
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔对应的`temperature`的最大值。这一步跟同时使用`MAX()`函数和`GROUP BY time()`子句、但不使用`MOVING_AVERAGE()`的情形一样：
 
   ```sql
-  > SELECT MAX("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   max
-  ----                   ---
-  2020-08-18T00:00:00Z   2.116
-  2020-08-18T00:12:00Z   2.126
-  2020-08-18T00:24:00Z   2.051
+  > SELECT MAX("temperature") FROM "air" WHERE "station" = 'LianYunGang' AND time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' GROUP BY time(12m)
+  name: air
+  time                 max
+  ----                 ---
+  2021-09-18T00:00:00Z 60
+  2021-09-18T00:12:00Z 79
+  2021-09-18T00:24:00Z 79
   ```
   
-  然后，cnosDB计算这些最大值的窗口大小为两个值的滚动平均值。最终查询结果中的第一个`point`(`2.121`)是前两个最大值的平均值(`(2.116 + 2.126) / 2`)。
+  然后，CnosDB计算这些最大值的窗口大小为两个值的滚动平均值。最终查询结果中的第一个`point`(`2.121`)是前两个最大值的平均值(`(2.116 + 2.126) / 2`)。
 
 - ### NON_NEGATIVE_DERIVATIVE()
 
@@ -5370,7 +5709,7 @@
   SELECT NON_NEGATIVE_DERIVATIVE( [ * | <field_key> | /<regular_expression>/ ] [ , <unit> ] ) [INTO_clause] FROM_clause [WHERE_clause] [GROUP_BY_clause] [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
   
-  cnosDB计算field value之间的差值，并将这些结果转换为每个`unit`的变化率。参数`unit`的值是一个整数，后跟一个时间单位。这个参数是可选的，不是必须要有的。如果查询没有指定`unit`的值，那么`unit`默认为一秒(`1s`)。`NON_NEGATIVE_DERIVATIVE()`只返回正的变化率和等于0的变化率。
+  CnosDB计算field value之间的差值，并将这些结果转换为每个`unit`的变化率。参数`unit`的值是一个整数，后跟一个时间单位。这个参数是可选的，不是必须要有的。如果查询没有指定`unit`的值，那么`unit`默认为一秒(`1s`)。`NON_NEGATIVE_DERIVATIVE()`只返回正的变化率和等于0的变化率。
   
   `NON_NEGATIVE_DERIVATIVE(field_key)`返回field key对应的field value的非负变化率。
   
@@ -5484,70 +5823,81 @@
   下面的示例将使用[示例数据](https://gist.github.com/sanderson/8f8aec94a60b2c31a61f44a37737bfea?spm=a2c4g.11186623.2.90.41fc3ee27HC1R6)中的如下数据：
 
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  water_level
-  ----                  -----------
-  2020-08-18T00:00:00Z  2.064
-  2020-08-18T00:06:00Z  2.116
-  2020-08-18T00:12:00Z  2.028
-  2020-08-18T00:18:00Z  2.126
-  2020-08-18T00:24:00Z  2.041
-  2020-08-18T00:30:00Z  2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的4次方
 
   ```sql
-  > SELECT POW("water_level", 4) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  pow
-  ----                  ---
-  2020-08-18T00:00:00Z  18.148417929216
-  2020-08-18T00:06:00Z  20.047612231936
-  2020-08-18T00:12:00Z  16.914992230656004
-  2020-08-18T00:18:00Z  20.429279055375993
-  2020-08-18T00:24:00Z  17.352898193760993
-  2020-08-18T00:30:00Z  17.69549197320101
+  > SELECT POW("temperature", 4) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 pow
+  ----                 ---
+  2021-09-18T00:00:00Z 6765201
+  2021-09-18T00:03:00Z 12960000
+  2021-09-18T00:06:00Z 9150625
+  2021-09-18T00:09:00Z 9150625
+  2021-09-18T00:12:00Z 15752961
+  2021-09-18T00:15:00Z 29986576
+  2021-09-18T00:18:00Z 38950081
+  2021-09-18T00:21:00Z 21381376
+  2021-09-18T00:24:00Z 24010000
+  2021-09-18T00:27:00Z 38950081
+  2021-09-18T00:30:00Z 31640625
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的4次方。
+  该查询返回measurement `air`中field key `temperature`对应的field value的4次方。
 
   - #### 计算measurement中每个field key对应的field value的4次方
 
   ```sql
-  > SELECT POW(*, 4) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  pow_water_level
-  ----                  ---------------
-  2020-08-18T00:00:00Z  18.148417929216
-  2020-08-18T00:06:00Z  20.047612231936
-  2020-08-18T00:12:00Z  16.914992230656004
-  2020-08-18T00:18:00Z  20.429279055375993
-  2020-08-18T00:24:00Z  17.352898193760993
-  2020-08-18T00:30:00Z  17.69549197320101
+  > SELECT POW(*, 4) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 pow_pressure pow_temperature pow_visibility
+  ----                 ------------ --------------- --------------
+  2021-09-18T00:00:00Z 16777216     6765201         21381376
+  2021-09-18T00:03:00Z 26873856     12960000        29986576
+  2021-09-18T00:06:00Z 8503056      9150625         35153041
+  2021-09-18T00:09:00Z 18974736     9150625         9150625
+  2021-09-18T00:12:00Z 16777216     15752961        24010000
+  2021-09-18T00:15:00Z 11316496     29986576        14776336
+  2021-09-18T00:18:00Z 9150625      38950081        8503056
+  2021-09-18T00:21:00Z 16777216     21381376        11316496
+  2021-09-18T00:24:00Z 18974736     24010000        22667121
+  2021-09-18T00:27:00Z 35153041     38950081        37015056
+  2021-09-18T00:30:00Z 14776336     31640625        40960000
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的4次方。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的4次方。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算指定field key对应的field value的4次方并包含多个子句
 
   ```sql
-  > SELECT POW("water_level", 4) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  pow
-  ----                  ---
-  2020-08-18T00:18:00Z  20.429279055375993
-  2020-08-18T00:12:00Z  16.914992230656004
-  2020-08-18T00:06:00Z  20.047612231936
-  2020-08-18T00:00:00Z  18.148417929216
+  > SELECT POW("temperature", 4) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 pow
+  ----                 ---
+  2021-09-18T00:24:00Z 24010000
+  2021-09-18T00:21:00Z 21381376
+  2021-09-18T00:18:00Z 38950081
+  2021-09-18T00:15:00Z 29986576
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的4次方，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value的4次方，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -5575,32 +5925,30 @@
   - #### 计算平均值的4次方
 
   ```sql
-  > SELECT POW(MEAN("water_level"), 4) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  pow
-  ----                  ---
-  2020-08-18T00:00:00Z  19.08029760999999
-  2020-08-18T00:12:00Z  18.609983417041
-  2020-08-18T00:24:00Z  17.523567165456008
+  > SELECT POW(MEAN("temperature"), 4) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 pow
+  ----                 ---
+  2021-09-18T00:00:00Z 9318137.81640625
+  2021-09-18T00:12:00Z 25411681
+  2021-09-18T00:24:00Z 31081863.901234582
   ```
   
-  该查询返回每12分钟的时间间隔对应的`water_level`的平均值的4次方。
+  该查询返回每12分钟的时间间隔对应的`temperature`的平均值的4次方。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔对应的`water_level`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`POW()`的情形一样：
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔对应的`temperature`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`POW()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算这些平均值的4次方。
+  然后，CnosDB计算这些平均值的4次方。
 
 - ### ROUND()
 
@@ -5625,68 +5973,79 @@
   下面的示例将使用[示例数据](https://gist.github.com/sanderson/8f8aec94a60b2c31a61f44a37737bfea?spm=a2c4g.11186623.2.91.41fc3ee27HC1R6)中的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  water_level
-  ----                  -----------
-  2020-08-18T00:00:00Z  2.064
-  2020-08-18T00:06:00Z  2.116
-  2020-08-18T00:12:00Z  2.028
-  2020-08-18T00:18:00Z  2.126
-  2020-08-18T00:24:00Z  2.041
-  2020-08-18T00:30:00Z  2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value四舍五入后的整数
 
   ```sql
-  > SELECT ROUND("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  round
-  ----                  -----
-  2020-08-18T00:00:00Z  2
-  2020-08-18T00:06:00Z  2
-  2020-08-18T00:12:00Z  2
-  2020-08-18T00:18:00Z  2
-  2020-08-18T00:24:00Z  2
-  2020-08-18T00:30:00Z  2
+  > SELECT ROUND("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 round
+  ----                 -----
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value四舍五入后的整数。
+  该查询返回measurement `air`中field key `temperature`对应的field value四舍五入后的整数。
 
   - #### 计算measurement中每个field key对应的field value四舍五入后的整数
 
   ```sql
-  > SELECT ROUND(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  round_water_level
-  ----                  -----------------
-  2020-08-18T00:00:00Z  2
-  2020-08-18T00:06:00Z  2
-  2020-08-18T00:12:00Z  2
-  2020-08-18T00:18:00Z  2
-  2020-08-18T00:24:00Z  2
-  2020-08-18T00:30:00Z  2
+  > SELECT ROUND(*) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 round_pressure round_temperature round_visibility
+  ----                 -------------- ----------------- ----------------
+  2021-09-18T00:00:00Z 64             51                68
+  2021-09-18T00:03:00Z 72             60                74
+  2021-09-18T00:06:00Z 54             55                77
+  2021-09-18T00:09:00Z 66             55                55
+  2021-09-18T00:12:00Z 64             63                70
+  2021-09-18T00:15:00Z 58             74                62
+  2021-09-18T00:18:00Z 55             79                54
+  2021-09-18T00:21:00Z 64             68                58
+  2021-09-18T00:24:00Z 66             70                69
+  2021-09-18T00:27:00Z 77             79                78
+  2021-09-18T00:30:00Z 62             75                80
   ```
 
   - #### 计算指定field key对应的field value四舍五入后的整数并包含多个子句
 
   ```sql
-  > SELECT ROUND("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  round
-  ----                  -----
-  2020-08-18T00:18:00Z  2
-  2020-08-18T00:12:00Z  2
-  2020-08-18T00:06:00Z  2
-  2020-08-18T00:00:00Z  2
+  > SELECT ROUND("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 round
+  ----                 -----
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:15:00Z 74
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value四舍五入后的整数，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value四舍五入后的整数，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -5714,32 +6073,30 @@
   - #### 计算平均值四舍五入后的整数
 
   ```sql
-  > SELECT ROUND(MEAN("water_level")) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  round
-  ----                  -----
-  2020-08-18T00:00:00Z  2
-  2020-08-18T00:12:00Z  2
-  2020-08-18T00:24:00Z  2
+  > SELECT ROUND(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 round
+  ----                 -----
+  2021-09-18T00:00:00Z 55
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 75
   ```
   
-  该查询返回每12分钟的时间间隔对应的`water_level`的平均值四舍五入后的整数。
+  该查询返回每12分钟的时间间隔对应的`temperature`的平均值四舍五入后的整数。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔对应的`water_level`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`ROUND()`的情形一样：
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔对应的`temperature`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`ROUND()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算这些平均值四舍五入后的整数。
+  然后，CnosDB计算这些平均值四舍五入后的整数。
 
 - ### SIN()
 
@@ -5761,73 +6118,84 @@
 
   ####示例
 
-  下面的示例将使用`NOAA_water_database`数据集的如下数据：
+  下面的示例将使用`oceanic_station`数据集的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  water_level
-  ----                  -----------
-  2020-08-18T00:00:00Z  2.064
-  2020-08-18T00:06:00Z  2.116
-  2020-08-18T00:12:00Z  2.028
-  2020-08-18T00:18:00Z  2.126
-  2020-08-18T00:24:00Z  2.041
-  2020-08-18T00:30:00Z  2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的正弦值
 
   ```sql
-  > SELECT SIN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  sin
-  ----                  ---
-  2020-08-18T00:00:00Z  0.8808206017241819
-  2020-08-18T00:06:00Z  0.8550216851706579
-  2020-08-18T00:12:00Z  0.8972904165810275
-  2020-08-18T00:18:00Z  0.8497930984115993
-  2020-08-18T00:24:00Z  0.8914760289023131
-  2020-08-18T00:30:00Z  0.8869008523376968
+  > SELECT SIN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 sin
+  ----                 ---
+  2021-09-18T00:00:00Z 0.6702291758433747
+  2021-09-18T00:03:00Z -0.3048106211022167
+  2021-09-18T00:06:00Z -0.9997551733586199
+  2021-09-18T00:09:00Z -0.9997551733586199
+  2021-09-18T00:12:00Z 0.16735570030280694
+  2021-09-18T00:15:00Z -0.9851462604682474
+  2021-09-18T00:18:00Z -0.4441126687075084
+  2021-09-18T00:21:00Z -0.8979276806892912
+  2021-09-18T00:24:00Z 0.7738906815578891
+  2021-09-18T00:27:00Z -0.4441126687075084
+  2021-09-18T00:30:00Z -0.38778163540943045
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的正弦值。
+  该查询返回measurement `air`中field key `temperature`对应的field value的正弦值。
 
   - #### 计算measurement中每个field key对应的field value的正弦值
 
   ```sql
-  > SELECT SIN(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  sin_water_level
-  ----                  ---------------
-  2020-08-18T00:00:00Z  0.8808206017241819
-  2020-08-18T00:06:00Z  0.8550216851706579
-  2020-08-18T00:12:00Z  0.8972904165810275
-  2020-08-18T00:18:00Z  0.8497930984115993
-  2020-08-18T00:24:00Z  0.8914760289023131
-  2020-08-18T00:30:00Z  0.8869008523376968
+  > SELECT SIN(*) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 sin_pressure          sin_temperature      sin_visibility
+  ----                 ------------          ---------------      --------------
+  2021-09-18T00:00:00Z 0.9200260381967907    0.6702291758433747   -0.8979276806892912
+  2021-09-18T00:03:00Z 0.25382336276203626   -0.3048106211022167  -0.9851462604682474
+  2021-09-18T00:06:00Z -0.5587890488516162   -0.9997551733586199  0.9995201585807312
+  2021-09-18T00:09:00Z -0.026551154023966794 -0.9997551733586199  -0.9997551733586199
+  2021-09-18T00:12:00Z 0.9200260381967907    0.16735570030280694  0.7738906815578891
+  2021-09-18T00:15:00Z 0.9928726480845371    -0.9851462604682474  -0.7391806966492229
+  2021-09-18T00:18:00Z -0.9997551733586199   -0.4441126687075084  -0.5587890488516162
+  2021-09-18T00:21:00Z 0.9200260381967907    -0.8979276806892912  0.9928726480845371
+  2021-09-18T00:24:00Z -0.026551154023966794 0.7738906815578891   -0.11478481378318722
+  2021-09-18T00:27:00Z 0.9995201585807312    -0.4441126687075084  0.5139784559875352
+  2021-09-18T00:30:00Z -0.7391806966492229   -0.38778163540943045 -0.9938886539233751
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的正弦值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的正弦值。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算指定field key对应的field value的正弦值并包含多个子句
 
   ```sql
-  > SELECT SIN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  sin
-  ----                  ---
-  2020-08-18T00:18:00Z  0.8497930984115993
-  2020-08-18T00:12:00Z  0.8972904165810275
-  2020-08-18T00:06:00Z  0.8550216851706579
-  2020-08-18T00:00:00Z  0.8808206017241819
+  > SELECT SIN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 sin
+  ----                 ---
+  2021-09-18T00:24:00Z 0.7738906815578891
+  2021-09-18T00:21:00Z -0.8979276806892912
+  2021-09-18T00:18:00Z -0.4441126687075084
+  2021-09-18T00:15:00Z -0.9851462604682474
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的正弦值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value的正弦值，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -5855,33 +6223,30 @@
   - #### 计算平均值的正弦值
 
   ```sql
-  > SELECT SIN(MEAN("water_level")) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  sin
-  
-  ----                  ---
-  2020-08-18T00:00:00Z  0.8682145834456126
-  2020-08-18T00:12:00Z  0.8745914945253902
-  2020-08-18T00:24:00Z  0.8891995555912935
+  > SELECT SIN(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 sin
+  ----                 ---
+  2021-09-18T00:00:00Z -0.9632009590319781
+  2021-09-18T00:12:00Z 0.9510546532543747
+  2021-09-18T00:24:00Z -0.6680290772524845
   ```
   
-  该查询返回每12分钟的时间间隔对应的`water_level`的平均值的正弦值。
+  该查询返回每12分钟的时间间隔对应的`temperature`的平均值的正弦值。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔对应的`water_level`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`SIN()`的情形一样：
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔对应的`temperature`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`SIN()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算这些平均值的正弦值。
+  然后，CnosDB计算这些平均值的正弦值。
 
 - ### SQRT()
 
@@ -5903,73 +6268,84 @@
 
   ####示例
 
-  下面的示例将使用”NOAA_water_database”数据集的如下数据：
+  下面的示例将使用”oceanic_station”数据集的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  water_level
-  ----                  -----------
-  2020-08-18T00:00:00Z  2.064
-  2020-08-18T00:06:00Z  2.116
-  2020-08-18T00:12:00Z  2.028
-  2020-08-18T00:18:00Z  2.126
-  2020-08-18T00:24:00Z  2.041
-  2020-08-18T00:30:00Z  2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的平方根
 
   ```sql
-  > SELECT SQRT("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  sqrt
-  ----                  ----
-  2020-08-18T00:00:00Z  1.4366627996854378
-  2020-08-18T00:06:00Z  1.4546477236774544
-  2020-08-18T00:12:00Z  1.4240786495134319
-  2020-08-18T00:18:00Z  1.4580809305384939
-  2020-08-18T00:24:00Z  1.4286357128393508
-  2020-08-18T00:30:00Z  1.4321312788986909
+  > SELECT SQRT("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 sqrt
+  ----                 ----
+  2021-09-18T00:00:00Z 7.14142842854285
+  2021-09-18T00:03:00Z 7.745966692414834
+  2021-09-18T00:06:00Z 7.416198487095663
+  2021-09-18T00:09:00Z 7.416198487095663
+  2021-09-18T00:12:00Z 7.937253933193772
+  2021-09-18T00:15:00Z 8.602325267042627
+  2021-09-18T00:18:00Z 8.888194417315589
+  2021-09-18T00:21:00Z 8.246211251235321
+  2021-09-18T00:24:00Z 8.366600265340756
+  2021-09-18T00:27:00Z 8.888194417315589
+  2021-09-18T00:30:00Z 8.660254037844387
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的平方根。
+  该查询返回measurement `air`中field key `temperature`对应的field value的平方根。
 
   - #### 计算measurement中每个field key对应的field value的平方根
 
   ```sql
-  > SELECT SQRT(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  sqrt_water_level
-  ----                  ----------------
-  2020-08-18T00:00:00Z  1.4366627996854378
-  2020-08-18T00:06:00Z  1.4546477236774544
-  2020-08-18T00:12:00Z  1.4240786495134319
-  2020-08-18T00:18:00Z  1.4580809305384939
-  2020-08-18T00:24:00Z  1.4286357128393508
-  2020-08-18T00:30:00Z  1.4321312788986909
+  > SELECT SQRT(*) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 sqrt_pressure      sqrt_temperature  sqrt_visibility
+  ----                 -------------      ----------------  ---------------
+  2021-09-18T00:00:00Z 8                  7.14142842854285  8.246211251235321
+  2021-09-18T00:03:00Z 8.48528137423857   7.745966692414834 8.602325267042627
+  2021-09-18T00:06:00Z 7.3484692283495345 7.416198487095663 8.774964387392123
+  2021-09-18T00:09:00Z 8.12403840463596   7.416198487095663 7.416198487095663
+  2021-09-18T00:12:00Z 8                  7.937253933193772 8.366600265340756
+  2021-09-18T00:15:00Z 7.615773105863909  8.602325267042627 7.874007874011811
+  2021-09-18T00:18:00Z 7.416198487095663  8.888194417315589 7.3484692283495345
+  2021-09-18T00:21:00Z 8                  8.246211251235321 7.615773105863909
+  2021-09-18T00:24:00Z 8.12403840463596   8.366600265340756 8.306623862918075
+  2021-09-18T00:27:00Z 8.774964387392123  8.888194417315589 8.831760866327848
+  2021-09-18T00:30:00Z 7.874007874011811  8.660254037844387 8.94427190999916
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的平方根。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的平方根。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算指定field key对应的field value的平方根并包含多个子句
 
   ```sql
-  > SELECT SQRT("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  sqrt
-  ----                  ----
-  2020-08-18T00:18:00Z  1.4580809305384939
-  2020-08-18T00:12:00Z  1.4240786495134319
-  2020-08-18T00:06:00Z  1.4546477236774544
-  2020-08-18T00:00:00Z  1.4366627996854378
+  > SELECT SQRT("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 sqrt
+  ----                 ----
+  2021-09-18T00:24:00Z 8.366600265340756
+  2021-09-18T00:21:00Z 8.246211251235321
+  2021-09-18T00:18:00Z 8.888194417315589
+  2021-09-18T00:15:00Z 8.602325267042627
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的平方根，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value的平方根，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -5997,32 +6373,30 @@
   - #### 计算平均值的平方根
 
   ```sql
-  > SELECT SQRT(MEAN("water_level")) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  sqrt
-  ----                  ----
-  2020-08-18T00:00:00Z  1.445683229480096
-  2020-08-18T00:12:00Z  1.4411800720243115
-  2020-08-18T00:24:00Z  1.430384563675098
+  > SELECT SQRT(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 sqrt
+  ----                 ----
+  2021-09-18T00:00:00Z 7.433034373659253
+  2021-09-18T00:12:00Z 8.426149773176359
+  2021-09-18T00:24:00Z 8.640987597877148
   ```
   
-  该查询返回每12分钟的时间间隔对应的`water_level`的平均值的平方根。
+  该查询返回每12分钟的时间间隔对应的`temperature`的平均值的平方根。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔对应的`water_level`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`SQRT()`的情形一样：
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔对应的`temperature`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`SQRT()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算这些平均值的平方根。
+  然后，CnosDB计算这些平均值的平方根。
 
 - ### TAN()
 
@@ -6044,73 +6418,84 @@
 
   ####示例
 
-  下面的示例将使用`NOAA_water_database`数据集的如下数据：
+  下面的示例将使用`oceanic_station`数据集的如下数据：
   
   ```sql
-  > SELECT "water_level" FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  water_level
-  ----                  -----------
-  2020-08-18T00:00:00Z  2.064
-  2020-08-18T00:06:00Z  2.116
-  2020-08-18T00:12:00Z  2.028
-  2020-08-18T00:18:00Z  2.126
-  2020-08-18T00:24:00Z  2.041
-  2020-08-18T00:30:00Z  2.051
+  > SELECT "temperature" FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 temperature
+  ----                 -----------
+  2021-09-18T00:00:00Z 51
+  2021-09-18T00:03:00Z 60
+  2021-09-18T00:06:00Z 55
+  2021-09-18T00:09:00Z 55
+  2021-09-18T00:12:00Z 63
+  2021-09-18T00:15:00Z 74
+  2021-09-18T00:18:00Z 79
+  2021-09-18T00:21:00Z 68
+  2021-09-18T00:24:00Z 70
+  2021-09-18T00:27:00Z 79
+  2021-09-18T00:30:00Z 75
   ```
 
   - #### 计算指定field key对应的field value的正切值
 
   ```sql
-  > SELECT TAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  tan
-  ----                  ---
-  2020-08-18T00:00:00Z  -1.8604293534384375
-  2020-08-18T00:06:00Z  -1.6487359603347427
-  2020-08-18T00:12:00Z  -2.0326408012302273
-  2020-08-18T00:18:00Z  -1.6121545688343464
-  2020-08-18T00:24:00Z  -1.9676434782626282
-  2020-08-18T00:30:00Z  -1.9198657720074992
+  > SELECT TAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 tan
+  ----                 ---
+  2021-09-18T00:00:00Z 0.9030861493754311
+  2021-09-18T00:03:00Z 0.320040389379563
+  2021-09-18T00:06:00Z -45.18308791052113
+  2021-09-18T00:09:00Z -45.18308791052113
+  2021-09-18T00:12:00Z 0.16974975208268753
+  2021-09-18T00:15:00Z -5.737022539278999
+  2021-09-18T00:18:00Z 0.49567753318135577
+  2021-09-18T00:21:00Z -2.040081598015946
+  2021-09-18T00:24:00Z 1.2219599181369432
+  2021-09-18T00:27:00Z 0.49567753318135577
+  2021-09-18T00:30:00Z -0.42070095062112434
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的正切值。
+  该查询返回measurement `air`中field key `temperature`对应的field value的正切值。
 
   - #### 计算measurement中每个field key对应的field value的正切值
 
   ```sql
-  > SELECT TAN(*) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica'
-  
-  name: h2o_feet
-  time                  tan_water_level
-  ----                  ---------------
-  2020-08-18T00:00:00Z  -1.8604293534384375
-  2020-08-18T00:06:00Z  -1.6487359603347427
-  2020-08-18T00:12:00Z  -2.0326408012302273
-  2020-08-18T00:18:00Z  -1.6121545688343464
-  2020-08-18T00:24:00Z  -1.9676434782626282
-  2020-08-18T00:30:00Z  -1.9198657720074992
+  > SELECT TAN(*) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang'
+  name: air
+  time                 tan_pressure         tan_temperature      tan_visibility
+  ----                 ------------         ---------------      --------------
+  2021-09-18T00:00:00Z 2.3478603091954366   0.9030861493754311   -2.040081598015946
+  2021-09-18T00:03:00Z -0.26241737750193517 0.320040389379563    -5.737022539278999
+  2021-09-18T00:06:00Z 0.6738001006480597   -45.18308791052113   -32.268575775934416
+  2021-09-18T00:09:00Z 0.026560517776039395 -45.18308791052113   -45.18308791052113
+  2021-09-18T00:12:00Z 2.3478603091954366   0.16974975208268753  1.2219599181369432
+  2021-09-18T00:15:00Z 8.33085685249046     -5.737022539278999   -1.0975097786622852
+  2021-09-18T00:18:00Z -45.18308791052113   0.49567753318135577  0.6738001006480597
+  2021-09-18T00:21:00Z 2.3478603091954366   -2.040081598015946   8.33085685249046
+  2021-09-18T00:24:00Z 0.026560517776039395 1.2219599181369432   -0.11554854579453279
+  2021-09-18T00:27:00Z -32.268575775934416  0.49567753318135577  -0.5991799983411151
+  2021-09-18T00:30:00Z -1.0975097786622852  -0.42070095062112434 9.00365494560708
   ```
   
-  该查询返回measurement `h2o_feet`中每个存储数值的field key对应的field value的正切值。measurement `h2o_feet`中只有一个数值类型的field：`water_level`。
+  该查询返回measurement `air`中每个存储数值的field key对应的field value的正切值。。measurement `air`中有三个数值类型的field：`temperature`、`pressure`以及`visibility`。
 
   - #### 计算指定field key对应的field value的正切值并包含多个子句
 
   ```sql
-  > SELECT TAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' ORDER BY time DESC LIMIT 4 OFFSET 2
-  
-  name: h2o_feet
-  time                  tan
-  ----                  ---
-  2020-08-18T00:18:00Z  -1.6121545688343464
-  2020-08-18T00:12:00Z  -2.0326408012302273
-  2020-08-18T00:06:00Z  -1.6487359603347427
-  2020-08-18T00:00:00Z  -1.8604293534384375
+  > SELECT TAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' ORDER BY time DESC LIMIT 4 OFFSET 2
+  name: air
+  time                 tan
+  ----                 ---
+  2021-09-18T00:24:00Z 1.2219599181369432
+  2021-09-18T00:21:00Z -2.040081598015946
+  2021-09-18T00:18:00Z 0.49567753318135577
+  2021-09-18T00:15:00Z -5.737022539278999
   ```
   
-  该查询返回measurement `h2o_feet`中field key `water_level`对应的field value的正切值，它涵盖的时间范围在`2020-08-18T00:00:00Z`和`2020-08-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
+  该查询返回measurement `air`中field key `temperature`对应的field value的正切值，它涵盖的时间范围在`2021-09-28T00:00:00Z`和`2021-09-18T00:30:00Z`之间，并且以递减的时间戳顺序返回结果，同时，该查询将返回的`point`个数限制为4，并将返回的`point`偏移两个(即前两个`point`不返回）。
 
   #### 高级语法
 
@@ -6138,32 +6523,30 @@
   - #### 计算平均值的正弦值
 
   ```sql
-  > SELECT TAN(MEAN("water_level")) FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  tan
-  ----                  ---
-  2020-08-18T00:00:00Z  -1.7497661902817365
-  2020-08-18T00:12:00Z  -1.8038002062256624
-  2020-08-18T00:24:00Z  -1.9435224805850773
+  > SELECT TAN(MEAN("temperature")) FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 tan
+  ----                 ---
+  2021-09-18T00:00:00Z -3.583573177439047
+  2021-09-18T00:12:00Z -3.0776204031933605
+  2021-09-18T00:24:00Z -0.8977254452596822
   ```
   
-  该查询返回每12分钟的时间间隔对应的`water_level`的平均值的正切值。
+  该查询返回每12分钟的时间间隔对应的`temperature`的平均值的正切值。
   
-  为了得到这些结果，cnosDB首先计算每12分钟的时间间隔对应的`water_level`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`TAN()`的情形一样：
+  为了得到这些结果，CnosDB首先计算每12分钟的时间间隔对应的`temperature`的平均值。这一步跟同时使用`MEAN()`函数和`GROUP BY time()`子句、但不使用`TAN()`的情形一样：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:30:00Z' AND "location" = 'santa_monica' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                   mean
-  ----                   ----
-  2020-08-18T00:00:00Z   2.09
-  2020-08-18T00:12:00Z   2.077
-  2020-08-18T00:24:00Z   2.0460000000000003
+  > SELECT MEAN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:30:00Z' AND "station" = 'LianYunGang' GROUP BY time(12m)
+  name: air
+  time                 mean
+  ----                 ----
+  2021-09-18T00:00:00Z 55.25
+  2021-09-18T00:12:00Z 71
+  2021-09-18T00:24:00Z 74.66666666666667
   ```
   
-  然后，cnosDB计算这些平均值的正切值。
+  然后，CnosDB计算这些平均值的正切值。
 
 ### 预测函数
 
@@ -6200,21 +6583,21 @@
 
   - #### 原始数据
 
-  该示例重点关注`NOAA_water_database`数据集的如下数据：
+  该示例重点关注`oceanic_station`数据集的如下数据：
   
   ```sql
-  SELECT "water_level" FROM "NOAA_water_database"."autogen"."h2o_feet" WHERE "location"='santa_monica' AND time >= '2020-08-22 22:12:00' AND time <= '2020-08-28 03:00:00'
+  SELECT "temperature" FROM "oceanic_station"."autogen"."air" WHERE "station"='LianYunGang' AND time >= '2021-09-12 12:12:00' AND time <= '2021-09-28 04:00:00'
   ```
 
   - #### 步骤一：匹配原始数据的趋势
 
-  编写一个`GROUP BY time()`查询，使得它匹配原始`water_level`数据的总体趋势。这里，我们使用了`FIRST()`函数：
+  编写一个`GROUP BY time()`查询，使得它匹配原始`temperature`数据的总体趋势。这里，我们使用了`FIRST()`函数：
   
   ```sql
-  SELECT FIRST("water_level") FROM "NOAA_water_database"."autogen"."h2o_feet" WHERE "location"='santa_monica' and time >= '2020-08-22 22:12:00' and time <= '2020-08-28 03:00:00' GROUP BY time(379m,348m)
+  SELECT FIRST("temperature") FROM "oceanic_station"."autogen"."air" WHERE "station"='LianYunGang' and time >= '2021-09-12 12:12:00' and time <= '2021-09-28 04:00:00' GROUP BY time(379m,348m)
   ```
   
-  在`GROUP BY time()`子句中，第一个参数(`379m`)匹配`water_level`数据中每个波峰和波谷之间发生的时间长度，第二个参数(`348m`)是一个偏移间隔，它通过改变cnosDB的默认`GROUP BY time()`边界来匹配原始数据的时间范围。
+  在`GROUP BY time()`子句中，第一个参数(`379m`)匹配`temperature`数据中每个波峰和波谷之间发生的时间长度，第二个参数(`348m`)是一个偏移间隔，它通过改变CnosDB的默认`GROUP BY time()`边界来匹配原始数据的时间范围。
 
   - #### 步骤二：确定季节性模式
 
@@ -6225,7 +6608,7 @@
   在查询中加入Holt-Winters函数。这里，我们使用`HOLT_WINTERS_WITH_FIT()`来查看拟合值和预测值：
 
   ```sql
-  SELECT HOLT_WINTERS_WITH_FIT(FIRST("water_level"),10,4) FROM "NOAA_water_database"."autogen"."h2o_feet" WHERE "location"='santa_monica' AND time >= '2020-08-22 22:12:00' AND time <= '2020-08-28 03:00:00' GROUP BY time(379m,348m)
+  SELECT HOLT_WINTERS_WITH_FIT(FIRST("temperature"),10,4) FROM "oceanic_station"."autogen"."air" WHERE "station"='LianYunGang' AND time >= '2021-09-12 12:12:00' AND time <= '2021-09-28 04:00:00' GROUP BY time(379m,348m)
   ```
   
   在`HOLT_WINTERS_WITH_FIT()`函数中，第一个参数(`10`)请求10个预测的field value。每个预测的`point`相距`379m`，与`GROUP BY time()`子句中的第一个参数相同。`HOLT_WINTERS_WITH_FIT()`函数中的第二个参数(`4`)是我们在上一步骤中确定的季节性模式。
@@ -6575,7 +6958,7 @@
 
   #### 示例数据
 
-  本文档使用的数据可在[示例数据](NOAA_water_database.txt)中下载。
+  本文档使用的数据可在[示例数据](oceanic_station.txt)中下载。
 
   #### 函数的通用语法
 
@@ -6592,58 +6975,53 @@
   - #### 在一个查询中计算field value的平均值和平均数
   
   ```sql
-  > SELECT MEAN("water_level"),MEDIAN("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  mean               median
-  ----                  ----               ------
-  1970-01-01T00:00:00Z  4.442107025822522  4.124
+  > SELECT MEAN("temperature"),MEDIAN("temperature") FROM "air"
+  name: air
+  time                 mean              median
+  ----                 ----              ------
+  1970-01-01T00:00:00Z 64.94933267424616 65
   ```
 
-  该查询返回`water_level`的平均值和平均数。
+  该查询返回`temperature`的平均值和平均数。
 
   - #### 在一个查询中计算两个field的mode
 
   ```sql
-  > SELECT MODE("water_level"),MODE("level description") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  mode  mode_1
-  ----                  ----  ------
-  1970-01-01T00:00:00Z  2.69  between 3 and 6 feet
+  > SELECT MODE("temperature"),MODE("pressure") FROM "air"
+  name: air
+  time                 mode mode_1
+  ----                 ---- ------
+  1970-01-01T00:00:00Z 53
   ```
   
-  该查询返回`water_level`中出现频率最高的field value和`level description`中出现频率最高的field value。`water_level`对应的值在列`mode`中，`level description`对应的值在列`mode_1`中。因为系统不能返回多个具有相同名字的列，所以它将第二个列`mode`重命名为`mode_1`。
+  该查询返回`temperature`中出现频率最高的field value和`pressure`中出现频率最高的field value。`temperature`对应的值在列`mode`中，`pressure`对应的值在列`mode_1`中。因为系统不能返回多个具有相同名字的列，所以它将第二个列`mode`重命名为`mode_1`。
 
   - #### 在一个查询中计算field value的最小值和最大值
 
   ```sql
-  > SELECT MIN("water_level"), MAX("water_level") [...]
-  
-  name: h2o_feet
-  time                  min    max
-  ----                  ---    ---
-  1970-01-01T00:00:00Z  -0.61  9.964
+  > SELECT MIN("temperature"), MAX("temperature") FROM "air"
+  name: air
+  time                 min max
+  ----                 --- ---
+  1970-01-01T00:00:00Z 50  80
   ```
   
-  该查询返回`water_level`的最小值和最大值。
+  该查询返回`temperature`的最小值和最大值。
   
-  请注意，该查询返回`1970-01-01T00:00:00Z`作为时间戳，这是cnosDB的空时间戳。`MIN()`和`MAX()`是selector函数；当selector函数是`SELECT`子句中的唯一函数时，它返回一个特定的时间戳。因为`MIN()`和`MAX()`返回两个不同的时间戳（见下面的例子），所以系统会用空时间戳覆盖这些时间戳。
+  请注意，该查询返回`1970-01-01T00:00:00Z`作为时间戳，这是CnosDB的空时间戳。`MIN()`和`MAX()`是selector函数；当selector函数是`SELECT`子句中的唯一函数时，它返回一个特定的时间戳。因为`MIN()`和`MAX()`返回两个不同的时间戳（见下面的例子），所以系统会用空时间戳覆盖这些时间戳。
   
   ```sql
-  >  SELECT MIN("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
+  >  SELECT MIN("temperature") FROM "air"
+  name: air
   time                  min
   ----                  ---
-  2020-08-29T14:30:00Z  -0.61    <--- Timestamp 1
+  2021-08-31T16:18:00Z  50    <--- Timestamp 1
   
-  >  SELECT MAX("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
+  >  SELECT MAX("temperature") FROM "air"
+  name: air
   time                  max
   ----                  ---
-  2020-08-29T07:24:00Z  9.964    <--- Timestamp 2
+  2021-08-31T18:03:00Z  80    <--- Timestamp 2
   ```
 
   #### 重命名查询结果字段
@@ -6661,45 +7039,41 @@
   - #### 指定输出的field key
 
   ```sql
-  > SELECT MEAN("water_level") AS "dream_name" FROM "h2o_feet"
-  
-  name: h2o_feet
+  > SELECT MEAN("temperature") AS "dream_name" FROM "air"
+  name: air
   time                  dream_name
   ----                  ----------
-  1970-01-01T00:00:00Z  4.442107025822522
+  1970-01-01T00:00:00Z 64.94933267424616
   ```
   
-  该查询返回`water_level`的平均值，并将输出的field key重命名为`dream_name`。如果没有`AS`子句，那么查询会返回`mean`作为输出的field key：
+  该查询返回`temperature`的平均值，并将输出的field key重命名为`dream_name`。如果没有`AS`子句，那么查询会返回`mean`作为输出的field key：
   
   ```sql
-  > SELECT MEAN("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
+  > SELECT MEAN("temperature") FROM "air"
+  name: air
   time                  mean
   ----                  ----
-  1970-01-01T00:00:00Z  4.442107025822522
+  1970-01-01T00:00:00Z 64.94933267424616
   ```
 
   - #### 为多个函数指定输出的field key
 
   ```sql
-  > SELECT MEDIAN("water_level") AS "med_wat",MODE("water_level") AS "mode_wat" FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  med_wat  mode_wat
-  ----                  -------  --------
-  1970-01-01T00:00:00Z  4.124    2.69
+  > SELECT MEDIAN("temperature") AS "med_wat",MODE("temperature") AS "mode_wat" FROM "air"
+  name: air
+  time                 med_wat mode_wat
+  ----                 ------- --------
+  1970-01-01T00:00:00Z 65      53
   ```
   
-  该查询返回`water_level`的平均数和`water_level`中出现频率最高的field value，并将输出的field key分别重命名为`med_wat`和`mode_wat`。如果没有`AS`子句，那么查询会返回`median`和`mode`作为输出的field key：
+  该查询返回`temperature`的平均数和`temperature`中出现频率最高的field value，并将输出的field key分别重命名为`med_wat`和`mode_wat`。如果没有`AS`子句，那么查询会返回`median`和`mode`作为输出的field key：
   
   ```sql
-  > SELECT MEDIAN("water_level"),MODE("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  median  mode
-  ----                  ------  ----
-  1970-01-01T00:00:00Z  4.124   2.69
+  > SELECT MEDIAN("temperature"),MODE("temperature") FROM "air"
+  name: air
+  time                 median mode
+  ----                 ------ ----
+  1970-01-01T00:00:00Z 65     53
   ```
   
   #### 改变不含数据的时间间隔的返回值
@@ -6744,7 +7118,7 @@
   - #### 理解返回的时间戳
 
   子句中具有 [聚合函数](#aggregations) 且 `WHERE`没有时间范围的查询讲返回 epoch 0 (`1970-01-01T00:00:00Z`) 作为时间戳.
-  cnosDB 使用 epoch 0 作为等效的空时间戳.
+  CnosDB 使用 epoch 0 作为等效的空时间戳.
   带有聚合函数的查询，如果 `WHERE` 子句中包含时间范围，将返回时间下限作为时间戳.
 
   ####示例
@@ -6752,39 +7126,37 @@
   - #### 使用聚合函数并且没有指定时间范围
 
   ```sql
-  > SELECT SUM("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                   sum
-  ----                   ---
-  1970-01-01T00:00:00Z   67777.66900000004
+  > SELECT SUM("temperature") FROM "air"
+  name: air
+  time                 sum
+  ----                 ---
+  1970-01-01T00:00:00Z 1839495
   ```
   
-  该查询将cnosDB的空时间戳(epoch 0: `1970-01-01T00:00:00Z`)作为时间戳返回。`SUM()`将多个`point`聚合，没有单个时间戳可以返回。
+  该查询将CnosDB的空时间戳(epoch 0: `1970-01-01T00:00:00Z`)作为时间戳返回。`SUM()`将多个`point`聚合，没有单个时间戳可以返回。
 
   - #### 使用聚合函数并且指定时间范围
 
   ```sql
-  > SELECT SUM("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z'
-  
-  name: h2o_feet
-  time                  sum
-  ----                  ---
-  2020-08-18T00:00:00Z  67777.66900000004
+  > SELECT SUM("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z'
+  name: air
+  time                 sum
+  ----                 ---
+  2021-09-28T00:00:00Z 134766
   ```
   
-  该查询将时间范围的下界(`WHERE time >= '2020-08-18T00:00:00Z'`)作为时间戳返回。
+  该查询将时间范围的下界(`WHERE time >= '2021-09-18T00:00:00Z'`)作为时间戳返回。
 
   - #### 使用聚合函数并且指定时间范围和使用GROUP BY time()子句
 
   ```sql
-  > SELECT SUM("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:18:00Z' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  sum
-  ----                  ---
-  2020-08-18T00:00:00Z  20.305
-  2020-08-18T00:12:00Z  19.802999999999997
+  > SELECT SUM("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-28T00:28:00Z' GROUP BY time(12m)
+  name: air
+  time                 sum
+  ----                 ---
+  2021-09-28T00:00:00Z 490
+  2021-09-28T00:12:00Z 524
+  2021-09-28T00:24:00Z 263
   ```
   
   该查询将每个`GROUP BY time()`间隔的时间下界作为时间戳返回。
@@ -6794,14 +7166,13 @@
   聚合函数不支持在`SELECT`语句中指定不使用聚合函数的单独的field key或tag key。聚合函数返回一个计算结果，对于没有被聚合的field或tag，没有明显的单个值可以返回。当`SELECT`语句同时包含聚合函数和单独的field key或tag key时，会返回错误：
   
   ```sql
-  > SELECT SUM("water_level"),"location" FROM "h2o_feet"
-  
-  ERR: error parsing query: mixing aggregate and non-aggregate queries is not supported
+  > SELECT SUM("temperature"),"station" FROM "air"
+  ERR: mixing aggregate and non-aggregate queries is not supported
   ```
 
   - #### 得到略有不同的结果
 
-  对于某些聚合函数，在相同的`point`（数据类型为float64)上执行相同的函数，可能会产生稍微不同的结果。在应用聚合函数之间，cnosDB不会将`point`进行排序；该行为可能会导致查询结果中出现小小的差异。
+  对于某些聚合函数，在相同的`point`（数据类型为float64)上执行相同的函数，可能会产生稍微不同的结果。在应用聚合函数之间，CnosDB不会将`point`进行排序；该行为可能会导致查询结果中出现小小的差异。
 
   #### Selector函数
 
@@ -6810,7 +7181,7 @@
   selector函数返回的时间戳依赖查询中函数的数量和查询中的其它子句：
   
   带有单个选择器函数，单个 field key 参数和无 `GROUP BY time()` 的查询返回原始数据中出现的point时间戳.
-  具有单个 selector 函数, 多个 `field key` 参数的查询, `GROUP BY time()` 返回原始数据中出现的point 时间戳，或与空时间戳 (epoch 0: `1970-01-01T00:00:00Z`)等价的cnosDB.
+  具有单个 selector 函数, 多个 `field key` 参数的查询, `GROUP BY time()` 返回原始数据中出现的point 时间戳，或与空时间戳 (epoch 0: `1970-01-01T00:00:00Z`)等价的CnosDB.
   
   `WHERE`子句中有多个函数且没有时间范围的查询将返回相当于空时间戳 (epoch 0: `1970-01-01T00:00:00Z`).
   在 `WHERE`子句中包含多个函数和时间范围的查询将时间下限作为时间戳返回
@@ -6822,19 +7193,17 @@
   - #### 使用单个selector函数和单个field key，并且没有指定时间范围
 
   ```sql
-  > SELECT MAX("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
+  > SELECT MAX("temperature") FROM "air"
+  name: air
   time                  max
   ----                  ---
   2020-08-29T07:24:00Z  9.964
   
-  > SELECT MAX("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z'
-  
-  name: h2o_feet
-  time                  max
-  ----                  ---
-  2020-08-29T07:24:00Z  9.964
+  > SELECT MAX("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z'
+  name: air
+  time                 max
+  ----                 ---
+  2021-09-28T01:57:00Z 80
   ```
   
   该查询返回原始数据中具有`最大`值的`point`的时间戳。
@@ -6842,66 +7211,836 @@
   - #### 使用单个selector函数和多个field key，并且没有指定时间范围
 
   ```sql
-  > SELECT FIRST(*) FROM "h2o_feet"
+  > SELECT FIRST(*) FROM "air"
+  name: air
+  time                 first_pressure first_temperature first_visibility
+  ----                 -------------- ----------------- ----------------
+  1970-01-01T00:00:00Z 78             79                71
   
-  name: h2o_feet
-  time                  first_level description  first_water_level
-  ----                  -----------------------  -----------------
-  1970-01-01T00:00:00Z  between 6 and 9 feet     8.12
-  
-  > SELECT MAX(*) FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  max_water_level
-  ----                  ---------------
-  2020-08-29T07:24:00Z  9.964
+  > SELECT MAX(*) FROM "air"
+  name: air
+  time                 max_pressure max_temperature max_visibility
+  ----                 ------------ --------------- --------------
+  1970-01-01T00:00:00Z 80           80              80
+
   ```
   
-  第一个查询返回cnosDB的空时间戳(epoch 0: `1970-01-01T00:00:00Z`)作为查询结果中的时间戳。因为`FIRST(*)`返回两个时间戳（对应measurement `h2o_feet`中的每个field key），所以系统使用空时间戳覆盖这两个时间戳。
+  第一个查询返回CnosDB的空时间戳(epoch 0: `1970-01-01T00:00:00Z`)作为查询结果中的时间戳。因为`FIRST(*)`返回两个时间戳（对应measurement `air`中的每个field key），所以系统使用空时间戳覆盖这两个时间戳。
   
-  第二个查询返回原始数据中具有最大值的`point`的时间戳。因为`MAX(*)`只返回一个时间戳(measurement `h2o_feet`中只有一个数值类型的field)，所以系统不会覆盖原始时间戳。
+  第二个查询返回原始数据中具有最大值的`point`的时间戳。因为`MAX(*)`只返回一个时间戳(measurement `air`中只有一个数值类型的field)，所以系统不会覆盖原始时间戳。
 
   - #### 使用多个selector函数，并且没有指定时间范围
 
   ```sql
-  > SELECT MAX("water_level"),MIN("water_level") FROM "h2o_feet"
-  
-  name: h2o_feet
-  time                  max    min
-  ----                  ---    ---
-  1970-01-01T00:00:00Z  9.964  -0.61
+  > SELECT MAX("temperature"),MIN("temperature") FROM "air"
+  name: air
+  time                 max min
+  ----                 --- ---
+  1970-01-01T00:00:00Z 80  50 
   ```
   
-  该查询返回cnosDB的空时间戳(epoch 0: `1970-01-01T00:00:00Z`)作为查询结果中的时间戳。因为`MAX()`和`MIN()`函数返回不同的时间戳，所以系统没有单个时间戳可以返回。
+  该查询返回CnosDB的空时间戳(epoch 0: `1970-01-01T00:00:00Z`)作为查询结果中的时间戳。因为`MAX()`和`MIN()`函数返回不同的时间戳，所以系统没有单个时间戳可以返回。
 
   - #### 使用多个selector函数，并且指定时间范围
 
   ```sql
-  > SELECT MAX("water_level"),MIN("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z'
-  
-  name: h2o_feet
-  time                  max    min
-  ----                  ---    ---
-  2020-08-18T00:00:00Z  9.964  -0.61
+  > SELECT MAX("temperature"),MIN("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z'
+    name: air
+    time                 max min
+    ----                 --- ---
+    2021-09-28T00:00:00Z 80  50
   ```
   
-  该查询返回时间范围的下界(`WHERE time >= '2020-08-18T00:00:00Z'`)作为查询结果中的时间戳。
+  该查询返回时间范围的下界(`WHERE time >= '2021-09-18T00:00:00Z'`)作为查询结果中的时间戳。
 
   - #### 使用单个selector函数，并且指定时间范围
 
   ```sql
-  > SELECT MAX("water_level") FROM "h2o_feet" WHERE time >= '2020-08-18T00:00:00Z' AND time <= '2020-08-18T00:18:00Z' GROUP BY time(12m)
-  
-  name: h2o_feet
-  time                  max
-  ----                  ---
-  2020-08-18T00:00:00Z  8.12
-  2020-08-18T00:12:00Z  7.887
+  > SELECT MAX("temperature") FROM "air" WHERE time >= '2021-09-18T00:00:00Z' AND time <= '2021-09-18T00:18:00Z' GROUP BY time(12m)
+  name: air
+  time                 max
+  ----                 ---
+  2021-09-18T00:00:00Z 80
+  2021-09-18T00:12:00Z 797
   ```
   
   该查询返回每个`GROUP BY time()`间隔的时间下限作为查询结果中的时间戳。
 
 
+## CnosQL 数学运算符
 
+- ### [数学运算符](#数学运算符)
+  - #### [加法](#加法)
+  - #### [减法](#减法)
+  - #### [乘法](#乘法)
+  - #### [除法](#除法)
+  - #### [模运算](#模运算)
+  - #### [位与运算](#位与运算)
+  - #### [位或运算](#位或运算)
+  - #### [位异运算](#位异运算)
+  - #### [常见问题](#常见问题)
+  
+- ### [不支持的运算符](#不支持的运算符)
 
+- ### 数学运算符
+ 
+  - #### 加法
 
+  常量的加法
+
+  ```
+  SELECT "temperature" + 5 FROM "air"
+  SELECT * FROM "air" WHERE "temperature" + 5 > 10
+  ```
+  
+  两字段的加法
+
+  ```
+  SELECT "temperature" + "visibility" FROM "air"
+  SELECT * FROM "air" WHERE "temperature" + "visibility" > 10
+  ```
+
+  - #### 减法
+
+  常量的减法
+
+  ```
+  SELECT "temperature" - 2 FROM "air"
+  SELECT * FROM "air" WHERE "temperature" - 2 > 12
+  ```
+
+  两字段的减法
+
+  ```
+  SELECT "temperature" - "visibility" FROM "air"
+  SELECT * FROM "air" WHERE "temperature" - "visibility" > 10
+  ```  
+
+  - #### 乘法
+
+  常量的乘法
+
+  ```
+  SELECT "temperature" * 2 FROM "air"
+  SELECT * FROM "air" WHERE "temperature" - 2 > 12
+  ```
+
+  两字段的减法
+
+  ```
+  SELECT "temperature" * "visibility" FROM "air"
+  SELECT * FROM "air" WHERE "temperature" * "visibility" > 10
+  ```  
+  
+  乘法和其他操作符并用
+  
+  ```
+  SELECT 10 * ("temperature" + "visibility" + "pressure") FROM "air"
+  SELECT 10 * ("temperature" + "visibility" - "pressure") FROM "air"
+  SELECT 10 * ("temperature" - "visibility" - "pressure") FROM "air"
+  ```
+
+  - #### 除法
+
+  常量的除法
+
+  ```
+  SELECT 10 / "temperature" FROM "air"
+  SELECT * FROM "air" WHERE 10 / "temperature" > 12
+  ```
+
+  两字段的减法
+
+  ```
+  SELECT "temperature" / "visibility" FROM "air"
+  SELECT * FROM "air" WHERE "temperature" / "visibility" > 10
+  ```  
+
+  乘法和其他操作符并用
+
+  ```
+  SELECT 10 / ("temperature" + "visibility" + "pressure") FROM "air"
+  SELECT 10 / ("temperature" + "visibility" - "pressure") FROM "air"
+  SELECT 10 / ("temperature" - "visibility" - "pressure") FROM "air"
+  ```
+
+  - #### 模运算
+
+  常量的模运算
+
+  ```
+  SELECT 10 % "temperature" FROM "air"
+  SELECT * FROM "air" WHERE 10 % "temperature" = 0
+  ```
+
+  两字段的模运算
+
+  ```
+  SELECT "temperature" % "visibility" FROM "air"
+  SELECT * FROM "air" WHERE "temperature" % "visibility" = 0
+  ```  
+  
+  - #### 按位与运算
+
+  您可以对任何整数或布尔值使用此操作符，无论它们是字段还是常量。它不适用于浮点或字符串数据类型，并且不能混合整数和布尔值使用。
+
+  ```
+  SELECT "temperature" & 255 FROM "air"
+  SELECT "temperature" & "pressure" FROM "air"
+  SELECT * FROM "air" WHERE "temperature" & 15 > 0
+  SELECT "temperature" & "pressure" FROM "air"
+  SELECT ("temperature" ^ true) & "pressure" FROM "air"
+  ```
+
+  - #### 按位或运算
+
+  您可以对任何整数或布尔值使用此操作符，无论它们是字段还是常量。它不适用于浮点或字符串数据类型，并且不能混合整数和布尔值使用。
+
+  ```
+  SELECT "temperature" | 255 FROM "air"
+  SELECT "temperature" | "pressure" FROM "air"
+  SELECT * FROM "air" WHERE "temperature" | 12 = 12
+  ```
+  - #### 按位异运算
+
+  您可以对任何整数或布尔值使用此操作符，无论它们是字段还是常量。它不适用于浮点或字符串数据类型，并且不能混合整数和布尔值使用。
+
+  ```
+  SELECT "temperature" ^ 255 FROM "air"
+  SELECT "temperature" ^ "pressure" FROM "air"
+  SELECT * FROM "air" WHERE "temperature" ^ 12 = 12
+  ``` 
+  
+  - #### 常见问题
+   
+    - #### 带有通配符和正则表达式的数学操作符
+
+    CnosDB不支持在SELECT子句中组合数学操作与通配符(*)或正则表达式。以下查询无效，系统返回错误:
+    对通配符执行数学运算。
+    ```
+    > SELECT * + 2 FROM "air"
+    ERR: unsupported expression with wildcard: * + 2
+    ```
+    对函数中的通配符执行数学运算。
+    ```
+    > SELECT COUNT(*) / 2 FROM "nope"
+    ERR: unsupported expression with wildcard: count(*) / 2
+    ```   
+    对正则表达式执行数学运算。
+    ```
+    > SELECT /A/ + 2 FROM "air"
+    ERR: error parsing query: found +, expected FROM at line 1, char 12
+    ```
+    对函数中的正则表达式执行数学运算。
+    ```
+    > SELECT COUNT(/A/) + 2 FROM "nope"
+    ERR: unsupported expression with regex field: count(/A/) + 2
+    ```     
+    
+    - #### 函数的数学运算符
+
+    目前不支持在函数调用中使用数学运算符。注意，CnosDB只允许SELECT子句中的函数。
+    可行操作：
+    ```
+    SELECT 10 * mean("value") FROM "cpu"
+    ```
+    不可行操作：
+    ```
+    SELECT mean(10 * "value") FROM "cpu"
+    ```
+- ### 不支持的运算符
+
+  - #### 比较运算
+
+  所有的比较运算符都不支持。例如：`=`,`!=`,`<`,`>`,`<=`,`>=`,`<>`。在SELECT语句中均不可以使用。
+
+  - #### 逻辑运算符
+
+  使用逻辑运算符，如：`!|`, `NAND`,`XOR`,`NOR`；都会导致解析错误。
+
+  此外，在查询的`SELECT`子句中使用`AND`和`OR`不会表现为数学运算符，只会产生空结果，因为它们在CnosQL中已经被定义。但是，您可以对布尔数据应用位操作符`&`、`|`和`^`。
+
+  - #### 位非运算
+
+  没有位非运算符，因为您期望的结果取决于您的位域的宽度。CnosQL不知道您的位域有多宽，因此无法实现合适的位非运算。
+
+  您可以通过使用`^`(位异或)操作符和代表字宽的全1的二进制数字来实现位非操作:
+
+  ```
+  8-bit 数据：
+  
+  SELECT "temperature" ^ 255 FROM "air"
+  
+  16-bit 数据:
+  
+  SELECT "temperature" ^ 65535 FROM "air"
+  
+  32-bit 数据:
+  
+  SELECT "temperature" ^ 4294967295 FROM "air"
+  ```
+
+## CnosQL参考
+
+- ### 介绍
+  CnosQL的定义和详细信息
+  - #### [符号](#符号)
+  - #### [查询表示](#查询表示)
+  - #### [字母和数字](#字母和数字)
+  - #### [标识符](#标识符)
+  - #### [关键字](#关键字)
+  - #### [文字](#文字)
+  - #### [查询](#查询)
+  - #### [语句](#语句)
+  - #### [条款](#条款)
+  - #### [表达式](#表达式)
+  - #### [其他](#其他)
+  - #### [查询引擎内部](#查询引擎内部)
+  要了解更多关于CnosQL的信息，请浏览以下内容：
+  - #### [使用CnosQL探索数据](#使用cnosql探索数据)
+  - #### [使用CnosQL探索您的模式](#)
+  - #### [数据库管理](#)
+
+- ### 符号
+
+  使用Extended Backus-Naur Form(" EBNF ")指定语法。EBNF与Go编程语言规范中使用的符号相同。并非巧合的是，CnosDB是用Go编写的。
+  ```
+  Production  = production_name "=" [ Expression ] "." .
+  Expression  = Alternative { "|" Alternative } .
+  Alternative = Term { Term } .
+  Term        = production_name | token [ "…" token ] | Group | Option | Repetition .
+  Group       = "(" Expression ")" .
+  Option      = "[" Expression "]" .
+  Repetition  = "{" Expression "}" .
+  ```
+  按优先级递增的顺序表示操作符:
+  ```
+  |   alternation
+  ()  grouping
+  []  option (0 or 1 times)
+  {}  repetition (0 to n times)
+  ```
+  
+- ### 查询表示
+
+  - #### 字符
+  CnosQL是使用UTF-8编码的Unicode文本。
+  ```
+  newline             = /* the Unicode code point U+000A */ .
+  unicode_char        = /* an arbitrary Unicode code point except newline */ .
+  ```
+  
+- ### 字母和数字
+
+  字母是ASCII字符的集合，加上下划线_ (U+005F)也被认为是字母。只支持十进制数字。
+  ```
+  letter              = ascii_letter | "_" .
+  ascii_letter        = "A" … "Z" | "a" … "z" .
+  digit               = "0" … "9" .
+  ```
+  
+- ### 标识符
+  标识符包括数据库名、保留策略名、用户名、度量名、标记键以及字段键。
+
+  标识符使用规则如下；
+
+  - 双引号标识符可以包含除新行以外的任何unicode字符。
+  - 双引号标识符可以包括转义的`"`字符。例如；`\"` 。
+  - 双引号标识符中可以包括CnosQL的关键字。
+  - 未加引号的标识符必须以大写或小写ASCII字符或者"_"开头。
+  - 未加引号的标识符只能包括ASCII字母、十进制数字或者"_"。
+  ```
+  identifier          = unquoted_identifier | quoted_identifier .
+  unquoted_identifier = ( letter ) { letter | digit } .
+  quoted_identifier   = `"` unicode_char { unicode_char } `"` .
+  ```
+  
+  例如：
+  ```
+  air
+  _air_temperature
+  "1h"
+  "anything really"
+  "1_Crazy-1337.identifier>NAME👍"
+  ```
+  
+- ### 关键字
+  ```
+  ALL           ALTER         ANY           AS            ASC           BEGIN
+  BY            CREATE        CONTINUOUS    DATABASE      DATABASES     DEFAULT
+  DELETE        DESC          DESTINATIONS  DIAGNOSTICS   DISTINCT      DROP
+  DURATION      END           EVERY         EXPLAIN       FIELD         FOR
+  FROM          GRANT         GRANTS        GROUP         GROUPS        IN
+  INF           INSERT        INTO          KEY           KEYS          KILL
+  LIMIT         SHOW          MEASUREMENT   MEASUREMENTS  NAME          OFFSET
+  ON            ORDER         PASSWORD      POLICY        POLICIES      PRIVILEGES
+  QUERIES       QUERY         READ          REPLICATION   RESAMPLE      RETENTION
+  REVOKE        SELECT        SERIES        SET           SHARD         SHARDS
+  SLIMIT        SOFFSET       STATS         SUBSCRIPTION  SUBSCRIPTIONS TAG
+  TO            USER          USERS         VALUES        WHERE         WITH
+  WRITE
+  ```
+  如果使用了CnosQL的关键字作为标识符，则需要在每次查询中对该标识符加双引号。
+
+  关键字`time`是一种特殊情况。`time`可以是连续查询名称、数据库名称、测量名称、保留策略名称、订阅名称和用户名称。在这些情况下，查询中的`time`不需要双引号。`time`不能是字段键或标签键；CnosQL拒绝将`time`作为字段键或标记键的写入，并返回错误。
+
+- ### 文字
+
+  - #### 整数
+  CnosQL目前只支持十进制数字，并不支持其他进制数字。
+  ```
+  int_lit             = ( "1" … "9" ) { digit } .
+  ```
+  - #### 浮点数
+  CnosQL目前只支持浮点数，并不支持指数。
+  ```
+  float_lit           = int_lit "." int_lit .
+  ```
+  - #### 字符串
+  字符串必须和单引号搭配使用。如果加上转义字符，那么字符串中可以包含单引号。
+  ```
+  string_lit          = `'` { unicode_char } `'` .
+  ```
+  - #### 持续时间
+  持续时间的字面值指定时间长度。整数字面值紧跟着(没有空格)下面列出的持续时间单位被称为持续时间字面值。可以使用混合单元指定持续时间。
+  ```
+  duration_lit        = int_lit duration_unit .
+  duration_unit       = "ns" | "u" | "µ" | "ms" | "s" | "m" | "h" | "d" | "w" .
+  ``` 
+  
+  - #### 日期和时间
+  与本文档的其余部分一样，EBNF中没有指定日期和时间文本格式。它是使用Go的日期/时间解析格式指定的，它是按照CnosQL要求的格式编写的引用日期。
+  
+  参考日期时间为:January 2nd, 2006 at 3:04:05 PM
+  ```
+  time_lit            = "2006-01-02 15:04:05.999999" | "2006-01-02" .
+  ``` 
+  - #### 布尔值
+  ```
+  bool_lit            = TRUE | FALSE .
+  ``` 
+  - #### 正则表达式
+  ```
+  regex_lit           = "/" { unicode_char } "/" .
+  ```   
+- ### 查询
+
+  查询由一个或多个以分号分隔的语句组成。
+  ```
+  query               = statement { ";" statement } .
+
+  statement           = alter_retention_policy_stmt |
+                        create_continuous_query_stmt |
+                        create_database_stmt |
+                        create_retention_policy_stmt |
+                        create_subscription_stmt |
+                        create_user_stmt |
+                        delete_stmt |
+                        drop_continuous_query_stmt |
+                        drop_database_stmt |
+                        drop_measurement_stmt |
+                        drop_retention_policy_stmt |
+                        drop_series_stmt |
+                        drop_shard_stmt |
+                        drop_subscription_stmt |
+                        drop_user_stmt |
+                        explain_stmt |
+                        explain_analyze_stmt |
+                        grant_stmt |
+                        kill_query_statement |
+                        revoke_stmt |
+                        select_stmt |
+                        show_continuous_queries_stmt |
+                        show_databases_stmt |
+                        show_diagnostics_stmt |
+                        show_field_key_cardinality_stmt |
+                        show_field_keys_stmt |
+                        show_grants_stmt |
+                        show_measurement_cardinality_stmt |
+                        show_measurement_exact_cardinality_stmt |
+                        show_measurements_stmt |
+                        show_queries_stmt |
+                        show_retention_policies_stmt |
+                        show_series_cardinality_stmt |
+                        show_series_exact_cardinality_stmt |
+                        show_series_stmt |
+                        show_shard_groups_stmt |
+                        show_shards_stmt |
+                        show_stats_stmt |
+                        show_subscriptions_stmt |
+                        show_tag_key_cardinality_stmt |
+                        show_tag_key_exact_cardinality_stmt |
+                        show_tag_keys_stmt |
+                        show_tag_values_stmt |
+                        show_tag_values_cardinality_stmt |
+                        show_users_stmt .
+  ```   
+- ### 语句
+  - #### 改变保留策略
+   ```
+   alter_retention_policy_stmt  = "ALTER RETENTION POLICY" policy_name on_clause
+                                  retention_policy_option
+                                  [ retention_policy_option ]
+                                  [ retention_policy_option ]
+                                  [ retention_policy_option ] .
+  ```    
+  - #### 创建连续查询
+   ```
+   create_continuous_query_stmt = "CREATE CONTINUOUS QUERY" query_name on_clause
+   [ "RESAMPLE" resample_opts ]
+   "BEGIN" select_stmt "END" .
+  
+   query_name                   = identifier .
+  
+   resample_opts                = (every_stmt for_stmt | every_stmt | for_stmt) .
+   every_stmt                   = "EVERY" duration_lit
+   for_stmt                     = "FOR" duration_lit
+  ```     
+  - #### 创建数据库
+   ```
+   create_database_stmt = "CREATE DATABASE" db_name
+                          [ WITH
+                              [ retention_policy_duration ]
+                              [ retention_policy_replication ]
+                              [ retention_policy_shard_group_duration ]
+                              [ retention_policy_name ]
+                           ] .
+   ```              
+  - #### 创建保留策略
+   ```
+   create_retention_policy_stmt = "CREATE RETENTION POLICY" policy_name on_clause
+                                  retention_policy_duration
+                                  retention_policy_replication
+                                  [ retention_policy_shard_group_duration ]
+                                  [ "DEFAULT" ] .
+   ```   
+  - #### 创建用户
+   ```
+   create_user_stmt = "CREATE USER" user_name "WITH PASSWORD" password
+                      [ "WITH ALL PRIVILEGES" ] .
+   ```    
+  - #### 删除
+   ```
+   e_stmt = "DELETE" ( from_clause | where_clause | from_clause where_clause ) .
+   ```   
+  - #### 抛弃连续查询
+   ```
+   drop_continuous_query_stmt = "DROP CONTINUOUS QUERY" query_name on_clause .
+   ```   
+  - #### 抛弃数据库
+   ```
+   drop_database_stmt = "DROP DATABASE" db_name .
+   ```          
+  - #### 抛弃度量
+   ```
+   drop_measurement_stmt = "DROP MEASUREMENT" measurement .
+   ``` 
+  - #### 抛弃保留策略
+   ```
+   drop_retention_policy_stmt = "DROP RETENTION POLICY" policy_name on_clause .
+   ```      
+  - #### 抛弃序列
+   ```
+   drop_series_stmt = "DROP SERIES" ( from_clause | where_clause | from_clause where_clause ) .
+   ```      
+  - #### 抛弃分片
+   ```
+   drop_shard_stmt = "DROP SHARD" ( shard_id ) .
+   ```        
+  - #### 抛弃用户
+   ```
+   drop_user_stmt = "DROP USER" user_name .
+   ```       
+  - #### EXPLAIN
+   ```
+   explain_stmt = "EXPLAIN" select_stmt .
+   ```     
+  - #### EXPLAIN ANALYZE
+  例如
+   ```
+   > explain analyze select mean(temperature) from air where time >= '2018-02-22T00:00:00Z' and time < '2018-02-22T12:00:00Z'
+   EXPLAIN ANALYZE
+   ----    -----------
+    .
+    └── select
+      ├── execution_time: 279.292µs
+      ├── planning_time: 952.75µs
+      ├── total_time: 1.232042ms
+      └── build_cursor
+       ├── labels
+        │   └── statement: SELECT mean(temperature) FROM data.autogen.air
+        └── iterator_scanner
+         └── labels
+          └── expr: mean(temperature)
+   ```    
+  execution_time: 执行查询所花费的时间，包括读取时间序列数据、在数据流经迭代器时执行操作，以及从迭代器中提取已处理的数据。执行时间不包括将输出序列化为JSON或其他格式所花费的时间。
+  planning_time: 显示计划查询所花费的时间量。在CnosDB中规划查询需要许多步骤。根据查询的复杂性，与执行查询相比，计划可能需要更多的工作并消耗更多的CPU和内存资源。例如，执行查询所需的系列键的数量会影响计划查询的速度和所需的内存。
+  create_iterator: 表示本地CnosDB实例所做的工作──一组复杂的嵌套迭代器组合在一起，以产生最终的查询输出。
+  cursor type：EXPLAIN ANALYZE区分3种游标类型。虽然游标类型具有相同的数据结构和相同的CPU和I/O成本，但每种游标类型的构造原因不同，并在最终输出中分开。
+  block types：EXPLAIN ANALYZE分离存储块类型，并报告被解码的块的总数和它们在磁盘上的大小(以字节为单位)。
+
+  - #### 授权
+   ```
+   grant_stmt = "GRANT" privilege [ on_clause ] to_clause .
+   ```   
+  - #### 关闭查询
+   ```
+   kill_query_statement = "KILL QUERY" query_id .
+   ```     
+  - #### 撤销
+   ```
+   revoke_stmt = "REVOKE" privilege [ on_clause ] "FROM" user_name .
+   ```    
+  - #### 选择
+   ```
+   select_stmt = "SELECT" fields [ into_clause ] from_clause [ where_clause ]
+            [ group_by_clause ] [ order_by_clause ] [ limit_clause ]
+            [ offset_clause ] [ slimit_clause ] [ soffset_clause ] [ timezone_clause ] .
+   ``` 
+  - #### 展示基数
+  指用于精确估计或计数测量值、序列、标记键、标记键值和字段键的基数的一组命令。SHOW CARDINALITY命令有两种变体:估计的和精确的。估计值使用草图计算，是所有基数大小的安全默认值。准确的值是直接从TSM(时间结构合并树)数据中计算的，但是对于高基数的数据来说，运行这些值是非常昂贵的。除非必要，使用估计的品种。仅当在数据库上启用了时间序列索引(TSI)时，才支持按时间过滤。
+    
+  - #### SHOW CONTINUOUS QUERIES
+   ```
+   show_continuous_queries_stmt = "SHOW CONTINUOUS QUERIES" .
+   ```       
+  - #### SHOW DATABASES
+   ```
+   show_databases_stmt = "SHOW DATABASES" .
+   ```   
+  - #### SHOW DIAGNOSTICS
+  示节点信息，如构建信息、正常运行时间、主机名、服务器配置、内存使用和运行时诊断。
+   ```
+   show_diagnostics_stmt = "SHOW DIAGNOSTICS"
+   ```   
+  - #### SHOW FIELD KEY CARDINALITY
+   ```
+   show_field_key_cardinality_stmt = "SHOW FIELD KEY CARDINALITY" [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ]
+
+   show_field_key_exact_cardinality_stmt = "SHOW FIELD KEY EXACT CARDINALITY" [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ]
+   ```  
+  - ####  SHOW FIELD KEYS
+   ```
+   show_field_keys_stmt = "SHOW FIELD KEYS" [on_clause] [ from_clause ] .
+   ```   
+  - #### SHOW GRANTS
+   ```
+   show_grants_stmt = "SHOW GRANTS FOR" user_name .
+   ```   
+  - #### SHOW MEASUREMENTS 
+   ```
+   show_measurements_stmt = "SHOW MEASUREMENTS" [on_clause] [ with_measurement_clause ] [ where_clause ] [ limit_clause ] [ offset_clause ] .
+   ```   
+  - #### SHOW QUERIES
+   ```
+   show_queries_stmt = "SHOW QUERIES" .
+   ```  
+  - #### SHOW RETENTION POLICIES
+   ```
+   show_retention_policies_stmt = "SHOW RETENTION POLICIES" [on_clause] .
+   ```      
+  - #### SHOW SERIES
+   ```
+   show_series_stmt = "SHOW SERIES" [on_clause] [ from_clause ] [ where_clause ] [ limit_clause ] [ offset_clause ] .
+   ```
+  - #### SHOW SERIES CARDINALITY
+   ```
+   show_series_cardinality_stmt = "SHOW SERIES CARDINALITY" [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ]
+
+   show_series_exact_cardinality_stmt = "SHOW SERIES EXACT CARDINALITY" [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ]
+
+   ```
+  - #### SHOW SHARD GROUPS
+   ```
+   show_shard_groups_stmt = "SHOW SHARD GROUPS" .
+   ```   
+  - #### SHOW SHARDS
+   ```
+   show_shards_stmt = "SHOW SHARDS" .
+   ``` 
+  - #### SHOW STATS
+   ```
+   show_stats_stmt = "SHOW STATS [ FOR '<component>' | 'indexes' ]"
+   ``` 
+  - #### SHOW TAG KEYS
+   ```
+   show_tag_keys_stmt = "SHOW TAG KEYS" [on_clause] [ from_clause ] [ where_clause ]
+                   [ limit_clause ] [ offset_clause ] .
+   ```     
+  - #### SHOW TAG VALUES
+   ```
+   show_tag_values_stmt = "SHOW TAG VALUES" [on_clause] [ from_clause ] with_tag_clause [ where_clause ]
+                     [ limit_clause ] [ offset_clause ] .
+   ```  
+  - #### SHOW TAG VALUES CARDINALITY
+   ```
+   show_tag_values_cardinality_stmt = "SHOW TAG VALUES CARDINALITY" [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ] with_key_clause
+
+   show_tag_values_exact_cardinality_stmt = "SHOW TAG VALUES EXACT CARDINALITY" [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ] with_key_clause
+   ```     
+  - #### SHOW USERS
+   ```
+   show_users_stmt = "SHOW USERS" .
+   ```   
+- ### 条款  
+   ```
+  from_clause     = "FROM" measurements .
+  
+  group_by_clause = "GROUP BY" dimensions fill(fill_option).
+  
+  into_clause     = "INTO" ( measurement | back_ref ).
+  
+  limit_clause    = "LIMIT" int_lit .
+  
+  offset_clause   = "OFFSET" int_lit .
+  
+  slimit_clause   = "SLIMIT" int_lit .
+  
+  soffset_clause  = "SOFFSET" int_lit .
+  
+  timezone_clause = tz(string_lit) .
+  
+  on_clause       = "ON" db_name .
+  
+  order_by_clause = "ORDER BY" sort_fields .
+  
+  to_clause       = "TO" user_name .
+  
+  where_clause    = "WHERE" expr .
+  
+  with_measurement_clause = "WITH MEASUREMENT" ( "=" measurement | "=~" regex_lit ) .
+  
+  with_tag_clause = "WITH KEY" ( "=" tag_key | "!=" tag_key | "=~" regex_lit | "IN (" tag_keys ")"  ) .
+   ```   
+- ### 表达式
+   ```
+  binary_op        = "+" | "-" | "*" | "/" | "%" | "&" | "|" | "^" | "AND" |
+                   "OR" | "=" | "!=" | "<>" | "<" | "<=" | ">" | ">=" .
+
+  expr             = unary_expr { binary_op unary_expr } .
+
+  unary_expr       = "(" expr ")" | var_ref | time_lit | string_lit | int_lit |
+  float_lit | bool_lit | duration_lit | regex_lit .
+   ```   
+- ### 其他
+   ```
+  alias            = "AS" identifier .
+  
+  back_ref         = ( policy_name ".:MEASUREMENT" ) |
+  ( db_name "." [ policy_name ] ".:MEASUREMENT" ) .
+  
+  db_name          = identifier .
+  
+  dimension        = expr .
+  
+  dimensions       = dimension { "," dimension } .
+  
+  field_key        = identifier .
+  
+  field            = expr [ alias ] .
+  
+  fields           = field { "," field } .
+  
+  fill_option      = "null" | "none" | "previous" | int_lit | float_lit | "linear" .
+  
+  host             = string_lit .
+  
+  measurement      = measurement_name |
+  ( policy_name "." measurement_name ) |
+  ( db_name "." [ policy_name ] "." measurement_name ) .
+  
+  measurements     = measurement { "," measurement } .
+  
+  measurement_name = identifier | regex_lit .
+  
+  password         = string_lit .
+  
+  policy_name      = identifier .
+  
+  privilege        = "ALL" [ "PRIVILEGES" ] | "READ" | "WRITE" .
+  
+  query_id         = int_lit .
+  
+  query_name       = identifier .
+  
+  retention_policy = identifier .
+  
+  retention_policy_option      = retention_policy_duration |
+  retention_policy_replication |
+  retention_policy_shard_group_duration |
+  "DEFAULT" .
+  
+  retention_policy_duration    = "DURATION" duration_lit .
+  
+  retention_policy_replication = "REPLICATION" int_lit .
+  
+  retention_policy_shard_group_duration = "SHARD DURATION" duration_lit .
+  
+  retention_policy_name = "NAME" identifier .
+  
+  series_id        = int_lit .
+  
+  shard_id         = int_lit .
+  
+  sort_field       = field_key [ ASC | DESC ] .
+  
+  sort_fields      = sort_field { "," sort_field } .
+  
+  subscription_name = identifier .
+  
+  tag_key          = identifier .
+  
+  tag_keys         = tag_key { "," tag_key } .
+  
+  user_name        = identifier .
+  
+  var_ref          = measurement .
+   ```   
+- ### 查询引擎内部
+
+  查询的生命周期是这样的；
+  - 对CnosQL查询字符串进行标记，然后将其解析为抽象语法树(AST)。这是查询本身的代码表示。
+  - AST被传递给`QueryExecutor`, `QueryExecutor`将查询定向到适当的处理程序。例如，与元数据相关的查询由元服务执行，`SELECT`语句由分片自己执行。
+  - 然后，查询引擎确定与`SELECT`语句的时间范围匹配的分片。从这些分片中，为语句中的每个字段创建迭代器。
+  - 迭代器被传递给发射器，发射器耗尽迭代器并连接结果点。发射器的工作是将简单的时间/值点转换为返回给客户端的更复杂的结果对象。
+
+  - #### 理解迭代器
+    迭代器是查询引擎的核心。它们为在一组点上循环提供了一个简单的接口。例如，这是一个浮点数的迭代器:
+    ```
+    type FloatIterator interface {
+        Next() *FloatPoint
+    }
+    ```  
+    这些迭代器是通过`IteratorCreator`接口创建的:  
+    ```
+    type IteratorCreator interface {
+        CreateIterator(opt *IteratorOptions) (Iterator, error)
+    }
+    ```  
+    `IteratorOptions`提供了关于字段选择、时间范围和维度的参数，迭代器创建者在规划迭代器时可以使用这些参数。`IteratorCreator`接口用于许多级别，如`Shards`、`Shard`和`Engine`。这允许在适当的时候执行优化，例如返回预先计算的`COUNT()`。
+    迭代器不仅仅是从存储器中读取原始数据。迭代器可以进行组合，以便围绕输入迭代器提供额外的功能。例如，`DistinctIterator`可以为输入迭代器计算每个时间窗口的不同值。或者，`FillIterator`可以生成输入迭代器所缺少的额外点。
+    这种组合也很适合聚合。例如，像这样的语句:
+    ```
+    SELECT MEAN(temperature) FROM cpu GROUP BY time(10m)
+    ```  
+    本例中，MEAN(temperature)是一个从底层分片包装迭代器的`MeanIterator`。但是，如果我们可以添加一个额外的迭代器来确定平均值的导数:  
+    ```
+    SELECT DERIVATIVE(MEAN(temperature), 20m) FROM cpu GROUP BY time(10m)
+    ```    
+  - #### 理解游标
+    游标通过元组(时间、值)中的分片标识单个序列(测量值、标签集和字段)的数据。游标遍历以日志结构的合并树形式存储的数据，并跨级别处理重复数据删除、删除数据的tombstone和合并缓存(Write Ahead Log)。游标按时间升序或降序对(时间，值)元组进行排序。
+  - #### 理解辅助字段
+    因为CnosQL允许用户使用FIRST()、LAST()、MIN()和MAX()等选择器函数，所以引擎必须提供一种方法，在选择点的同时返回相关数据。
+  - #### 内置的迭代器
+    有许多内置迭代器可以让我们构建查询:
+    - 排序合并迭代器——该迭代器将一个或多个迭代器合并成一个相同类型的新迭代器。该迭代器保证在开始下一个窗口之前输出窗口内的所有点，但不提供窗口内的排序保证。这允许快速访问聚合查询，而聚合查询不需要更强的排序保证。
+    - 限制迭代器——该迭代器限制每个名称/标签组的点数。这是`LIMIT & OFFSET`语法的实现。
+    - 填充迭代器——如果输入迭代器缺少额外的点，这个迭代器会注入额外的点。它可以提供空点、带有前一个值的点或带有特定值的点。
+    - 缓冲迭代器——该迭代器提供了将一个点“未读”回缓冲区的能力，以便下次可以再次读取它。这被广泛用于为窗口提供前瞻。
+    - Reduce迭代器——该迭代器为窗口中的每个点调用一个Reduce函数。当窗口完成时，输出该窗口的所有点。这用于简单的聚合函数，如COUNT()。
+    - Reduce Slice迭代器——该迭代器首先收集窗口的所有点，然后将它们一次性全部传递给Reduce函数。迭代器返回结果。这用于聚合函数，如DERIVATIVE()。
+    - Transform迭代器——该迭代器为输入迭代器中的每个点调用Transform函数。它用于执行二进制表达式。
+    - 重复数据删除迭代器——此迭代器只输出唯一的点。它是资源密集型的，所以它只用于像元查询语句这样的小查询。
+  - #### 调用迭代器
+    CnosQL中的函数调用在两个级别上实现。为了提高效率，可以将一些调用封装在多个层上。例如，一个`COUNT()`可以在分片层执行，然后多个`counterator`可以与另一个`counterator`包装，以计算所有分片的计数。这些迭代器可以使用`NewCallIterator()`创建。有些迭代器更复杂，或者需要在更高的级别上实现。例如，在执行计算之前，`DERIVATIVE()`需要首先检索窗口的所有点。这个迭代器是由引擎本身创建的，较低级别的迭代器不会被要求创建。
+    
