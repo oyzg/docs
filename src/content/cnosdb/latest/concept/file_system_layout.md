@@ -1,27 +1,27 @@
-# 文件系统布局
+## 文件系统布局
 
-## CnosDB 文件结构
+- ### CnosDB 文件结构
 
-### Data 目录
+  #### Data 目录
 
   CnosDB存储时间序列数据(TSM文件)的目录路径。要定制此路径，请使用`[data].dir`配置选项。
 
-### WAL 目录
+  #### WAL 目录
 
   CnosDB存放WAL(Write Ahead Log 预写日志)文件的目录路径。要定制此路径，请使用`[data].wal-dir`配置选项。
 
-### Meta 目录
+  #### Meta 目录
 
   CnosDB存放meta文件的目录路径，存储有关用户、数据库、保留策略、分片和连续查询的信息。要定制此路径，请使用`[meta].dir`配置选项。
 
-## 文件布局
-  - [macOS](####macOS)
-  - [Linux](####Linux)
-  - [Windows](####Windows)
-  - [Docker](####Docker)
-  - [Kubernetes](####Kubernetes)
+- ### 文件布局
+    - [macOS](#macos)
+    - [Linux](#linux)
+    - [Windows](#windows)
+    - [Docker](#docker)
+    - [Kubernetes](#kubernetes)
 
-### macOS
+#### macOS
 
 macOs默认目录
 
@@ -41,7 +41,7 @@ macOS 文件系统概述
                 └──meta
                    └──meta.db
 
-### Linux
+#### Linux
 在Linux上安装CnosDB时，您可以下载并安装cnosdb二进制文件，也可以以包的形式安装。使用的安装方法决定了文件系统的布局。
 
 Linux 默认目录 (以独立的二进制文件形式安装)
@@ -84,7 +84,7 @@ Linux 文件系统概述 (以包的形式安装)
               /etc/cnosdb/
                 └──cnosdb.conf
 
-### Windows
+#### Windows
 
 Windows 默认目录
 
@@ -104,7 +104,7 @@ Windows 文件系统概述
                 └──meta
                    └──meta.db
 
-### Docker
+#### Docker
 
 Docker 默认目录
 
@@ -124,7 +124,7 @@ Docker 文件系统概述
                 └──meta
                    └──meta.db
 
-### kubernetes
+#### Kubernetes
 
 Kubernetes 默认目录
 

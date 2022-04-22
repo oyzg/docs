@@ -2,11 +2,10 @@
 
 ## 备份 `cnosdb backup`
 
-  从指定数据节点创建数据库快照，并保存到 PATH 对应目录。
-
-    ```
-    cnosdb backup [flags] PATH
-    ```
+从指定数据节点创建数据库快照，并保存到 PATH 对应目录。
+```shell
+cnosdb backup [flags] PATH
+```
 
 ### 参数介绍
 

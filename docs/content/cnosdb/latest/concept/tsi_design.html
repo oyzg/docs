@@ -1,0 +1,248 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>TSI的设计 - CnosDB</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../../../favicon.svg">
+        <link rel="shortcut icon" href="../../../../favicon.png">
+        <link rel="stylesheet" href="../../../../css/variables.css">
+        <link rel="stylesheet" href="../../../../css/general.css">
+        <link rel="stylesheet" href="../../../../css/chrome.css">
+        <link rel="stylesheet" href="../../../../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../../../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../../../highlight.css">
+        <link rel="stylesheet" href="../../../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/about.html"><strong aria-hidden="true">1.</strong> 关于本项目</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/index.html"><strong aria-hidden="true">2.</strong> 介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/download.html"><strong aria-hidden="true">2.1.</strong> 下载</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/install.html"><strong aria-hidden="true">2.2.</strong> 安装</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/get-start.html"><strong aria-hidden="true">2.3.</strong> 入门指南 TODO</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept.html"><strong aria-hidden="true">3.</strong> 概念</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/cnosql_vs_sql.html"><strong aria-hidden="true">3.1.</strong> CnosDB VS SQL</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/design_insights.html"><strong aria-hidden="true">3.2.</strong> 设计原则</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/storage_engine.html"><strong aria-hidden="true">3.3.</strong> 存储引擎</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/tsi_design.html" class="active"><strong aria-hidden="true">3.4.</strong> TSI的设计</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/file_system_layout.html"><strong aria-hidden="true">3.5.</strong> 文件系统布局</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/guide/index.html"><strong aria-hidden="true">4.</strong> 指南</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/guide/cnosdb-cli.html"><strong aria-hidden="true">4.1.</strong> cnosdb-cli</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/index.html"><strong aria-hidden="true">5.</strong> 运维管理</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/export_import.html"><strong aria-hidden="true">5.1.</strong> 导入和导出</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/backup_restore.html"><strong aria-hidden="true">5.2.</strong> 备份和还原</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/configuration.html"><strong aria-hidden="true">5.3.</strong> CnosDB配置</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/index.html"><strong aria-hidden="true">6.</strong> CnosDB工具</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb.html"><strong aria-hidden="true">6.1.</strong> cnosdb</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-cli.html"><strong aria-hidden="true">6.2.</strong> cnosdb-cli</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-inspect.html"><strong aria-hidden="true">6.3.</strong> cnosdb-inspect</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> CnosQL</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_sample.html"><strong aria-hidden="true">7.1.</strong> CnosQL入门 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_syntax.html"><strong aria-hidden="true">7.2.</strong> CnosQL语法 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_queries.html"><strong aria-hidden="true">7.3.</strong> CnosQL查询 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/management_database.html"><strong aria-hidden="true">7.4.</strong> 管理数据库</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_schema.html"><strong aria-hidden="true">7.5.</strong> Schema查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/continuous_queries.html"><strong aria-hidden="true">7.6.</strong> 连续查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_function.html"><strong aria-hidden="true">7.7.</strong> CnosQL函数</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/math_operators.html"><strong aria-hidden="true">7.8.</strong> CnosQL数学运算符</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_spect.html"><strong aria-hidden="true">7.9.</strong> CnosQL参考</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> 数据协议</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/line_protocol.html"><strong aria-hidden="true">8.1.</strong> CnosDB Line Protocol</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/write_api.html"><strong aria-hidden="true">8.2.</strong> CnosDB Write API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/query_api.html"><strong aria-hidden="true">8.3.</strong> CnosDB Query API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/prometheus.html"><strong aria-hidden="true">8.4.</strong> Prometheus</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/telegraf.html"><strong aria-hidden="true">8.5.</strong> Telegraf</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/sandboxmanagement.html"><strong aria-hidden="true">9.</strong> 集群管理</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/frequently_asked_questions.html"><strong aria-hidden="true">10.</strong> 常见问题</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CnosDB</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="tsi的设计"><a class="header" href="#tsi的设计">TSI的设计</a></h1>
+<h2 id="文件结构"><a class="header" href="#文件结构">文件结构</a></h2>
+<p>TSI 由如下几部分构成
+- 索引:包含单个分片的整个索引数据集。
+- 分区:包含用于分片的数据的分片分区。
+- 日志文件:以内存索引的形式包含新写入的series，并持久化为WAL。
+- 索引文件:包含一个不可变的、内存映射的索引，由一个日志文件构建或由两个连续的索引文件合并而成。
+- 序列文件：它包含整个数据库中所有series keys的集合。数据库中的每个分片共享相同的序列文件。</p>
+<h2 id="写入"><a class="header" href="#写入">写入</a></h2>
+<p>当写入操作系统时，会发生以下情况。</p>
+<ol>
+<li>Series被添加到Series文件中，如果Series文件已经存在，则查找它。这将返回一个自动递增的序列ID。</li>
+<li>series被发送到索引。索引维护现有系列id的咆哮位图，并忽略已经创建的series。</li>
+<li>该series被hash并发送到适当的分区。</li>
+<li>分区将series作为一个条目写入日志文件。</li>
+<li>日志文件将该series写入磁盘上的预写日志文件，并将该series添加到一组内存索引中。</li>
+</ol>
+<h2 id="压缩"><a class="header" href="#压缩">压缩</a></h2>
+<p>一旦日志文件大小超过阈值(5MB)，就会创建一个新的活跃日志文件，并将前一个日志文件压缩到一个索引文件中。第一个索引文件的级别为L1。日志文件被认为是级别L0。</p>
+<p>索引文件也可以通过合并两个较小的索引文件来创建。例如，如果两个相邻的L1索引文件存在，则可以将它们合并到L2索引文件中。</p>
+<h2 id="读取"><a class="header" href="#读取">读取</a></h2>
+<p>索引提供了几个API调用来检索数据集，例如:</p>
+<p><code>MeasurementIterator ()</code>: 返回已排序的<code>measurement</code>名称列表。</p>
+<p><code>TagKeyIterator() </code>: 返回<code>measurements</code>中已排序的<code>tag keys</code>列表。</p>
+<p><code>TagValueIterator()</code>: 返回<code>tag keys</code>的<code>tag values</code>的排序列表。</p>
+<p><code>MeasurementSeriesIDIterator()</code>: 返回measurements的所有series id的排序列表。</p>
+<p><code>TagKeySeriesIDIterator()</code>: 返回<code>tag keys</code>的所有<code>series id</code>的排序列表。</p>
+<p><code>TagValueSeriesIDIterator() </code>: 返回一个<code>tag values</code>的所有<code>series id</code>的排序列表。</p>
+<h2 id="日志文件结构"><a class="header" href="#日志文件结构">日志文件结构</a></h2>
+<p>日志文件的结构很简单，它是按顺序写入磁盘的LogEntry对象列表。日志文件一直写到5MB，然后压缩成索引文件。日志中的条目对象可以是以下任何一种类型:</p>
+<ul>
+<li>AddSeries</li>
+<li>DeleteSeries</li>
+<li>DeleteMeasurement</li>
+<li>DeleteTagKey</li>
+<li>DeleteTagValue</li>
+</ul>
+<p>日志文件的内存索引跟踪以下内容:</p>
+<ul>
+<li><code>measurements</code>的名字</li>
+<li><code>measurements</code>的<code>tag keys</code></li>
+<li><code>tag keys</code>的<code>tag values</code></li>
+<li><code>series</code>的<code>measurements</code></li>
+<li><code>series</code>的<code>tag values</code></li>
+<li><code>series</code>, <code>measurements</code>, <code>tag keys</code>和<code>tag values</code>的<code>tombstones</code>文件</li>
+</ul>
+<h2 id="索引文件结构"><a class="header" href="#索引文件结构">索引文件结构</a></h2>
+<p>索引文件是一个不可变的文件，它跟踪与日志文件类似的信息，但所有数据都被索引并写入磁盘，以便可以直接从内存映射中访问它。</p>
+<p>索引文件包含以下部分：</p>
+<ul>
+<li><code>TagBlocks</code>: 为单个<code>tag key</code>维护<code>tag value</code>的索引。</li>
+<li><code>MeasurementBlock</code>: 维护<code>measurements</code>值及其<code>tag keys</code>的索引。</li>
+<li><code>Trailer</code>: 存储文件的偏移量信息，以及用于基数估计的<code>HyperLogLog</code>草图。</li>
+</ul>
+<h2 id="manifest文件"><a class="header" href="#manifest文件">MANIFEST文件</a></h2>
+<p>MANIFEST文件存储在索引目录中，并列出属于该索引的所有文件以及访问它们的顺序。每次发生压缩时，都会更新此文件。目录中任何不在索引文件中的文件都是正在压缩过程中的索引文件。</p>
+<h2 id="文件集"><a class="header" href="#文件集">文件集</a></h2>
+<p>文件集是在CnosDB进程运行时获得的清单的内存快照。这需要提供索引在某个时间点的一致视图。该文件集还促进了对其所有文件的引用计数，以便在文件的所有读取器完成对文件的操作之前，不会通过压缩删除任何文件。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../../../content/cnosdb/latest/concept/storage_engine.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../../../../content/cnosdb/latest/concept/file_system_layout.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../../../content/cnosdb/latest/concept/storage_engine.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../../../../content/cnosdb/latest/concept/file_system_layout.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../../../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

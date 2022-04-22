@@ -1,0 +1,379 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>CnosDB Line Protocol - CnosDB</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../../../favicon.svg">
+        <link rel="shortcut icon" href="../../../../favicon.png">
+        <link rel="stylesheet" href="../../../../css/variables.css">
+        <link rel="stylesheet" href="../../../../css/general.css">
+        <link rel="stylesheet" href="../../../../css/chrome.css">
+        <link rel="stylesheet" href="../../../../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../../../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../../../highlight.css">
+        <link rel="stylesheet" href="../../../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/about.html"><strong aria-hidden="true">1.</strong> 关于本项目</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/index.html"><strong aria-hidden="true">2.</strong> 介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/download.html"><strong aria-hidden="true">2.1.</strong> 下载</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/install.html"><strong aria-hidden="true">2.2.</strong> 安装</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/get-start.html"><strong aria-hidden="true">2.3.</strong> 入门指南 TODO</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept.html"><strong aria-hidden="true">3.</strong> 概念</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/cnosql_vs_sql.html"><strong aria-hidden="true">3.1.</strong> CnosDB VS SQL</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/design_insights.html"><strong aria-hidden="true">3.2.</strong> 设计原则</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/storage_engine.html"><strong aria-hidden="true">3.3.</strong> 存储引擎</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/tsi_design.html"><strong aria-hidden="true">3.4.</strong> TSI的设计</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/file_system_layout.html"><strong aria-hidden="true">3.5.</strong> 文件系统布局</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/guide/index.html"><strong aria-hidden="true">4.</strong> 指南</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/guide/cnosdb-cli.html"><strong aria-hidden="true">4.1.</strong> cnosdb-cli</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/index.html"><strong aria-hidden="true">5.</strong> 运维管理</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/export_import.html"><strong aria-hidden="true">5.1.</strong> 导入和导出</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/backup_restore.html"><strong aria-hidden="true">5.2.</strong> 备份和还原</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/configuration.html"><strong aria-hidden="true">5.3.</strong> CnosDB配置</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/index.html"><strong aria-hidden="true">6.</strong> CnosDB工具</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb.html"><strong aria-hidden="true">6.1.</strong> cnosdb</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-cli.html"><strong aria-hidden="true">6.2.</strong> cnosdb-cli</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-inspect.html"><strong aria-hidden="true">6.3.</strong> cnosdb-inspect</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> CnosQL</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_sample.html"><strong aria-hidden="true">7.1.</strong> CnosQL入门 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_syntax.html"><strong aria-hidden="true">7.2.</strong> CnosQL语法 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_queries.html"><strong aria-hidden="true">7.3.</strong> CnosQL查询 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/management_database.html"><strong aria-hidden="true">7.4.</strong> 管理数据库</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_schema.html"><strong aria-hidden="true">7.5.</strong> Schema查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/continuous_queries.html"><strong aria-hidden="true">7.6.</strong> 连续查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_function.html"><strong aria-hidden="true">7.7.</strong> CnosQL函数</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/math_operators.html"><strong aria-hidden="true">7.8.</strong> CnosQL数学运算符</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_spect.html"><strong aria-hidden="true">7.9.</strong> CnosQL参考</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> 数据协议</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/line_protocol.html" class="active"><strong aria-hidden="true">8.1.</strong> CnosDB Line Protocol</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/write_api.html"><strong aria-hidden="true">8.2.</strong> CnosDB Write API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/query_api.html"><strong aria-hidden="true">8.3.</strong> CnosDB Query API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/prometheus.html"><strong aria-hidden="true">8.4.</strong> Prometheus</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/telegraf.html"><strong aria-hidden="true">8.5.</strong> Telegraf</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/sandboxmanagement.html"><strong aria-hidden="true">9.</strong> 集群管理</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/frequently_asked_questions.html"><strong aria-hidden="true">10.</strong> 常见问题</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CnosDB</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="cnosdb-line-protocol"><a class="header" href="#cnosdb-line-protocol">CnosDB line Protocol</a></h2>
+<p>CnosDB行协议是一种基于文本格式将点写入CnosDB的行协议。</p>
+<ul>
+<li>
+<h3 id="cnosdb行协议参考"><a class="header" href="#cnosdb行协议参考">CnosDB行协议参考</a></h3>
+<h4 id="语法"><a class="header" href="#语法">语法</a></h4>
+<pre><code>&lt;measurement&gt;[,&lt;tag_key&gt;=&lt;tag_value&gt;[,&lt;tag_key&gt;=&lt;tag_value&gt;]] &lt;field_key&gt;=&lt;field_value&gt;[,&lt;field_key&gt;=&lt;field_value&gt;] [&lt;timestamp&gt;]
+</code></pre>
+<p>行协议接受换行符<code>\n</code>，对空格敏感。</p>
+<blockquote>
+<p>注意：行协议不支持在标签值或字段值中使用换行符<code>\n</code>。</p>
+</blockquote>
+<h4 id="语法描述"><a class="header" href="#语法描述">语法描述</a></h4>
+<ul>
+<li>
+<p><code>measurement</code>- 必须。是measurement项的名字。CnosDB接受每一个点的measurement值。为string类型。</p>
+</li>
+<li>
+<p><code>tag set</code> - 可选。为该点所有的标记键值对。tag keys和tag values都是string类型。</p>
+</li>
+<li>
+<p><code>field set</code> - 必须。每一个点必须要有一个field。是该点所有的字段键值对。可以是任何类型。</p>
+</li>
+<li>
+<p><code>timestamp</code> - 可选。如果时间戳没有包含在点中，则CnosDB将在UTC中使用服务器的本地纳秒时间戳。</p>
+</li>
+</ul>
+<h4 id="性能小提示"><a class="header" href="#性能小提示">性能小提示</a></h4>
+<ul>
+<li>将数据发送到CnosDB之前，请使用<a href="https://pkg.go.dev/bytes#Compare">Go bytes.Compare function</a>对数据根据tag key排序。</li>
+<li>要显著改善压缩，请对时间戳使用尽可能粗糙的精度。</li>
+<li>使用NTP (Network Time Protocol)同步主机时间。CnosDB使用UTC格式的主机本地时间为数据分配时间戳。如果主机的时钟没有与NTP同步，则主机写入到CnosDB的数据可能有不准确的时间戳。</li>
+</ul>
+<h4 id="例子"><a class="header" href="#例子">例子</a></h4>
+<ul>
+<li>
+<p>将field值<code>-1.234456e+78</code>作为浮点数写入CnosDB</p>
+<p><code>INSERT mydb value=-1.234456e+78</code></p>
+<p>CnosDB支持用科学符号指定的字段值。</p>
+</li>
+<li>
+<p>将field值<code>1.0</code>作为浮点数写入CnosDB</p>
+<p><code>INSERT mydb value=1.0</code></p>
+</li>
+<li>
+<p>将field值<code>1</code>作为浮点数写入CnosDB</p>
+<p><code>INSERT mydb value=1</code></p>
+</li>
+<li>
+<p>将field值<code>1.0</code>作为整数写入CnosDB，在字段值后附加i，告诉CnosDB将数字存储为整数。</p>
+<p><code>INSERT mydb value=1i</code></p>
+</li>
+<li>
+<p>将field值<code>string exapmple</code>作为字符串写入CnosDB</p>
+<p><code>INSERT mydb value=&quot;stringing along&quot;</code></p>
+</li>
+<li>
+<p>将field值<code>true</code>作为布尔值写入CnosDB</p>
+<p><code>INSERT mydb value=true</code></p>
+</li>
+<li>
+<p>尝试将字符串写入先前接收浮点数的字段</p>
+</li>
+<li></li>
+</ul>
+<p>如果float和string的时间戳存储在同一个分片中:</p>
+<pre><code>INSERT mydb value=3 1465934559000000000
+INSERT mydb value=&quot;stringing example&quot; 1465934559000000001
+ERR: {&quot;error&quot;:&quot;field type conflict: input field \&quot;value\&quot; on measurement \&quot;mymeas\&quot; is type string, already exists as type float&quot;}
+</code></pre>
+<p>如果float和string的时间戳没有存储在同一个分片中:</p>
+<pre><code>INSERT mymeas value=3 1465934559000000000
+INSERT mymeas value=&quot;stringing example&quot; 1466625759000000000
+</code></pre>
+<ul>
+<li>
+<h3 id="cnosdb行协议教程"><a class="header" href="#cnosdb行协议教程">CnosDB行协议教程</a></h3>
+<p>CnosDB行协议是一种将点写入数据库的基于文本的格式。点必须是行协议格式，以便CnosDB成功解析和写入点。</p>
+<h4 id="语法-1"><a class="header" href="#语法-1">语法</a></h4>
+<p>行协议格式中的一行文本表示CnosDB中的一个数据点。它将点的measurement value、tag set、field set和timestamp告知CnosDB。下面的代码块显示了一个行协议的示例，并将其分解为独立的组件:</p>
+<pre><code>air,station=LianYunGang temperature=74 1642176540000000000
+|    -------------------- -----------------  |
+|              |              |              |
+|              |              |              |
++-----------+--------+-+---------+-+---------+
+|measurement|,tag_set| |field_set| |timestamp|
++-----------+--------+-+---------+-+---------+
+</code></pre>
+<p><strong><code>measurement</code></strong></p>
+<ul>
+<li><code>measurement</code> - 要将数据写入的measurement的名字。measurement需符合线路协议。在本例子中，measurement为weather。</li>
+<li><code>tag set</code> - 标记集。包含在数据点中的标记。tag在行协议中是可选的。需要注意的是，tag set和measurement之间由逗号分隔，没有空格。用等号<code>=</code>分隔标签的键值对时，不需要插入空格，如:<code>&lt;tag_key&gt;=&lt;tag_value&gt;</code>。多个标记值对之间用逗号分隔，不能有空格。在本例子中，标记集由标记<code>station=LianYunGang</code>组成。
+当在标记集中使用引号时，行协议支持单引号和双引号，如下表所示:</li>
+<li><code>空格 I</code> - 将度量和字段集分开，或者，如果您在数据点中包含一个标记集，则使用空格将标记集和字段集分开。在行协议中需要空格。例如，没有tag set的有效行协议<code>air temperature=75 1642176360000000000</code>。</li>
+<li><code>field set</code> - 您的数据点的字段。每个行协议中的数据点至少需要一个字段。用等号=分隔字段的键值对，并且没有空格，比如：<code>&lt;field_key&gt;=&lt;field_value&gt;</code>。多个字段值对用逗号分隔，不能用空格，如：<code>&lt;field_key&gt;=&lt;field_value&gt;,&lt;field_key&gt;=&lt;field_value&gt;</code>。</li>
+<li><code>空格 II</code> - 用空格分隔field set和时间戳。如果包含时间戳，则行协议中需要空格。</li>
+<li><code>timestamp</code> - 数据点的时间戳，以纳秒级Unix时间为单位。时间戳在行协议中是可选的。如果没有为数据点指定时间戳，则CnosDB将在UTC中使用服务器的本地纳秒时间戳。</li>
+</ul>
+<h4 id="数据类型"><a class="header" href="#数据类型">数据类型</a></h4>
+<ul>
+<li>measurements, tag keys, tag values和field keys总是字符串。</li>
+<li>时间戳为UNIX时间戳。最小时间戳为<code>-9223372036854775806</code>或<code>1677-09-21T00:12:43.145224194Z</code>。最大时间戳为<code>9223372036854775806</code>或<code>2262-04-11T23:47:16.854775806Z</code>。如上所述，根据默认配置，CnosDB假设时间戳具有纳秒精度。</li>
+<li>field value可以是浮点数、整数、字符串或布尔值。在默认情况下，CnosDB假设所有的field value都是浮点数。</li>
+<li>在一个measurement中，一个分片中的字段类型不能不同。但多个分片中的字段类型可以不同。例如，如果InfluxDB试图将整数存储在与浮点数相同的分片中，则将整数写入之前接受的浮点数字段将失败:
+<pre><code>&gt; INSERT air,station=LianYunGang temperature=72 1642176180000000000
+&gt; INSERT air,station=LianYunGang temperature=79i 1642176540000000000
+ERR: {&quot;error&quot;:&quot;field type conflict: input field \&quot;temperature\&quot; on measurement \&quot;air\&quot; is type int64, already exists as type float&quot;}
+``
+</code></pre>
+</li>
+</ul>
+<h4 id="引号"><a class="header" href="#引号">引号</a></h4>
+<ul>
+<li>不要对时间戳使用双引号或单引号。这不是有效的线路协议。例如：
+<pre><code>&gt; INSERT air,station=LianYunGang temperature=72 &quot;1642176180000000000&quot;
+ERR: {&quot;error&quot;:&quot;unable to parse 'air,station=LianYunGang temperature=72 \&quot;1642176180000000000\&quot;': bad timestamp&quot;}
+</code></pre>
+</li>
+<li>永远不要给字段值(即使它们是字符串)加单引号，这也不是有效的线路协议。例如：
+<pre><code>&gt; INSERT air,station=LianYunGang temperature='72' 1642176180000000000
+ERR: {&quot;error&quot;:&quot;unable to parse 'air,station=LianYunGang temperature='72'': invalid boolean&quot;} 
+</code></pre>
+</li>
+<li>不要用双引号或单引号引用measurement名称、tag key、tag value和field key。这是有效的行协议，但CnosDB假定引用是名称的一部分。例如：
+<pre><code>&gt; INSERT air,station=LianYunGang temperature=72 1642176180000000000
+&gt; INSERT &quot;air&quot;,station=LianYunGang temperature=79 1642176540000000000
+&gt; SHOW MEASUREMENTS
+  name: measurements
+  ------------------
+  name
+  &quot;air&quot;
+  air
+</code></pre>
+要查询&quot;air&quot;中的数据，需要使用双引号，并使用正确的转义字符。
+<pre><code>&gt; SELECT * FROM &quot;\&quot;air\&quot;&quot;
+name: &quot;air&quot;
+time                 station     temperature
+----                 -------     -----------
+2022-01-14T16:09:00Z LianYunGang 79
+
+</code></pre>
+</li>
+<li>不要对浮点型、整型或布尔型字段值使用双引号。CnosDB将假定这些值是字符串。例如：
+<pre><code>&gt; INSERT air,station=LianYunGang temperature=&quot;72&quot;
+&gt; SELECT * FROM air WHERE temperature &gt;= 70
+&gt;
+</code></pre>
+</li>
+<li>对类型为字符串的字段值使用双引号。
+<pre><code>&gt; INSERT air,station=LianYunGang temperature=&quot;too warm&quot;
+&gt; SELECT * FROM air
+name: air
+-------------
+time				            station	 temperature
+2022-01-14T16:09:00Z	LianYunGang	 too warm
+</code></pre>
+</li>
+</ul>
+<h4 id="特殊字符和关键字"><a class="header" href="#特殊字符和关键字">特殊字符和关键字</a></h4>
+<p>对于tag keys,tag values,measurement,字符串类型的field values以及field keys总是使用反斜杠字符<code>\</code>进行转义。</p>
+<ul>
+<li>逗号<code>,</code>：
+<pre><code>wind,station=Lian\,YunGang visibility=59,temperature=59,pressure=56 1649664217071649000
+</code></pre>
+</li>
+<li>等号<code>=</code>：
+<pre><code>wind,station=LianYunGang vis\=ibility=59,temperature=59,pressure=56 1649664217071649000
+</code></pre>
+</li>
+<li>空格<code> </code>：
+<pre><code>wind,stat\ ion=LianYunGang visibility=59,temperature=59,pressure=56 1649664217071649000
+</code></pre>
+</li>
+<li>emojis 🥰： CnosDB的行协议支持emojis表情的输入，并且无需使用转义字符转义。例如：
+<pre><code>&gt; INSERT 🌤,⛪️=LianYunGang 🌡=23
+&gt; SELECT * FROM &quot;🌤&quot;
+name: 🌤
+time                        ⛪️          🌡
+----                        ------      ----
+2022-04-14T03:50:01.705037Z LianYunGang 23
+
+</code></pre>
+</li>
+<li>关键字:行协议接受CnosQL关键字作为标识符名称。通常，我们建议避免在模式中使用CnosQL关键字，因为它可能会在查询数据时造成混乱。 关键字<code>time</code>是一种特殊情况。<code>time</code>可以是连续查询名称、数据库名称、measurement名称、保留策略名称和用户名称。在这些情况下，<code>time</code>不需要在查询中使用双引号。<code>time</code>不能是字段键或标记键;CnosDB拒绝以<code>time</code>作为字段键或标记键的写操作，并返回错误。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../../../content/cnosdb/latest/cnosql/cnosql_spect.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../../../../content/cnosdb/latest/protocol/write_api.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../../../content/cnosdb/latest/cnosql/cnosql_spect.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../../../../content/cnosdb/latest/protocol/write_api.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../../../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

@@ -31,19 +31,13 @@
 
   cnosdb
    ```
-### 全局设置
-
-#### reporting-disabled = false
-
-  CnosDB主要使用来自运行CnosDB节点的自愿报告的数据来跟踪不同的CnosDB版本的采用率。此数据帮助CnosDB支持对CnosDB的持续开发。
-
-  `reporting-disabled`选项将每24小时将数据报告切换到`usage.cnosdb.com`。每个报告包括随机生成的标识符、操作系统、体系结构、CnosDB版本以及数据库数量、度量值和唯一序列。将此选项设置为`true`将禁用报告。
+### 全局配置
 
 #### bind-address = "127.0.0.1:8088"
 
   用于备份和恢复的RPC服务的绑定地址。环境变量为：`CNOSDB_BIND_ADDRESS`
 
-### 端口
+### Port
 
 #### 可用端口：
 
@@ -51,7 +45,7 @@
 
   `8088`：提供cnosdb 内部RPC服务以及备份恢复的默认端口
 
-### 元节点
+### meta
 
 #### dir = "/var/lib/cnosdb/meta"
 

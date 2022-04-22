@@ -1,0 +1,412 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>CnosQL数学运算符 - CnosDB</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../../../favicon.svg">
+        <link rel="shortcut icon" href="../../../../favicon.png">
+        <link rel="stylesheet" href="../../../../css/variables.css">
+        <link rel="stylesheet" href="../../../../css/general.css">
+        <link rel="stylesheet" href="../../../../css/chrome.css">
+        <link rel="stylesheet" href="../../../../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../../../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../../../highlight.css">
+        <link rel="stylesheet" href="../../../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/about.html"><strong aria-hidden="true">1.</strong> 关于本项目</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/index.html"><strong aria-hidden="true">2.</strong> 介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/download.html"><strong aria-hidden="true">2.1.</strong> 下载</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/install.html"><strong aria-hidden="true">2.2.</strong> 安装</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/get-start.html"><strong aria-hidden="true">2.3.</strong> 入门指南 TODO</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept.html"><strong aria-hidden="true">3.</strong> 概念</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/cnosql_vs_sql.html"><strong aria-hidden="true">3.1.</strong> CnosDB VS SQL</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/design_insights.html"><strong aria-hidden="true">3.2.</strong> 设计原则</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/storage_engine.html"><strong aria-hidden="true">3.3.</strong> 存储引擎</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/tsi_design.html"><strong aria-hidden="true">3.4.</strong> TSI的设计</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/file_system_layout.html"><strong aria-hidden="true">3.5.</strong> 文件系统布局</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/guide/index.html"><strong aria-hidden="true">4.</strong> 指南</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/guide/cnosdb-cli.html"><strong aria-hidden="true">4.1.</strong> cnosdb-cli</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/index.html"><strong aria-hidden="true">5.</strong> 运维管理</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/export_import.html"><strong aria-hidden="true">5.1.</strong> 导入和导出</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/backup_restore.html"><strong aria-hidden="true">5.2.</strong> 备份和还原</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/configuration.html"><strong aria-hidden="true">5.3.</strong> CnosDB配置</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/index.html"><strong aria-hidden="true">6.</strong> CnosDB工具</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb.html"><strong aria-hidden="true">6.1.</strong> cnosdb</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-cli.html"><strong aria-hidden="true">6.2.</strong> cnosdb-cli</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-inspect.html"><strong aria-hidden="true">6.3.</strong> cnosdb-inspect</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> CnosQL</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_sample.html"><strong aria-hidden="true">7.1.</strong> CnosQL入门 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_syntax.html"><strong aria-hidden="true">7.2.</strong> CnosQL语法 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_queries.html"><strong aria-hidden="true">7.3.</strong> CnosQL查询 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/management_database.html"><strong aria-hidden="true">7.4.</strong> 管理数据库</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_schema.html"><strong aria-hidden="true">7.5.</strong> Schema查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/continuous_queries.html"><strong aria-hidden="true">7.6.</strong> 连续查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_function.html"><strong aria-hidden="true">7.7.</strong> CnosQL函数</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/math_operators.html" class="active"><strong aria-hidden="true">7.8.</strong> CnosQL数学运算符</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_spect.html"><strong aria-hidden="true">7.9.</strong> CnosQL参考</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> 数据协议</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/line_protocol.html"><strong aria-hidden="true">8.1.</strong> CnosDB Line Protocol</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/write_api.html"><strong aria-hidden="true">8.2.</strong> CnosDB Write API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/query_api.html"><strong aria-hidden="true">8.3.</strong> CnosDB Query API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/prometheus.html"><strong aria-hidden="true">8.4.</strong> Prometheus</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/telegraf.html"><strong aria-hidden="true">8.5.</strong> Telegraf</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/sandboxmanagement.html"><strong aria-hidden="true">9.</strong> 集群管理</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/frequently_asked_questions.html"><strong aria-hidden="true">10.</strong> 常见问题</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CnosDB</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="cnosql-数学运算符"><a class="header" href="#cnosql-数学运算符">CnosQL 数学运算符</a></h2>
+<ul>
+<li>
+<h3 id="数学运算符"><a class="header" href="#数学运算符"><a href="#%E6%95%B0%E5%AD%A6%E8%BF%90%E7%AE%97%E7%AC%A6">数学运算符</a></a></h3>
+<ul>
+<li>
+<h4 id="加法"><a class="header" href="#加法"><a href="#%E5%8A%A0%E6%B3%95">加法</a></a></h4>
+</li>
+<li>
+<h4 id="减法"><a class="header" href="#减法"><a href="#%E5%87%8F%E6%B3%95">减法</a></a></h4>
+</li>
+<li>
+<h4 id="乘法"><a class="header" href="#乘法"><a href="#%E4%B9%98%E6%B3%95">乘法</a></a></h4>
+</li>
+<li>
+<h4 id="除法"><a class="header" href="#除法"><a href="#%E9%99%A4%E6%B3%95">除法</a></a></h4>
+</li>
+<li>
+<h4 id="模运算"><a class="header" href="#模运算"><a href="#%E6%A8%A1%E8%BF%90%E7%AE%97">模运算</a></a></h4>
+</li>
+<li>
+<h4 id="位与运算"><a class="header" href="#位与运算"><a href="#%E4%BD%8D%E4%B8%8E%E8%BF%90%E7%AE%97">位与运算</a></a></h4>
+</li>
+<li>
+<h4 id="位或运算"><a class="header" href="#位或运算"><a href="#%E4%BD%8D%E6%88%96%E8%BF%90%E7%AE%97">位或运算</a></a></h4>
+</li>
+<li>
+<h4 id="位异运算"><a class="header" href="#位异运算"><a href="#%E4%BD%8D%E5%BC%82%E8%BF%90%E7%AE%97">位异运算</a></a></h4>
+</li>
+<li>
+<h4 id="常见问题"><a class="header" href="#常见问题"><a href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98">常见问题</a></a></h4>
+</li>
+</ul>
+</li>
+<li>
+<h3 id="不支持的运算符"><a class="header" href="#不支持的运算符"><a href="#%E4%B8%8D%E6%94%AF%E6%8C%81%E7%9A%84%E8%BF%90%E7%AE%97%E7%AC%A6">不支持的运算符</a></a></h3>
+</li>
+<li>
+<h3 id="数学运算符-1"><a class="header" href="#数学运算符-1">数学运算符</a></h3>
+<ul>
+<li>
+<h4 id="加法-1"><a class="header" href="#加法-1">加法</a></h4>
+</li>
+</ul>
+<p>常量的加法</p>
+<pre><code>SELECT &quot;temperature&quot; + 5 FROM &quot;air&quot;
+SELECT * FROM &quot;air&quot; WHERE &quot;temperature&quot; + 5 &gt; 10
+</code></pre>
+<p>两字段的加法</p>
+<pre><code>SELECT &quot;temperature&quot; + &quot;visibility&quot; FROM &quot;air&quot;
+SELECT * FROM &quot;air&quot; WHERE &quot;temperature&quot; + &quot;visibility&quot; &gt; 10
+</code></pre>
+<ul>
+<li>
+<h4 id="减法-1"><a class="header" href="#减法-1">减法</a></h4>
+</li>
+</ul>
+<p>常量的减法</p>
+<pre><code>SELECT &quot;temperature&quot; - 2 FROM &quot;air&quot;
+SELECT * FROM &quot;air&quot; WHERE &quot;temperature&quot; - 2 &gt; 12
+</code></pre>
+<p>两字段的减法</p>
+<pre><code>SELECT &quot;temperature&quot; - &quot;visibility&quot; FROM &quot;air&quot;
+SELECT * FROM &quot;air&quot; WHERE &quot;temperature&quot; - &quot;visibility&quot; &gt; 10
+</code></pre>
+<ul>
+<li>
+<h4 id="乘法-1"><a class="header" href="#乘法-1">乘法</a></h4>
+</li>
+</ul>
+<p>常量的乘法</p>
+<pre><code>SELECT &quot;temperature&quot; * 2 FROM &quot;air&quot;
+SELECT * FROM &quot;air&quot; WHERE &quot;temperature&quot; - 2 &gt; 12
+</code></pre>
+<p>两字段的减法</p>
+<pre><code>SELECT &quot;temperature&quot; * &quot;visibility&quot; FROM &quot;air&quot;
+SELECT * FROM &quot;air&quot; WHERE &quot;temperature&quot; * &quot;visibility&quot; &gt; 10
+</code></pre>
+<p>乘法和其他操作符并用</p>
+<pre><code>SELECT 10 * (&quot;temperature&quot; + &quot;visibility&quot; + &quot;pressure&quot;) FROM &quot;air&quot;
+SELECT 10 * (&quot;temperature&quot; + &quot;visibility&quot; - &quot;pressure&quot;) FROM &quot;air&quot;
+SELECT 10 * (&quot;temperature&quot; - &quot;visibility&quot; - &quot;pressure&quot;) FROM &quot;air&quot;
+</code></pre>
+<ul>
+<li>
+<h4 id="除法-1"><a class="header" href="#除法-1">除法</a></h4>
+</li>
+</ul>
+<p>常量的除法</p>
+<pre><code>SELECT 10 / &quot;temperature&quot; FROM &quot;air&quot;
+SELECT * FROM &quot;air&quot; WHERE 10 / &quot;temperature&quot; &gt; 12
+</code></pre>
+<p>两字段的减法</p>
+<pre><code>SELECT &quot;temperature&quot; / &quot;visibility&quot; FROM &quot;air&quot;
+SELECT * FROM &quot;air&quot; WHERE &quot;temperature&quot; / &quot;visibility&quot; &gt; 10
+</code></pre>
+<p>乘法和其他操作符并用</p>
+<pre><code>SELECT 10 / (&quot;temperature&quot; + &quot;visibility&quot; + &quot;pressure&quot;) FROM &quot;air&quot;
+SELECT 10 / (&quot;temperature&quot; + &quot;visibility&quot; - &quot;pressure&quot;) FROM &quot;air&quot;
+SELECT 10 / (&quot;temperature&quot; - &quot;visibility&quot; - &quot;pressure&quot;) FROM &quot;air&quot;
+</code></pre>
+<ul>
+<li>
+<h4 id="模运算-1"><a class="header" href="#模运算-1">模运算</a></h4>
+</li>
+</ul>
+<p>常量的模运算</p>
+<pre><code>SELECT 10 % &quot;temperature&quot; FROM &quot;air&quot;
+SELECT * FROM &quot;air&quot; WHERE 10 % &quot;temperature&quot; = 0
+</code></pre>
+<p>两字段的模运算</p>
+<pre><code>SELECT &quot;temperature&quot; % &quot;visibility&quot; FROM &quot;air&quot;
+SELECT * FROM &quot;air&quot; WHERE &quot;temperature&quot; % &quot;visibility&quot; = 0
+</code></pre>
+<ul>
+<li>
+<h4 id="按位与运算"><a class="header" href="#按位与运算">按位与运算</a></h4>
+</li>
+</ul>
+<p>您可以对任何整数或布尔值使用此操作符，无论它们是字段还是常量。它不适用于浮点或字符串数据类型，并且不能混合整数和布尔值使用。</p>
+<pre><code>SELECT &quot;temperature&quot; &amp; 255 FROM &quot;air&quot;
+SELECT &quot;temperature&quot; &amp; &quot;pressure&quot; FROM &quot;air&quot;
+SELECT * FROM &quot;air&quot; WHERE &quot;temperature&quot; &amp; 15 &gt; 0
+SELECT &quot;temperature&quot; &amp; &quot;pressure&quot; FROM &quot;air&quot;
+SELECT (&quot;temperature&quot; ^ true) &amp; &quot;pressure&quot; FROM &quot;air&quot;
+</code></pre>
+<ul>
+<li>
+<h4 id="按位或运算"><a class="header" href="#按位或运算">按位或运算</a></h4>
+</li>
+</ul>
+<p>您可以对任何整数或布尔值使用此操作符，无论它们是字段还是常量。它不适用于浮点或字符串数据类型，并且不能混合整数和布尔值使用。</p>
+<pre><code>SELECT &quot;temperature&quot; | 255 FROM &quot;air&quot;
+SELECT &quot;temperature&quot; | &quot;pressure&quot; FROM &quot;air&quot;
+SELECT * FROM &quot;air&quot; WHERE &quot;temperature&quot; | 12 = 12
+</code></pre>
+<ul>
+<li>
+<h4 id="按位异运算"><a class="header" href="#按位异运算">按位异运算</a></h4>
+</li>
+</ul>
+<p>您可以对任何整数或布尔值使用此操作符，无论它们是字段还是常量。它不适用于浮点或字符串数据类型，并且不能混合整数和布尔值使用。</p>
+<pre><code>SELECT &quot;temperature&quot; ^ 255 FROM &quot;air&quot;
+SELECT &quot;temperature&quot; ^ &quot;pressure&quot; FROM &quot;air&quot;
+SELECT * FROM &quot;air&quot; WHERE &quot;temperature&quot; ^ 12 = 12
+</code></pre>
+<ul>
+<li>
+<h4 id="常见问题-1"><a class="header" href="#常见问题-1">常见问题</a></h4>
+<ul>
+<li>
+<h4 id="带有通配符和正则表达式的数学操作符"><a class="header" href="#带有通配符和正则表达式的数学操作符">带有通配符和正则表达式的数学操作符</a></h4>
+</li>
+</ul>
+<p>CnosDB不支持在SELECT子句中组合数学操作与通配符(*)或正则表达式。以下查询无效，系统返回错误:
+对通配符执行数学运算。</p>
+<pre><code>&gt; SELECT * + 2 FROM &quot;air&quot;
+ERR: unsupported expression with wildcard: * + 2
+</code></pre>
+<p>对函数中的通配符执行数学运算。</p>
+<pre><code>&gt; SELECT COUNT(*) / 2 FROM &quot;nope&quot;
+ERR: unsupported expression with wildcard: count(*) / 2
+</code></pre>
+<p>对正则表达式执行数学运算。</p>
+<pre><code>&gt; SELECT /A/ + 2 FROM &quot;air&quot;
+ERR: error parsing query: found +, expected FROM at line 1, char 12
+</code></pre>
+<p>对函数中的正则表达式执行数学运算。</p>
+<pre><code>&gt; SELECT COUNT(/A/) + 2 FROM &quot;nope&quot;
+ERR: unsupported expression with regex field: count(/A/) + 2
+</code></pre>
+<ul>
+<li>
+<h4 id="函数的数学运算符"><a class="header" href="#函数的数学运算符">函数的数学运算符</a></h4>
+</li>
+</ul>
+<p>目前不支持在函数调用中使用数学运算符。注意，CnosDB只允许SELECT子句中的函数。
+可行操作：</p>
+<pre><code>SELECT 10 * mean(&quot;value&quot;) FROM &quot;cpu&quot;
+</code></pre>
+<p>不可行操作：</p>
+<pre><code>SELECT mean(10 * &quot;value&quot;) FROM &quot;cpu&quot;
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<h3 id="不支持的运算符-1"><a class="header" href="#不支持的运算符-1">不支持的运算符</a></h3>
+<ul>
+<li>
+<h4 id="比较运算"><a class="header" href="#比较运算">比较运算</a></h4>
+</li>
+</ul>
+<p>所有的比较运算符都不支持。例如：<code>=</code>,<code>!=</code>,<code>&lt;</code>,<code>&gt;</code>,<code>&lt;=</code>,<code>&gt;=</code>,<code>&lt;&gt;</code>。在SELECT语句中均不可以使用。</p>
+<ul>
+<li>
+<h4 id="逻辑运算符"><a class="header" href="#逻辑运算符">逻辑运算符</a></h4>
+</li>
+</ul>
+<p>使用逻辑运算符，如：<code>!|</code>, <code>NAND</code>,<code>XOR</code>,<code>NOR</code>；都会导致解析错误。</p>
+<p>此外，在查询的<code>SELECT</code>子句中使用<code>AND</code>和<code>OR</code>不会表现为数学运算符，只会产生空结果，因为它们在CnosQL中已经被定义。但是，您可以对布尔数据应用位操作符<code>&amp;</code>、<code>|</code>和<code>^</code>。</p>
+<ul>
+<li>
+<h4 id="位非运算"><a class="header" href="#位非运算">位非运算</a></h4>
+</li>
+</ul>
+<p>没有位非运算符，因为您期望的结果取决于您的位域的宽度。CnosQL不知道您的位域有多宽，因此无法实现合适的位非运算。</p>
+<p>您可以通过使用<code>^</code>(位异或)操作符和代表字宽的全1的二进制数字来实现位非操作:</p>
+<pre><code>8-bit 数据：
+
+SELECT &quot;temperature&quot; ^ 255 FROM &quot;air&quot;
+
+16-bit 数据:
+
+SELECT &quot;temperature&quot; ^ 65535 FROM &quot;air&quot;
+
+32-bit 数据:
+
+SELECT &quot;temperature&quot; ^ 4294967295 FROM &quot;air&quot;
+</code></pre>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../../../content/cnosdb/latest/cnosql/cnosql_function.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../../../../content/cnosdb/latest/cnosql/cnosql_spect.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../../../content/cnosdb/latest/cnosql/cnosql_function.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../../../../content/cnosdb/latest/cnosql/cnosql_spect.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../../../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>
