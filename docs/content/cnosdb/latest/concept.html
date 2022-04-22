@@ -346,13 +346,13 @@ time			               #wind_speed
 <li>
 <p><code>Writers/Readers</code> - 每种文件类型（<code>WAL</code>段、<code>TSM</code>文件、<code>tombstones</code>等）都有用于处理格式的<code>Writers</code>和<code>Readers</code>。</p>
 </li>
+</ul>
+</li>
 <li>
 <h3 id="预写日志-wal"><a class="header" href="#预写日志-wal">预写日志 WAL</a></h3>
 <p>WAL被组织成一组类似于<code>_000001.wal</code>的文件。文件编号是单调递增的，称为WAL段。当一个段的大小达到10MB时，它被关闭并打开一个新的段。每个WAL段存储多个压缩的写和删除块。</p>
 <p>当写入时，新的点被序列化，使用Snappy压缩，并写入WAL文件。在成功返回之前，文件被fsync并将数据添加到内存索引中。这意味着需要将点批处理在一起以实现高吞吐量性能。(对于许多用例来说，最佳批量大小似乎是每批5000 - 10000个点。)</p>
 <p>WAL中的每个表项都遵循<code>TLV标准</code>，一个字节代表表项的类型(写或删除)，一个4字节的<code>uint32</code>压缩块的长度，然后是压缩块。</p>
-</li>
-</ul>
 </li>
 <li>
 <h3 id="缓存"><a class="header" href="#缓存">缓存</a></h3>
@@ -563,11 +563,11 @@ time			               #wind_speed
 <li>
 <h3 id="文件布局"><a class="header" href="#文件布局">文件布局</a></h3>
 <ul>
-<li><a href="####macOS">macOS</a></li>
-<li><a href="####Linux">Linux</a></li>
-<li><a href="####Windows">Windows</a></li>
-<li><a href="####Docker">Docker</a></li>
-<li><a href="####Kubernetes">Kubernetes</a></li>
+<li><a href="#macos">macOS</a></li>
+<li><a href="#linux">Linux</a></li>
+<li><a href="#windows">Windows</a></li>
+<li><a href="#docker">Docker</a></li>
+<li><a href="#kubernetes">Kubernetes</a></li>
 </ul>
 </li>
 </ul>
@@ -655,7 +655,7 @@ time			               #wind_speed
             └──meta
                └──meta.db
 </code></pre>
-<h4 id="kubernetes"><a class="header" href="#kubernetes">kubernetes</a></h4>
+<h4 id="kubernetes"><a class="header" href="#kubernetes">Kubernetes</a></h4>
 <p>Kubernetes 默认目录</p>
 <table><thead><tr><th style="text-align: center">路径</th><th style="text-align: center">默认路径</th></tr></thead><tbody>
 <tr><td style="text-align: center">Data directory</td><td style="text-align: center">/var/lib/cnosdb/data/</td></tr>
