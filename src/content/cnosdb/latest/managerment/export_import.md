@@ -1,16 +1,16 @@
-## 导入和导出
+# 导入和导出
 
-- ### 导入
+## 导入
 
-  ```
-  cnosdb-cli import --path <path> [arguments]
-  ```
-  <!--TODO -->
+```
+cnosdb-cli import --path <path> [arguments]
+```
+<!--TODO -->
 
-- ### 导出
+## 导出
 
-  ```
-  cnosdb-inspect export [arguments]
-  ```
+```
+cnosdb-inspect export [arguments]
+```
 
-  <!--TODO -->
+<!--TODO -->

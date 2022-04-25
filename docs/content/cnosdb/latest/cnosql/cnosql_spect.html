@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>CnosQL参考 - CnosDB</title>
+        <title>语法约定 - CnosDB</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/about.html"><strong aria-hidden="true">1.</strong> 关于本项目</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/index.html"><strong aria-hidden="true">2.</strong> 介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/download.html"><strong aria-hidden="true">2.1.</strong> 下载</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/install.html"><strong aria-hidden="true">2.2.</strong> 安装</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/get-start.html"><strong aria-hidden="true">2.3.</strong> 入门指南 TODO</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept.html"><strong aria-hidden="true">3.</strong> 概念</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/cnosql_vs_sql.html"><strong aria-hidden="true">3.1.</strong> CnosDB VS SQL</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/design_insights.html"><strong aria-hidden="true">3.2.</strong> 设计原则</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/storage_engine.html"><strong aria-hidden="true">3.3.</strong> 存储引擎</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/tsi_design.html"><strong aria-hidden="true">3.4.</strong> TSI的设计</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/file_system_layout.html"><strong aria-hidden="true">3.5.</strong> 文件系统布局</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/guide/index.html"><strong aria-hidden="true">4.</strong> 指南</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/guide/cnosdb-cli.html"><strong aria-hidden="true">4.1.</strong> cnosdb-cli</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/index.html"><strong aria-hidden="true">5.</strong> 运维管理</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/export_import.html"><strong aria-hidden="true">5.1.</strong> 导入和导出</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/backup_restore.html"><strong aria-hidden="true">5.2.</strong> 备份和还原</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/configuration.html"><strong aria-hidden="true">5.3.</strong> CnosDB配置</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/index.html"><strong aria-hidden="true">6.</strong> CnosDB工具</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb.html"><strong aria-hidden="true">6.1.</strong> cnosdb</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-cli.html"><strong aria-hidden="true">6.2.</strong> cnosdb-cli</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-inspect.html"><strong aria-hidden="true">6.3.</strong> cnosdb-inspect</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> CnosQL</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_sample.html"><strong aria-hidden="true">7.1.</strong> CnosQL入门 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_syntax.html"><strong aria-hidden="true">7.2.</strong> CnosQL语法 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_queries.html"><strong aria-hidden="true">7.3.</strong> CnosQL查询 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/management_database.html"><strong aria-hidden="true">7.4.</strong> 管理数据库</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_schema.html"><strong aria-hidden="true">7.5.</strong> Schema查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/continuous_queries.html"><strong aria-hidden="true">7.6.</strong> 连续查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_function.html"><strong aria-hidden="true">7.7.</strong> CnosQL函数</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/math_operators.html"><strong aria-hidden="true">7.8.</strong> CnosQL数学运算符</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_spect.html" class="active"><strong aria-hidden="true">7.9.</strong> CnosQL参考</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> 数据协议</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/line_protocol.html"><strong aria-hidden="true">8.1.</strong> CnosDB Line Protocol</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/write_api.html"><strong aria-hidden="true">8.2.</strong> CnosDB Write API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/query_api.html"><strong aria-hidden="true">8.3.</strong> CnosDB Query API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/prometheus.html"><strong aria-hidden="true">8.4.</strong> Prometheus</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/telegraf.html"><strong aria-hidden="true">8.5.</strong> Telegraf</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/sandboxmanagement.html"><strong aria-hidden="true">9.</strong> 集群管理</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/frequently_asked_questions.html"><strong aria-hidden="true">10.</strong> 常见问题</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/about.html"><strong aria-hidden="true">1.</strong> 关于CnosDB</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/index.html"><strong aria-hidden="true">2.</strong> 快速上手</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/download.html"><strong aria-hidden="true">2.1.</strong> 下载与安装</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/install.html"><strong aria-hidden="true">2.2.</strong> 命令行终端</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 应用编程接口</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/line_protocol.html"><strong aria-hidden="true">3.1.</strong> CnosDB Line Protocol</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/write_api.html"><strong aria-hidden="true">3.2.</strong> CnosDB Write API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/query_api.html"><strong aria-hidden="true">3.3.</strong> CnosDB Query API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/prometheus.html"><strong aria-hidden="true">3.4.</strong> Prometheus</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/telegraf.html"><strong aria-hidden="true">3.5.</strong> Telegraf</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.6.</strong> Golang</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.7.</strong> Java</div></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/index.html"><strong aria-hidden="true">4.</strong> 运维管理</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/export_import.html"><strong aria-hidden="true">4.1.</strong> 导入和导出</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/backup_restore.html"><strong aria-hidden="true">4.2.</strong> 备份和还原</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/configuration.html"><strong aria-hidden="true">4.3.</strong> CnosDB配置 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/sandboxmanagement.html"><strong aria-hidden="true">4.4.</strong> 集群管理</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.5.</strong> 运维工具介绍</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb.html"><strong aria-hidden="true">4.5.1.</strong> cnosdb</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-cli.html"><strong aria-hidden="true">4.5.2.</strong> cnosdb-cli</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-inspect.html"><strong aria-hidden="true">4.5.3.</strong> cnosdb-inspect</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/index.html"><strong aria-hidden="true">5.</strong> 设计原理</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/cnosql_vs_sql.html"><strong aria-hidden="true">5.1.</strong> CnosDB VS SQL</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/design_insights.html"><strong aria-hidden="true">5.2.</strong> 设计原则</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/storage_engine.html"><strong aria-hidden="true">5.3.</strong> 存储引擎</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/tsi_design.html"><strong aria-hidden="true">5.4.</strong> TSI的设计</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/concept/file_system_layout.html"><strong aria-hidden="true">5.5.</strong> 文件系统布局</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> 语法参考手册</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_sample.html"><strong aria-hidden="true">6.1.</strong> 查询入门 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_syntax.html"><strong aria-hidden="true">6.2.</strong> 数据查询 TODO</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/management_database.html"><strong aria-hidden="true">6.3.</strong> 数据库管理</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_schema.html"><strong aria-hidden="true">6.4.</strong> 模式查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_function.html"><strong aria-hidden="true">6.5.</strong> 函数</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/continuous_queries.html"><strong aria-hidden="true">6.6.</strong> 连续查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/math_operators.html"><strong aria-hidden="true">6.7.</strong> 数学运算符</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_spect.html" class="active"><strong aria-hidden="true">6.8.</strong> 语法约定</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/other.html"><strong aria-hidden="true">6.9.</strong> 其他</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/frequently_asked_questions.html"><strong aria-hidden="true">7.</strong> 常见问题</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -134,64 +134,29 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="cnosql参考"><a class="header" href="#cnosql参考">CnosQL参考</a></h2>
-<ul>
-<li>
-<h3 id="介绍"><a class="header" href="#介绍">介绍</a></h3>
+                        <h1 id="cnosql参考"><a class="header" href="#cnosql参考">CnosQL参考</a></h1>
+<h2 id="介绍"><a class="header" href="#介绍">介绍</a></h2>
 <p>CnosQL的定义和详细信息</p>
 <ul>
-<li>
-<h4 id="符号"><a class="header" href="#符号"><a href="#%E7%AC%A6%E5%8F%B7">符号</a></a></h4>
-</li>
-<li>
-<h4 id="查询表示"><a class="header" href="#查询表示"><a href="#%E6%9F%A5%E8%AF%A2%E8%A1%A8%E7%A4%BA">查询表示</a></a></h4>
-</li>
-<li>
-<h4 id="字母和数字"><a class="header" href="#字母和数字"><a href="#%E5%AD%97%E6%AF%8D%E5%92%8C%E6%95%B0%E5%AD%97">字母和数字</a></a></h4>
-</li>
-<li>
-<h4 id="标识符"><a class="header" href="#标识符"><a href="#%E6%A0%87%E8%AF%86%E7%AC%A6">标识符</a></a></h4>
-</li>
-<li>
-<h4 id="关键字"><a class="header" href="#关键字"><a href="#%E5%85%B3%E9%94%AE%E5%AD%97">关键字</a></a></h4>
-</li>
-<li>
-<h4 id="文字"><a class="header" href="#文字"><a href="#%E6%96%87%E5%AD%97">文字</a></a></h4>
-</li>
-<li>
-<h4 id="查询"><a class="header" href="#查询"><a href="#%E6%9F%A5%E8%AF%A2">查询</a></a></h4>
-</li>
-<li>
-<h4 id="语句"><a class="header" href="#语句"><a href="#%E8%AF%AD%E5%8F%A5">语句</a></a></h4>
-</li>
-<li>
-<h4 id="条款"><a class="header" href="#条款"><a href="#%E6%9D%A1%E6%AC%BE">条款</a></a></h4>
-</li>
-<li>
-<h4 id="表达式"><a class="header" href="#表达式"><a href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F">表达式</a></a></h4>
-</li>
-<li>
-<h4 id="其他"><a class="header" href="#其他"><a href="#%E5%85%B6%E4%BB%96">其他</a></a></h4>
-</li>
-<li>
-<h4 id="查询引擎内部"><a class="header" href="#查询引擎内部"><a href="#%E6%9F%A5%E8%AF%A2%E5%BC%95%E6%93%8E%E5%86%85%E9%83%A8">查询引擎内部</a></a></h4>
-</li>
+<li><a href="#%E7%AC%A6%E5%8F%B7">符号</a></li>
+<li><a href="#%E6%9F%A5%E8%AF%A2%E8%A1%A8%E7%A4%BA">查询表示</a></li>
+<li><a href="#%E5%AD%97%E6%AF%8D%E5%92%8C%E6%95%B0%E5%AD%97">字母和数字</a></li>
+<li><a href="#%E6%A0%87%E8%AF%86%E7%AC%A6">标识符</a></li>
+<li><a href="#%E5%85%B3%E9%94%AE%E5%AD%97">关键字</a></li>
+<li><a href="#%E6%96%87%E5%AD%97">文字</a></li>
+<li><a href="#%E6%9F%A5%E8%AF%A2">查询</a></li>
+<li><a href="#%E8%AF%AD%E5%8F%A5">语句</a></li>
+<li><a href="#%E6%9D%A1%E6%AC%BE">条款</a></li>
+<li><a href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F">表达式</a></li>
+<li><a href="#%E5%85%B6%E4%BB%96">其他</a></li>
 </ul>
+<blockquote>
 <p>要了解更多关于CnosQL的信息，请浏览以下内容：</p>
-<ul>
-<li>
-<h4 id="使用cnosql探索数据"><a class="header" href="#使用cnosql探索数据"><a href="#%E4%BD%BF%E7%94%A8cnosql%E6%8E%A2%E7%B4%A2%E6%95%B0%E6%8D%AE">使用CnosQL探索数据</a></a></h4>
-</li>
-<li>
-<h4 id="使用cnosql探索您的模式"><a class="header" href="#使用cnosql探索您的模式"><a href="#">使用CnosQL探索您的模式</a></a></h4>
-</li>
-<li>
-<h4 id="数据库管理"><a class="header" href="#数据库管理"><a href="#">数据库管理</a></a></h4>
-</li>
-</ul>
-</li>
-<li>
-<h3 id="符号-1"><a class="header" href="#符号-1">符号</a></h3>
+<p><a href="#%E4%BD%BF%E7%94%A8cnosql%E6%8E%A2%E7%B4%A2%E6%95%B0%E6%8D%AE">使用CnosQL探索数据</a></p>
+<p><a href="">使用CnosQL探索您的模式</a></p>
+<p><a href="#">数据库管理</a></p>
+</blockquote>
+<h3 id="符号"><a class="header" href="#符号">符号</a></h3>
 <p>使用Extended Backus-Naur Form(&quot; EBNF &quot;)指定语法。EBNF与Go编程语言规范中使用的符号相同。并非巧合的是，CnosDB是用Go编写的。</p>
 <pre><code>Production  = production_name &quot;=&quot; [ Expression ] &quot;.&quot; .
 Expression  = Alternative { &quot;|&quot; Alternative } .
@@ -207,9 +172,7 @@ Repetition  = &quot;{&quot; Expression &quot;}&quot; .
 []  option (0 or 1 times)
 {}  repetition (0 to n times)
 </code></pre>
-</li>
-<li>
-<h3 id="查询表示-1"><a class="header" href="#查询表示-1">查询表示</a></h3>
+<h3 id="查询表示"><a class="header" href="#查询表示">查询表示</a></h3>
 <ul>
 <li>
 <h4 id="字符"><a class="header" href="#字符">字符</a></h4>
@@ -219,17 +182,13 @@ Repetition  = &quot;{&quot; Expression &quot;}&quot; .
 <pre><code>newline             = /* the Unicode code point U+000A */ .
 unicode_char        = /* an arbitrary Unicode code point except newline */ .
 </code></pre>
-</li>
-<li>
-<h3 id="字母和数字-1"><a class="header" href="#字母和数字-1">字母和数字</a></h3>
+<h3 id="字母和数字"><a class="header" href="#字母和数字">字母和数字</a></h3>
 <p>字母是ASCII字符的集合，加上下划线_ (U+005F)也被认为是字母。只支持十进制数字。</p>
 <pre><code>letter              = ascii_letter | &quot;_&quot; .
 ascii_letter        = &quot;A&quot; … &quot;Z&quot; | &quot;a&quot; … &quot;z&quot; .
 digit               = &quot;0&quot; … &quot;9&quot; .
 </code></pre>
-</li>
-<li>
-<h3 id="标识符-1"><a class="header" href="#标识符-1">标识符</a></h3>
+<h3 id="标识符"><a class="header" href="#标识符">标识符</a></h3>
 <p>标识符包括数据库名、保留策略名、用户名、度量名、标记键以及字段键。</p>
 <p>标识符使用规则如下；</p>
 <ul>
@@ -250,9 +209,7 @@ _air_temperature
 &quot;anything really&quot;
 &quot;1_Crazy-1337.identifier&gt;NAME👍&quot;
 </code></pre>
-</li>
-<li>
-<h3 id="关键字-1"><a class="header" href="#关键字-1">关键字</a></h3>
+<h3 id="关键字"><a class="header" href="#关键字">关键字</a></h3>
 <pre><code>ALL           ALTER         ANY           AS            ASC           BEGIN
 BY            CREATE        CONTINUOUS    DATABASE      DATABASES     DEFAULT
 DELETE        DESC          DESTINATIONS  DIAGNOSTICS   DISTINCT      DROP
@@ -269,9 +226,7 @@ WRITE
 </code></pre>
 <p>如果使用了CnosQL的关键字作为标识符，则需要在每次查询中对该标识符加双引号。</p>
 <p>关键字<code>time</code>是一种特殊情况。<code>time</code>可以是连续查询名称、数据库名称、测量名称、保留策略名称、订阅名称和用户名称。在这些情况下，查询中的<code>time</code>不需要双引号。<code>time</code>不能是字段键或标签键；CnosQL拒绝将<code>time</code>作为字段键或标记键的写入，并返回错误。</p>
-</li>
-<li>
-<h3 id="文字-1"><a class="header" href="#文字-1">文字</a></h3>
+<h3 id="文字"><a class="header" href="#文字">文字</a></h3>
 <ul>
 <li>
 <h4 id="整数"><a class="header" href="#整数">整数</a></h4>
@@ -328,9 +283,7 @@ duration_unit       = &quot;ns&quot; | &quot;u&quot; | &quot;µ&quot; | &quot;ms
 </ul>
 <pre><code>regex_lit           = &quot;/&quot; { unicode_char } &quot;/&quot; .
 </code></pre>
-</li>
-<li>
-<h3 id="查询-1"><a class="header" href="#查询-1">查询</a></h3>
+<h3 id="查询"><a class="header" href="#查询">查询</a></h3>
 <p>查询由一个或多个以分号分隔的语句组成。</p>
 <pre><code>query               = statement { &quot;;&quot; statement } .
 
@@ -380,9 +333,7 @@ statement           = alter_retention_policy_stmt |
                       show_tag_values_cardinality_stmt |
                       show_users_stmt .
 </code></pre>
-</li>
-<li>
-<h3 id="语句-1"><a class="header" href="#语句-1">语句</a></h3>
+<h3 id="语句"><a class="header" href="#语句">语句</a></h3>
 <ul>
 <li>
 <h4 id="改变保留策略"><a class="header" href="#改变保留策略">改变保留策略</a></h4>
@@ -702,9 +653,7 @@ show_tag_values_exact_cardinality_stmt = &quot;SHOW TAG VALUES EXACT CARDINALITY
 </ul>
 <pre><code>show_users_stmt = &quot;SHOW USERS&quot; .
 </code></pre>
-</li>
-<li>
-<h3 id="条款-1"><a class="header" href="#条款-1">条款</a></h3>
+<h3 id="条款"><a class="header" href="#条款">条款</a></h3>
 <pre><code>from_clause     = &quot;FROM&quot; measurements .
 
 group_by_clause = &quot;GROUP BY&quot; dimensions fill(fill_option).
@@ -733,10 +682,8 @@ with_measurement_clause = &quot;WITH MEASUREMENT&quot; ( &quot;=&quot; measureme
 
 with_tag_clause = &quot;WITH KEY&quot; ( &quot;=&quot; tag_key | &quot;!=&quot; tag_key | &quot;=~&quot; regex_lit | &quot;IN (&quot; tag_keys &quot;)&quot;  ) .
 </code></pre>
-</li>
-<li>
-<h3 id="表达式-1"><a class="header" href="#表达式-1">表达式</a></h3>
-<pre><code>binary_op        = &quot;+&quot; | &quot;-&quot; | &quot;*&quot; | &quot;/&quot; | &quot;%&quot; | &quot;&amp;&quot; | &quot;|&quot; | &quot;^&quot; | &quot;AND&quot; |
+<h3 id="表达式"><a class="header" href="#表达式">表达式</a></h3>
+<pre><code class="language-SQL">binary_op        = &quot;+&quot; | &quot;-&quot; | &quot;*&quot; | &quot;/&quot; | &quot;%&quot; | &quot;&amp;&quot; | &quot;|&quot; | &quot;^&quot; | &quot;AND&quot; |
                 &quot;OR&quot; | &quot;=&quot; | &quot;!=&quot; | &quot;&lt;&gt;&quot; | &quot;&lt;&quot; | &quot;&lt;=&quot; | &quot;&gt;&quot; | &quot;&gt;=&quot; .
 
 expr             = unary_expr { binary_op unary_expr } .
@@ -744,9 +691,7 @@ expr             = unary_expr { binary_op unary_expr } .
 unary_expr       = &quot;(&quot; expr &quot;)&quot; | var_ref | time_lit | string_lit | int_lit |
 float_lit | bool_lit | duration_lit | regex_lit .
 </code></pre>
-</li>
-<li>
-<h3 id="其他-1"><a class="header" href="#其他-1">其他</a></h3>
+<h3 id="其他"><a class="header" href="#其他">其他</a></h3>
 <pre><code>alias            = &quot;AS&quot; identifier .
 
 back_ref         = ( policy_name &quot;.:MEASUREMENT&quot; ) |
@@ -819,73 +764,6 @@ user_name        = identifier .
 
 var_ref          = measurement .
 </code></pre>
-</li>
-<li>
-<h3 id="查询引擎内部-1"><a class="header" href="#查询引擎内部-1">查询引擎内部</a></h3>
-<p>查询的生命周期是这样的；</p>
-<ul>
-<li>
-<p>对CnosQL查询字符串进行标记，然后将其解析为抽象语法树(AST)。这是查询本身的代码表示。</p>
-</li>
-<li>
-<p>AST被传递给<code>QueryExecutor</code>, <code>QueryExecutor</code>将查询定向到适当的处理程序。例如，与元数据相关的查询由元服务执行，<code>SELECT</code>语句由分片自己执行。</p>
-</li>
-<li>
-<p>然后，查询引擎确定与<code>SELECT</code>语句的时间范围匹配的分片。从这些分片中，为语句中的每个字段创建迭代器。</p>
-</li>
-<li>
-<p>迭代器被传递给发射器，发射器耗尽迭代器并连接结果点。发射器的工作是将简单的时间/值点转换为返回给客户端的更复杂的结果对象。</p>
-</li>
-<li>
-<h4 id="理解迭代器"><a class="header" href="#理解迭代器">理解迭代器</a></h4>
-<p>迭代器是查询引擎的核心。它们为在一组点上循环提供了一个简单的接口。例如，这是一个浮点数的迭代器:</p>
-<pre><code>type FloatIterator interface {
-    Next() *FloatPoint
-}
-</code></pre>
-<p>这些迭代器是通过<code>IteratorCreator</code>接口创建的:</p>
-<pre><code>type IteratorCreator interface {
-    CreateIterator(opt *IteratorOptions) (Iterator, error)
-}
-</code></pre>
-<p><code>IteratorOptions</code>提供了关于字段选择、时间范围和维度的参数，迭代器创建者在规划迭代器时可以使用这些参数。<code>IteratorCreator</code>接口用于许多级别，如<code>Shards</code>、<code>Shard</code>和<code>Engine</code>。这允许在适当的时候执行优化，例如返回预先计算的<code>COUNT()</code>。
-迭代器不仅仅是从存储器中读取原始数据。迭代器可以进行组合，以便围绕输入迭代器提供额外的功能。例如，<code>DistinctIterator</code>可以为输入迭代器计算每个时间窗口的不同值。或者，<code>FillIterator</code>可以生成输入迭代器所缺少的额外点。
-这种组合也很适合聚合。例如，像这样的语句:</p>
-<pre><code>SELECT MEAN(temperature) FROM cpu GROUP BY time(10m)
-</code></pre>
-<p>本例中，MEAN(temperature)是一个从底层分片包装迭代器的<code>MeanIterator</code>。但是，如果我们可以添加一个额外的迭代器来确定平均值的导数:</p>
-<pre><code>SELECT DERIVATIVE(MEAN(temperature), 20m) FROM cpu GROUP BY time(10m)
-</code></pre>
-</li>
-<li>
-<h4 id="理解游标"><a class="header" href="#理解游标">理解游标</a></h4>
-<p>游标通过元组(时间、值)中的分片标识单个序列(测量值、标签集和字段)的数据。游标遍历以日志结构的合并树形式存储的数据，并跨级别处理重复数据删除、删除数据的tombstone和合并缓存(Write Ahead Log)。游标按时间升序或降序对(时间，值)元组进行排序。</p>
-</li>
-<li>
-<h4 id="理解辅助字段"><a class="header" href="#理解辅助字段">理解辅助字段</a></h4>
-<p>因为CnosQL允许用户使用FIRST()、LAST()、MIN()和MAX()等选择器函数，所以引擎必须提供一种方法，在选择点的同时返回相关数据。</p>
-</li>
-<li>
-<h4 id="内置的迭代器"><a class="header" href="#内置的迭代器">内置的迭代器</a></h4>
-<p>有许多内置迭代器可以让我们构建查询:</p>
-<ul>
-<li>排序合并迭代器——该迭代器将一个或多个迭代器合并成一个相同类型的新迭代器。该迭代器保证在开始下一个窗口之前输出窗口内的所有点，但不提供窗口内的排序保证。这允许快速访问聚合查询，而聚合查询不需要更强的排序保证。</li>
-<li>限制迭代器——该迭代器限制每个名称/标签组的点数。这是<code>LIMIT &amp; OFFSET</code>语法的实现。</li>
-<li>填充迭代器——如果输入迭代器缺少额外的点，这个迭代器会注入额外的点。它可以提供空点、带有前一个值的点或带有特定值的点。</li>
-<li>缓冲迭代器——该迭代器提供了将一个点“未读”回缓冲区的能力，以便下次可以再次读取它。这被广泛用于为窗口提供前瞻。</li>
-<li>Reduce迭代器——该迭代器为窗口中的每个点调用一个Reduce函数。当窗口完成时，输出该窗口的所有点。这用于简单的聚合函数，如COUNT()。</li>
-<li>Reduce Slice迭代器——该迭代器首先收集窗口的所有点，然后将它们一次性全部传递给Reduce函数。迭代器返回结果。这用于聚合函数，如DERIVATIVE()。</li>
-<li>Transform迭代器——该迭代器为输入迭代器中的每个点调用Transform函数。它用于执行二进制表达式。</li>
-<li>重复数据删除迭代器——此迭代器只输出唯一的点。它是资源密集型的，所以它只用于像元查询语句这样的小查询。</li>
-</ul>
-</li>
-<li>
-<h4 id="调用迭代器"><a class="header" href="#调用迭代器">调用迭代器</a></h4>
-<p>CnosQL中的函数调用在两个级别上实现。为了提高效率，可以将一些调用封装在多个层上。例如，一个<code>COUNT()</code>可以在分片层执行，然后多个<code>counterator</code>可以与另一个<code>counterator</code>包装，以计算所有分片的计数。这些迭代器可以使用<code>NewCallIterator()</code>创建。有些迭代器更复杂，或者需要在更高的级别上实现。例如，在执行计算之前，<code>DERIVATIVE()</code>需要首先检索窗口的所有点。这个迭代器是由引擎本身创建的，较低级别的迭代器不会被要求创建。</p>
-</li>
-</ul>
-</li>
-</ul>
 
                     </main>
 
@@ -894,7 +772,7 @@ var_ref          = measurement .
                             <a rel="prev" href="../../../../content/cnosdb/latest/cnosql/math_operators.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="../../../../content/cnosdb/latest/protocol/line_protocol.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../../../../content/cnosdb/latest/cnosql/other.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -906,7 +784,7 @@ var_ref          = measurement .
                     <a rel="prev" href="../../../../content/cnosdb/latest/cnosql/math_operators.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="../../../../content/cnosdb/latest/protocol/line_protocol.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../../../../content/cnosdb/latest/cnosql/other.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
