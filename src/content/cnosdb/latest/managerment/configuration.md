@@ -36,6 +36,10 @@
 #### bind-address = "127.0.0.1:8088"
 
   用于备份和恢复的RPC服务的绑定地址。环境变量为：`CNOSDB_BIND_ADDRESS`
+  
+ #### cluster = true
+ 
+  是否开启集群模式；true：开启，false：关闭 
 
 ### Port
 
@@ -45,7 +49,7 @@
 
   `8088`：提供cnosdb 内部RPC服务以及备份恢复的默认端口
 
-### meta
+### [Meta]-元信息
 
 #### dir = "/var/lib/cnosdb/meta"
 
@@ -59,7 +63,7 @@
 
   启用记录来自元服务的消息。 环境变量:`CNOSDB_META_LOGGING_ENABLED`
 
-### 数据节点
+### [Data]-数据相关
 
 #### dir = "/var/lib/cnosdb/data"
 
@@ -124,8 +128,6 @@
 
 如果为`true`，那么MMap Advise值`MADV_WILLNEED`就输入/输出分页方面向内核建议如何处理映射内存区域，以及如何期望在不久的将来访问映射内存区域(与TSM文件有关)。因为这个设置在一些内核(包括CentOS和RHEL)上有问题，所以默认值是`false`。在某些情况下，将该值更改为`true`可能对磁盘速度较慢的用户有所帮助。环境变量:`CNOSDB_DATA_TSM_USE_MADV_WILLNEED`
 
-### 索引
-
 #### max-series-per-database = 1000000
 
   在删除写操作之前，每个数据库允许的最大序列数。默认设置为1000000(100万)。将该设置更改为0，以允许每个数据库无限数量的序列。如果某个点导致数据库中序列的数量超过max-series-per-database，则CnosDB将不会写入该点，并返回500，并出现以下错误:
@@ -154,7 +156,7 @@
 
   环境变量:`CNOSDB_DATA_SERIES_ID_SET_CACHE_SIZE`
 
-### 查询管理
+### [Coordinator]-查询管理
 
 #### write-timeout = "10s"
 
@@ -184,7 +186,7 @@
 
   一个查询可以处理的GROUP BY time()桶的最大数量。默认设置(0)允许查询处理无限数量的桶。 环境变量:`CNOSDB_COORDINATOR_MAX_SELECT_BUCKETS`
 
-### 保留策略
+### [RetentionPolicy]-保留策略
 
 #### enabled = true
 
@@ -194,7 +196,7 @@
 
   CnosDB检查以强制执行保留策略的时间间隔。环境变量:`CNOSDB_RETENTION_CHECK_INTERVAL`
 
-### 分片
+### [Precreator]-分片
 
 #### enabled = true
 
@@ -208,7 +210,7 @@
 
   未来CnosDB预先创建分片的最长时间。30m的默认值应该适用于大多数系统。在未来将此设置增加得太久可能会导致效率低下。环境变量:`CNOSDB_SHARD_PRECREATION_ADVANCE_PERIOD`
 
-### 监控
+### [Monitor]-监控
 
   默认情况下，CnosDB将数据写入_internal数据库。如果该数据库不存在，则CnosDB自动创建它。_internal数据库的默认保留策略是7天。如果需要使用7天保留策略以外的其他策略，必须先创建该策略。
 
@@ -224,7 +226,7 @@
 
   CnosDB记录统计信息的时间间隔。默认值是每10秒一次。环境变量:`CNOSDB_MONITOR_STORE_INTERVAL`
 
-### HTTP端点
+### [HTTPD]-HTTP端点
 
   [http]部分设置控制CnosDB如何配置http端点。这些是进出CnosDB的主要机制。编辑此部分中的设置以启用HTTPS和身份验证。
 
@@ -328,7 +330,7 @@
 
   在等待处理的队列中等待写操作的最大持续时间。如果要禁用该限制，请将该值设置为0或将`max-concurrent-write-limit`值设置为0。环境变量:`CNOSDB_HTTP_ENQUEUED_WRITE_TIMEOUT`
 
-### 日志
+### [Log]-日志
 
 #### format = "auto"
 
@@ -342,7 +344,7 @@
 
   抑制程序启动时打印的标志输出。如果STDOUT不是TTY，则标识总是被抑制的。环境变量:`CNOSDB_LOGGING_SUPPRESS_LOGO`
 
-### 订阅
+### [Subscriber]-订阅
 
 #### enabled = true
 
@@ -368,7 +370,7 @@
 
   写通道中缓冲的正在写的次数。环境变量:`CNOSDB_SUBSCRIBER_WRITE_BUFFER_SIZE`
 
-### 连续查询
+### [ContinuousQuery]-连续查询
 
 #### enabled = true
 
@@ -386,7 +388,7 @@
 
   CnosDB检查CQ是否需要运行的时间间隔。将此选项设置为CQs运行的最低时间间隔。例如，如果你最频繁的CQ每分钟运行，设置运行间隔为1米。环境变量:`CNOSDB_CONTINUOUS_QUERIES_RUN_INTERVAL`
 
-### 传输层安全
+### [TLS]-传输层安全
 
   如果没有指定TLS配置设置，则根据用于构建CnosDB的Go`crypto/tls`包文档中的常量部分，CnosDB支持列出的所有加密套件id和实现的所有TLS版本。使用`SHOW DIAGNOSTICS`命令查看用于构建CnosDB的Go版本。
 
