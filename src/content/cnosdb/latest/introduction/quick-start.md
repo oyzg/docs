@@ -1,12 +1,24 @@
 # 快速入门
 
+## 创建数据库
+
 ```sql
 > CREATE DATABASE oceanic_station
->
+```
+创一个名字为oceanic_station的数据库
+
+## 使用数据库
+
+```sql
 > use oceanic_station
 Using database oceanic_station
 Using rp autogen
-> 
+```
+USE db-name后，后面所有操作都是在这个DB中进行
+
+## 写入数据
+
+```sql
 > insert test_air,station=XiaoMaiDao visibility=68,temperature=79,pressure=75 
 > insert test_air,station=LianYunGang visibility=71,temperature=63,pressure=78
 > insert test_air,station=LianYunGang visibility=71,temperature=63,pressure=79
@@ -15,6 +27,11 @@ Using rp autogen
 > insert test_air,station=XiaoMaiDao visibility=78,temperature=79,pressure=75 
 > insert test_air,station=XiaoMaiDao visibility=78,temperature=77,pressure=75 
 > 
+```
+Cnosdb通过insert语句写入数据
+
+## 读取数据
+```sql
 > select * from test_air
 name: test_air
 time                        pressure station     temperature visibility
@@ -27,7 +44,3 @@ time                        pressure station     temperature visibility
 2022-05-05T06:55:24.798981Z 75       XiaoMaiDao  79          78
 2022-05-05T06:55:24.818872Z 75       XiaoMaiDao  77          78
 ```
-- 创建数据库： CREATE DATABASE oceanic_station
-- 使用数据库： use oceanic_station
-- 写入数据： INSERT
-- 查询数据：SELECT
