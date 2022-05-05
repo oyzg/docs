@@ -18,7 +18,7 @@
 SHOW DATABASES
 ```
 
-#### Examples
+#### 例1：显示数据库
 
 ```sql
 > SHOW DATABASES
@@ -52,7 +52,7 @@ SHOW RETENTION POLICIES
 [ON <database_name>]
 ```
 
-#### Examples
+#### 例1：显示retention policy
 
 ```sql
 > SHOW RETENTION POLICIES ON oceanic_station
