@@ -2,6 +2,37 @@
 
 > 历史版本和其他操作系统软件安装包，请访问[Github Releases](https://github.com/cnosdb/cnosdb/releases)
 
+## 源码安装
+
+- ### 构建
+
+  克隆项目
+
+   ```
+   git clone https://github.com/cnosdb/cnosdb.git
+   ```
+
+  编译
+
+   ```
+   go install ./...
+   ```
+
+- ### 运行
+
+  启动服务端
+
+   ```bash
+   $GOPATH/bin/cnosdb
+   ```
+
+  使用客户端
+
+   ```bash
+   $GOPATH/bin/cnosdb-cli
+   ```
+
+
 ## Docker
 
 1. 拉取镜像
@@ -68,5 +99,6 @@
    ```shell
    gpg: Good signature from "CnosDB <contact@cnosdb.com>" [unknown]
    ```
+
 
 

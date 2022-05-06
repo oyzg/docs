@@ -1,4 +1,4 @@
-# 数据查询
+# CnosQL 数据查询
 
 CnosDB查询语法类似于SQL，使用SELECT语句从特定的measurement中查询数据，但又不完全一样；当前所有支持查询结构如下。
 
