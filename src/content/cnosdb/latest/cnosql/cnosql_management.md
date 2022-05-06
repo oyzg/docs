@@ -1,6 +1,6 @@
 
 
-# CnosQL for Database Management
+# 数据库管理和模式查询
 
 
 

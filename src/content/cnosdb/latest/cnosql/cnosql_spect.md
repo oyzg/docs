@@ -13,14 +13,6 @@ CnosQL的定义和详细信息
 - [条款](#条款)
 - [表达式](#表达式)
 - [其他](#其他)
-> 要了解更多关于CnosQL的信息，请浏览以下内容：
-> 
-> [使用CnosQL探索数据](#使用cnosql探索数据)
-> 
-> [使用CnosQL探索您的模式]()
-> 
-> [数据库管理](#)
-
 ### 符号
 
 使用Extended Backus-Naur Form(" EBNF ")指定语法。EBNF与Go编程语言规范中使用的符号相同。并非巧合的是，CnosDB是用Go编写的。
@@ -126,7 +118,7 @@ string_lit          = `'` { unicode_char } `'` .
 ```
 duration_lit        = int_lit duration_unit .
 duration_unit       = "ns" | "u" | "µ" | "ms" | "s" | "m" | "h" | "d" | "w" .
-``` 
+```
 
   - #### 日期和时间
 与本文档的其余部分一样，EBNF中没有指定日期和时间文本格式。它是使用Go的日期/时间解析格式指定的，它是按照CnosQL要求的格式编写的引用日期。
@@ -134,15 +126,15 @@ duration_unit       = "ns" | "u" | "µ" | "ms" | "s" | "m" | "h" | "d" | "w" .
 参考日期时间为:January 2nd, 2006 at 3:04:05 PM
 ```
 time_lit            = "2006-01-02 15:04:05.999999" | "2006-01-02" .
-``` 
+```
   - #### 布尔值
 ```
 bool_lit            = TRUE | FALSE .
-``` 
+```
   - #### 正则表达式
 ```
 regex_lit           = "/" { unicode_char } "/" .
-```   
+```
 ### 查询
 
 查询由一个或多个以分号分隔的语句组成。
@@ -194,7 +186,7 @@ statement           = alter_retention_policy_stmt |
                       show_tag_values_stmt |
                       show_tag_values_cardinality_stmt |
                       show_users_stmt .
-```   
+```
 ### 语句
   - #### 改变保留策略
  ```
@@ -203,7 +195,7 @@ statement           = alter_retention_policy_stmt |
                                 [ retention_policy_option ]
                                 [ retention_policy_option ]
                                 [ retention_policy_option ] .
-```    
+ ```
   - #### 创建连续查询
  ```
  create_continuous_query_stmt = "CREATE CONTINUOUS QUERY" query_name on_clause
@@ -215,7 +207,7 @@ statement           = alter_retention_policy_stmt |
  resample_opts                = (every_stmt for_stmt | every_stmt | for_stmt) .
  every_stmt                   = "EVERY" duration_lit
  for_stmt                     = "FOR" duration_lit
-```     
+ ```
   - #### 创建数据库
  ```
  create_database_stmt = "CREATE DATABASE" db_name
@@ -225,7 +217,7 @@ statement           = alter_retention_policy_stmt |
                             [ retention_policy_shard_group_duration ]
                             [ retention_policy_name ]
                          ] .
- ```              
+ ```
   - #### 创建保留策略
  ```
  create_retention_policy_stmt = "CREATE RETENTION POLICY" policy_name on_clause
@@ -233,48 +225,48 @@ statement           = alter_retention_policy_stmt |
                                 retention_policy_replication
                                 [ retention_policy_shard_group_duration ]
                                 [ "DEFAULT" ] .
- ```   
+ ```
   - #### 创建用户
  ```
  create_user_stmt = "CREATE USER" user_name "WITH PASSWORD" password
                     [ "WITH ALL PRIVILEGES" ] .
- ```    
+ ```
   - #### 删除
  ```
  e_stmt = "DELETE" ( from_clause | where_clause | from_clause where_clause ) .
- ```   
+ ```
   - #### 抛弃连续查询
  ```
  drop_continuous_query_stmt = "DROP CONTINUOUS QUERY" query_name on_clause .
- ```   
+ ```
   - #### 抛弃数据库
  ```
  drop_database_stmt = "DROP DATABASE" db_name .
- ```          
+ ```
   - #### 抛弃度量
  ```
  drop_measurement_stmt = "DROP MEASUREMENT" measurement .
- ``` 
+ ```
   - #### 抛弃保留策略
  ```
  drop_retention_policy_stmt = "DROP RETENTION POLICY" policy_name on_clause .
- ```      
+ ```
   - #### 抛弃序列
  ```
  drop_series_stmt = "DROP SERIES" ( from_clause | where_clause | from_clause where_clause ) .
- ```      
+ ```
   - #### 抛弃分片
  ```
  drop_shard_stmt = "DROP SHARD" ( shard_id ) .
- ```        
+ ```
   - #### 抛弃用户
  ```
  drop_user_stmt = "DROP USER" user_name .
- ```       
+ ```
   - #### EXPLAIN
  ```
  explain_stmt = "EXPLAIN" select_stmt .
- ```     
+ ```
   - #### EXPLAIN ANALYZE
 例如
  ```
@@ -292,7 +284,7 @@ statement           = alter_retention_policy_stmt |
       └── iterator_scanner
        └── labels
         └── expr: mean(temperature)
- ```    
+ ```
 execution_time: 执行查询所花费的时间，包括读取时间序列数据、在数据流经迭代器时执行操作，以及从迭代器中提取已处理的数据。执行时间不包括将输出序列化为JSON或其他格式所花费的时间。
 planning_time: 显示计划查询所花费的时间量。在CnosDB中规划查询需要许多步骤。根据查询的复杂性，与执行查询相比，计划可能需要更多的工作并消耗更多的CPU和内存资源。例如，执行查询所需的系列键的数量会影响计划查询的速度和所需的内存。
 create_iterator: 表示本地CnosDB实例所做的工作──一组复杂的嵌套迭代器组合在一起，以产生最终的查询输出。
@@ -302,63 +294,63 @@ block types：EXPLAIN ANALYZE分离存储块类型，并报告被解码的块的
   - #### 授权
  ```
  grant_stmt = "GRANT" privilege [ on_clause ] to_clause .
- ```   
+ ```
   - #### 关闭查询
  ```
  kill_query_statement = "KILL QUERY" query_id .
- ```     
+ ```
   - #### 撤销
  ```
  revoke_stmt = "REVOKE" privilege [ on_clause ] "FROM" user_name .
- ```    
+ ```
   - #### 选择
  ```
  select_stmt = "SELECT" fields [ into_clause ] from_clause [ where_clause ]
           [ group_by_clause ] [ order_by_clause ] [ limit_clause ]
           [ offset_clause ] [ slimit_clause ] [ soffset_clause ] [ timezone_clause ] .
- ``` 
+ ```
   - #### 展示基数
 指用于精确估计或计数测量值、序列、标记键、标记键值和字段键的基数的一组命令。SHOW CARDINALITY命令有两种变体:估计的和精确的。估计值使用草图计算，是所有基数大小的安全默认值。准确的值是直接从TSM(时间结构合并树)数据中计算的，但是对于高基数的数据来说，运行这些值是非常昂贵的。除非必要，使用估计的品种。仅当在数据库上启用了时间序列索引(TSI)时，才支持按时间过滤。
 
   - #### SHOW CONTINUOUS QUERIES
  ```
  show_continuous_queries_stmt = "SHOW CONTINUOUS QUERIES" .
- ```       
+ ```
   - #### SHOW DATABASES
  ```
  show_databases_stmt = "SHOW DATABASES" .
- ```   
+ ```
   - #### SHOW DIAGNOSTICS
 示节点信息，如构建信息、正常运行时间、主机名、服务器配置、内存使用和运行时诊断。
  ```
  show_diagnostics_stmt = "SHOW DIAGNOSTICS"
- ```   
+ ```
   - #### SHOW FIELD KEY CARDINALITY
  ```
  show_field_key_cardinality_stmt = "SHOW FIELD KEY CARDINALITY" [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ]
 
  show_field_key_exact_cardinality_stmt = "SHOW FIELD KEY EXACT CARDINALITY" [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ]
- ```  
+ ```
   - ####  SHOW FIELD KEYS
  ```
  show_field_keys_stmt = "SHOW FIELD KEYS" [on_clause] [ from_clause ] .
- ```   
+ ```
   - #### SHOW GRANTS
  ```
  show_grants_stmt = "SHOW GRANTS FOR" user_name .
- ```   
+ ```
   - #### SHOW MEASUREMENTS
  ```
  show_measurements_stmt = "SHOW MEASUREMENTS" [on_clause] [ with_measurement_clause ] [ where_clause ] [ limit_clause ] [ offset_clause ] .
- ```   
+ ```
   - #### SHOW QUERIES
  ```
  show_queries_stmt = "SHOW QUERIES" .
- ```  
+ ```
   - #### SHOW RETENTION POLICIES
  ```
  show_retention_policies_stmt = "SHOW RETENTION POLICIES" [on_clause] .
- ```      
+ ```
   - #### SHOW SERIES
  ```
  show_series_stmt = "SHOW SERIES" [on_clause] [ from_clause ] [ where_clause ] [ limit_clause ] [ offset_clause ] .
@@ -373,35 +365,35 @@ block types：EXPLAIN ANALYZE分离存储块类型，并报告被解码的块的
   - #### SHOW SHARD GROUPS
  ```
  show_shard_groups_stmt = "SHOW SHARD GROUPS" .
- ```   
+ ```
   - #### SHOW SHARDS
  ```
  show_shards_stmt = "SHOW SHARDS" .
- ``` 
+ ```
   - #### SHOW STATS
  ```
  show_stats_stmt = "SHOW STATS [ FOR '<component>' | 'indexes' ]"
- ``` 
+ ```
   - #### SHOW TAG KEYS
  ```
  show_tag_keys_stmt = "SHOW TAG KEYS" [on_clause] [ from_clause ] [ where_clause ]
                  [ limit_clause ] [ offset_clause ] .
- ```     
+ ```
   - #### SHOW TAG VALUES
  ```
  show_tag_values_stmt = "SHOW TAG VALUES" [on_clause] [ from_clause ] with_tag_clause [ where_clause ]
                    [ limit_clause ] [ offset_clause ] .
- ```  
+ ```
   - #### SHOW TAG VALUES CARDINALITY
  ```
  show_tag_values_cardinality_stmt = "SHOW TAG VALUES CARDINALITY" [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ] with_key_clause
 
  show_tag_values_exact_cardinality_stmt = "SHOW TAG VALUES EXACT CARDINALITY" [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ] with_key_clause
- ```     
+ ```
   - #### SHOW USERS
  ```
  show_users_stmt = "SHOW USERS" .
- ```   
+ ```
 ### 条款
  ```
 from_clause     = "FROM" measurements .
@@ -431,7 +423,7 @@ where_clause    = "WHERE" expr .
 with_measurement_clause = "WITH MEASUREMENT" ( "=" measurement | "=~" regex_lit ) .
 
 with_tag_clause = "WITH KEY" ( "=" tag_key | "!=" tag_key | "=~" regex_lit | "IN (" tag_keys ")"  ) .
- ```   
+ ```
 ### 表达式
  ```SQL
 binary_op        = "+" | "-" | "*" | "/" | "%" | "&" | "|" | "^" | "AND" |
@@ -441,7 +433,7 @@ expr             = unary_expr { binary_op unary_expr } .
 
 unary_expr       = "(" expr ")" | var_ref | time_lit | string_lit | int_lit |
 float_lit | bool_lit | duration_lit | regex_lit .
- ```   
+ ```
 ### 其他
  ```
 alias            = "AS" identifier .
