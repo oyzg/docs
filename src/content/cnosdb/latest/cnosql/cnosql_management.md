@@ -2,10 +2,6 @@
 
 # 数据库管理和模式查询
 
-
-
-
-
 ## SHOW
 
 ### SHOW DATABASES Statement

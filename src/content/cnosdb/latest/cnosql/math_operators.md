@@ -6,9 +6,9 @@
     -  [乘法](#乘法)
     -  [除法](#除法)
     -  [模运算](#模运算)
-    -  [位与运算](#位与运算)
-    -  [位或运算](#位或运算)
-    -  [位异运算](#位异运算)
+    -  [位与运算](#按位与运算)
+    -  [位或运算](#按位或运算)
+    -  [位异运算](#按位异运算)
     -  [常见问题](#常见问题)
 
 -  [不支持的运算符](#不支持的运算符)
@@ -148,41 +148,43 @@
 
 #### 常见问题
 
-        - #### 带有通配符和正则表达式的数学操作符
+带有通配符和正则表达式的数学操作符，CnosDB不支持在SELECT子句中组合数学操作与通配符(*)或正则表达式。以下查询无效，系统返回错误:对通配符执行数学运算。
+
+    > SELECT * + 2 FROM "air"
+    ERR: unsupported expression with wildcard: * + 2
     
-      CnosDB不支持在SELECT子句中组合数学操作与通配符(*)或正则表达式。以下查询无效，系统返回错误:
-      对通配符执行数学运算。
-      ```
-      > SELECT * + 2 FROM "air"
-      ERR: unsupported expression with wildcard: * + 2
-      ```
-      对函数中的通配符执行数学运算。
-      ```
-      > SELECT COUNT(*) / 2 FROM "nope"
-      ERR: unsupported expression with wildcard: count(*) / 2
-      ```
-      对正则表达式执行数学运算。
-      ```
-      > SELECT /A/ + 2 FROM "air"
-      ERR: error parsing query: found +, expected FROM at line 1, char 12
-      ```
-      对函数中的正则表达式执行数学运算。
-      ```
-      > SELECT COUNT(/A/) + 2 FROM "nope"
-      ERR: unsupported expression with regex field: count(/A/) + 2
-      ```
+    对函数中的通配符执行数学运算。
+    
+    > SELECT COUNT(*) / 2 FROM "nope"
+    ERR: unsupported expression with wildcard: count(*) / 2
+    
+    对正则表达式执行数学运算。
+    
+    > SELECT /A/ + 2 FROM "air"
+    ERR: error parsing query: found +, expected FROM at line 1, char 12
+    
+    对函数中的正则表达式执行数学运算。
+    
+    > SELECT COUNT(/A/) + 2 FROM "nope"
+    ERR: unsupported expression with regex field: count(/A/) + 2
 
 #### 函数的数学运算符
 
-      目前不支持在函数调用中使用数学运算符。注意，CnosDB只允许SELECT子句中的函数。
-      可行操作：
-      ```
-      SELECT 10 * mean("value") FROM "cpu"
-      ```
-      不可行操作：
-      ```
-      SELECT mean(10 * "value") FROM "cpu"
-      ```
+目前不支持在函数调用中使用数学运算符。注意，CnosDB只允许SELECT子句中的函数。
+
+
+
+可行操作：
+
+    SELECT 10 * mean("value") FROM "cpu"
+不可行操作：
+
+```
+SELECT mean(10 * "value") FROM "cpu"
+```
+
+
+
 ### 不支持的运算符
 
 #### 比较运算
