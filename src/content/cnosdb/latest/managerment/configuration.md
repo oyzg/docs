@@ -57,7 +57,7 @@
 
 #### retention-autocreate = true
 
-  启用在创建数据库时自动创建DEFAULT保留策略autogen。保留策略autogen具有无限的持续时间，也被设置为数据库的DEFAULT保留策略，当写入或查询没有指定保留策略时使用该保留策略。禁用此设置，以防止在创建数据库时创建此保留策略。环境变量:`CNOSDB_META_RETENTION_AUTOCREATE`
+  启用此设置，在创建数据库时自动创建DEFAULT保留策略autogen。保留策略autogen具有无限的持续时间，也被设置为数据库的DEFAULT保留策略，当写入或查询没有指定保留策略时使用该保留策略。禁用此设置，可以防止在创建数据库时创建此保留策略。环境变量:`CNOSDB_META_RETENTION_AUTOCREATE`
 
 #### logging-enabled = true
 
@@ -146,7 +146,7 @@
 
 #### max-index-log-file-size = "1m"
 
-  当索引提前写日志(WAL)文件压缩为索引文件时，以字节为单位的阈值。较小的大小将导致日志文件被更快地压缩，并以写吞吐量为代价减少堆的使用。更高的大小将更少地被压缩，在内存中存储更多的系列，并提供更高的写吞吐量。有效的大小后缀是k、m或g(不区分大小写，1024 = 1k)。没有大小后缀的值以字节为单位。环境变量:`CNOSDB_DATA_MAX_INDEX_LOG_FILE_SIZE`
+  当索引预写日志(WAL)文件压缩为索引文件时，以字节为单位的阈值。阈值较低将导致日志文件被更快地压缩，并以写吞吐量为代价减少堆的使用。阈值较高将导致日志文件更少地被压缩，在内存中存储更多的系列，并提供更高的写吞吐量。有效的大小后缀是k、m或g(不区分大小写，1024 = 1k)。没有大小后缀的值以字节为单位。环境变量:`CNOSDB_DATA_MAX_INDEX_LOG_FILE_SIZE`
 
 #### series-id-set-cache-size = 100
 
