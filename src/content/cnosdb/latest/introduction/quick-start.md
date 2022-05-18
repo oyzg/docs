@@ -11,6 +11,8 @@
 
 ```sql
 > use oceanic_station
+```
+```
 Using database oceanic_station
 Using rp autogen
 ```
@@ -33,6 +35,8 @@ Cnosdb通过insert语句写入数据
 ## 读取数据
 ``` sql
 > select * from test_air
+```
+```
 name: test_air
 time                        pressure station     temperature visibility
 ----                        -------- -------     ----------- ----------
@@ -49,7 +53,9 @@ time                        pressure station     temperature visibility
 
 ### 创建数据库
 ``` http
-> curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE mydb" 
+> curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE mydb"
+```
+```
 HTTP/1.1 200 OK
 Content-Type: application/json
 X-Cnosdb-Version: 0.0.0
@@ -64,12 +70,13 @@ Transfer-Encoding: chunked
 ``` http
 
 > curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary 'cpu,host=server01,region=Beijing idle=0.72' 
+```
+```
 HTTP/1.1 204 No Content
 Content-Type: application/json
 X-Cnosdb-Version: 0.0.0
 X-Request-Id: ade613b0-cd0f-11ec-8004-6ada2a120bb2
 Date: Fri, 06 May 2022 07:39:37 GMT
-
 ```
 
 ### 查询数据
@@ -77,6 +84,8 @@ Date: Fri, 06 May 2022 07:39:37 GMT
 ``` http
 
 > curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=mydb" --data-urlencode "q=SELECT \"idle\" FROM \"cpu\" WHERE \"region\"='Beijing'"
+```
+```
 {
     "results": [
         {
@@ -99,5 +108,4 @@ Date: Fri, 06 May 2022 07:39:37 GMT
         }
     ]
 }
-
 ```
