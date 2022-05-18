@@ -40,7 +40,7 @@ CnosDB API 是在 CnosDB中查询数据的主要方式。
 
   ```
 ## 返回错误
-CnosDB返回JSON，查询的结果会在`rusults`数组中，如果发生错误，CnosDB会设置一个带有`error`的key
+CnosDB返回JSON，查询的结果会在`results`数组中，如果发生错误，CnosDB会设置一个带有`error`的key
 
 ## 多条查询语句
 多条查询语句需要用`;`分隔
