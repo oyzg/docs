@@ -93,7 +93,7 @@ CnosDB由两组软件组成，`data`节点和`meta`节点，集群内的通讯�
 ### 克隆项目
 
   ```
-  git clone https://github.com/IvanGao01/distributed-sandbox.git
+  git clone https://github.com/cnosdb/distributed-sandbox.git
   ```
 ### 运行
 
