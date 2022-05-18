@@ -5,7 +5,7 @@
 ```sql
 > CREATE DATABASE oceanic_station
 ```
-创一个名字为oceanic_station的数据库
+创建一个数据库oceanic_station
 
 ## 使用数据库
 
