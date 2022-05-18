@@ -1,6 +1,6 @@
 # cnosdb_inspect
 
-CnosDB Inspect 是一个 CnosDB 磁盘实用程序，可用于：
+CnosDB Inspect 是一个磁盘数据检查工具，可用于：
 - 查看有关磁盘分片的详细信息。
 - 将数据从分片导出到可以插入回数据库的CnosDB 线路协议。
 - 将 TSM 索引分片转换为 TSI 索引分片。

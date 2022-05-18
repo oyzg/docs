@@ -30,7 +30,7 @@ USE db-name后，后面所有操作都是在这个DB中进行
 > insert test_air,station=XiaoMaiDao visibility=78,temperature=77,pressure=75 
 > 
 ```
-Cnosdb通过insert语句写入数据
+CnosDB通过insert语句写入数据
 
 ## 读取数据
 ``` sql

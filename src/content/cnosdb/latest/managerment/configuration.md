@@ -36,9 +36,9 @@
 #### bind-address = "127.0.0.1:8088"
 
   用于备份和恢复的RPC服务的绑定地址。环境变量为：`CNOSDB_BIND_ADDRESS`
-  
+
  #### cluster = true
- 
+
   是否开启集群模式；true：开启，false：关闭 
 
 ### Port
@@ -88,10 +88,6 @@
 #### query-log-enabled = true
 
   在执行之前启用解析查询的日志记录。查询日志对于故障排除很有用，但会记录查询中包含的任何敏感数据。 环境变量:`CNOSDB_DATA_QUERY_LOG_ENABLED`
-#### query-log-enabled = true
-
-  在执行之前启用解析查询的日志记录。查询日志对于故障排除很有用，但会记录查询中包含的任何敏感数据。 环境变量:`CNOSDB_DATA_QUERY_LOG_ENABLED`
-
 #### validate-keys = false
 
   验证传入的写入以确保键只有有效的Unicode字符。这个设置将产生一个小开销，因为必须检查每个键。

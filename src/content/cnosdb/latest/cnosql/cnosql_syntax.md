@@ -32,7 +32,7 @@ ORDER BY  time DESC LIMIT N1 OFFSET N2 SLIMIT N3 SOFFSET N4
 |GROUP_BY |GROUP BY子句，用于分组查询|
 |ORDER_BY |ORDER BY 子句，用于对返回结果数据进行排序|
 |LIMIT N|从指定的measurement中返回前N个数据点|
-|SLIMIT N|返回指定measurement的前个series中的每一个点|
+|SLIMIT N|返回指定measurement的前N个series中的每一个点|
 |OFFSET N|从查询结果中返回分页的N个数据点|
 |SOFFSET N|从查询结果中返回分页的N个series|
 
@@ -125,7 +125,7 @@ time                 mean
 
 #### 其他用法及其注意事项
 
-* 分组字段可以根据多个字断进行，用逗号隔开
+* 分组字段可以根据多个字段进行，用逗号隔开
 * 根据时间分组time(30m)：30分钟一个分组， time(1d)：1天一个分组
 
 ### 例4: INTO子句用法
@@ -185,7 +185,7 @@ time                 pressure station     temperature visibility
 #### 其他用法及其注意事项
 
 * 系统默认返回数据按照先旧后新，如若需要先新后旧可以使用：order by time desc
-* 只支持按照时间字断排序，不支持按照其他字断排序
+* 只支持按照time字段排序，不支持按照其他字段排序
 
 ### 例6: LIMIT SLIMIT子句用法
 
@@ -265,7 +265,7 @@ time                 pressure station     temperature visibility
 2021-08-31T16:09:00Z 63       XiaoMaiDao  54          70
 ```
 
-上面例子中LIMIT 3控制返回数据量位3条，OFFSET 5进行分页过滤掉前面5条
+上面例子中LIMIT 3控制返回数据条目为3条，OFFSET 5进行分页过滤掉前面5条
 
 #### 其他用法及其注意事项
 
@@ -338,5 +338,5 @@ time                 mean
 
 #### 其他用法及其注意事项
 
-* Cnosdb支持多层嵌套查询
+* CnosDB支持多层嵌套查询
 * 每个子查询要用小括号()包裹起来
