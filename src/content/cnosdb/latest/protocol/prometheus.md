@@ -11,7 +11,9 @@ CnosDB对Prometheus远程读写的支持是将以下HTTP端点添加到CnosDB。
 
 在您的CnosDB中创建一个数据库来存放从Prometheus发送的数据。在下面的示例中，我们使用prometheus作为数据库名。
 
-`CREATE DATABASE "prometheus"`
+```sql
+CREATE DATABASE "prometheus"
+```
 
 ## 配置
 
@@ -33,9 +35,9 @@ remote_read:
 ```  
 ## 如何在CnosDB中解析Prometheus度量
 
-  - Prometheus度量名称成为CnosDB的measurement名称。
-  - Prometheus的样本值成为CnosDB的字段键及字段值。通常是浮点数形式。
-  - Prometheus的标签成为CnosDB的tags。
+  - 将Prometheus度量名称作为CnosDB的measurement名称。
+  - 将Prometheus的样本值作为CnosDB的字段键及字段值。通常是浮点数形式。
+  - 将Prometheus的标签作为CnosDB的tags。
   - 所有的`# HELP `和`# TYPE `行被忽略。
 ```
   # Prometheus 

@@ -9,15 +9,19 @@
 
 ## 使用CnosDB API写入数据
 
-> `measurement`与`tag`之间使用`,`分隔
+### 分隔规则
+
+> `measurement`与`tag`之间使用逗号分隔
 >
-> `tag`组合可以有多个，`tag`之间使用`,`分隔
+> `tag`组合可以有多个，`tag`之间使用逗号分隔
 >
 > `tag`与`field`之间使用空格分隔
 >
-> `field`组合可以有多个，`field`之间使用`,`分隔
+> `field`组合可以有多个，`field`之间使用逗号分隔
 >
 > `field`与时间戳使用空格分隔
+
+### 写入规则
 
 使用CnosDB API写入数据，向/write端点发送POST请求。例如，向"weather_data"写入一个点。此数据的组成为：measurement为`wind`，field key为`speed`和`direction`，field values分别为`75`和`65`，timestamp为`1649664217085031000`。
   ```
@@ -28,7 +32,7 @@
 
 ## 写入多点
 
-将多个点同时Post到多个序列，每个点用一个新行分开。以这种方式对点进行批处理可以获得更高的性能。
+将多个`Points`同时Post到多个序列，每个`Points`用一个新行分开,以这种方式批处理`Points`可以提高性能。
 
 通过用换行分隔每个`Points`，将多个`Points`同时写入到多个`series`中，以这种方式批处理`Points`可以提高性能。
 
@@ -42,7 +46,7 @@ wind,station=XiaoMaiDao speed=70,direction=63 1649664217085036000'
 
 ## 配置gzip压缩
 
-cnosdb支持gzip压缩，要减少网络流量，需优先考虑一下选项
+cnosdb支持gzip压缩，要减少网络流量，需优先考虑以下选项
 
   - 要接受来自cnosdb的压缩数据，请将`Accept-Encoding：gzip`heade信息添加到cnosdb API请求中
 

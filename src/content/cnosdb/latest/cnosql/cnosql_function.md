@@ -160,7 +160,7 @@
   1970-01-01T00:00:00Z 7
   ```
 
-查询返回measurement为`air`field`为`pressure 的唯一field value的数量。
+查询返回measurement为`air`field为`pressure` 的唯一field value的数量。
 
 #### `COUNT()`的常见问题
 
