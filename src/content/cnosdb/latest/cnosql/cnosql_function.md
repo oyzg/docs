@@ -150,17 +150,17 @@
 
   该查询返回`pressure`field key中的非空field value的数量。它涵盖`now()`之间的`时间段`，并将结果分组为1ms的时间间隔和每个tag(表示为以上代码中的`*`)。并用`-1`填充空的时间间隔，并返回7个`point`，表格返回1。
 
-- #### 计算一个field key的distinct的field value的数量
+  - #### 计算一个field key的distinct的field value的数量
 
-  ```sql
-  > SELECT COUNT(DISTINCT("pressure")) FROM "air"
-  name: air
-  time                 count
-  ----                 -----
-  1970-01-01T00:00:00Z 7
-  ```
+    ```sql
+    > SELECT COUNT(DISTINCT("pressure")) FROM "air"
+    name: air
+    time                 count
+    ----                 -----
+    1970-01-01T00:00:00Z 7
+    ```
 
-查询返回measurement为`air`field为`pressure` 的唯一field value的数量。
+  该查询返回measurement为`air`field为`pressure` 的唯一field value的数量。
 
 #### `COUNT()`的常见问题
 

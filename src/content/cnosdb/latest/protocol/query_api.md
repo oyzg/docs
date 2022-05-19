@@ -7,7 +7,7 @@ CnosDB API 是在 CnosDB中查询数据的主要方式。
 
 示例：
   ```
-  curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=weather_data" --data-urlencode "q=SELECT \"speed\" FROM \"wind\" WHERE \"station\"='LianYunGang'"
+  curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=oceanic_station" --data-urlencode "q=SELECT \"speed\" FROM \"wind\" WHERE \"station\"='LianYunGang'"
   ```
 其结果为：
   ```
@@ -40,12 +40,12 @@ CnosDB API 是在 CnosDB中查询数据的主要方式。
 
   ```
 ## 返回错误
-CnosDB返回JSON，查询的结果会在`rusults`数组中，如果发生错误，CnosDB会设置一个带有`error`的key
+CnosDB返回JSON，查询的结果会在`results`数组中，如果发生错误，CnosDB会设置一个带有`error`的key
 
 ## 多条查询语句
 多条查询语句需要用`;`分隔
  ```shell
- curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=weather_data" --data-urlencode "q=SELECT speed FROM wind WHERE station = 'XiaoMaiDao';SELECT temperature FROM air WHERE station = 'XiaoMaiDao'"
+ curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=oceanic_station" --data-urlencode "q=SELECT speed FROM wind WHERE station = 'XiaoMaiDao';SELECT temperature FROM air WHERE station = 'XiaoMaiDao'"
  ```
 
 ## 时间精度

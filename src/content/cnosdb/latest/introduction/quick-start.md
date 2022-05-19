@@ -25,6 +25,7 @@ CnosDB shell version: vunknown
 ```sql
 > CREATE DATABASE oceanic_station
 ```
+创建一个数据库oceanic_station
 创建成功后，并不会返回任何结果，不过不必担心，没有结果才是最好的结果，您已经成功创建了数据库
 
 可以使用`SHOW DATABASES`来进行查看：
@@ -66,6 +67,8 @@ CnosDB通过insert语句写入数据，现在向数据库中写入一条语句�
 > insert test_air,station=XiaoMaiDao visibility=78,temperature=77,pressure=75 
 > 
 ```
+我们新建了test_air这个measurement，并插入了7条数据，每条数据包含1个tag，3个field
+
 CnosDB中的数据预先是不需要建立Schema的，`test_air`会自动变成`measurement`，具体的定义请查看[CnosDB Line Protocol](../protocol/line_protocol.md)
 
 ## 查询数据
@@ -87,6 +90,7 @@ time                        pressure station     temperature visibility
 2022-05-05T06:55:24.798981Z 75       XiaoMaiDao  79          78
 2022-05-05T06:55:24.818872Z 75       XiaoMaiDao  77          78
 ```
+此处可以查询到7条数据，其中time为时间戳，station为tag，其他3列为field
 
 查询某一个字段，并对其进行聚合计算
 

@@ -87,7 +87,7 @@ CnosDB支持用类型符号指定的字段值。
     +-----------+--------+-+---------+-+---------+
 ```
 **`measurement`**
-- `measurement` - 要将数据写入的measurement的名字。measurement需符合线路协议。在本例子中，measurement为weather。
+- `measurement` - 要将数据写入的measurement的名字。measurement需符合行协议。在本例子中，measurement为weather。
 - `tag set` - 标记集。包含在数据点中的标记。tag在行协议中是可选的。需要注意的是，tag set和measurement之间由逗号分隔，没有空格。用等号`=`分隔标签的键值对时，不需要插入空格，如:`<tag_key>=<tag_value>`。多个标记值对之间用逗号分隔，不能有空格。在本例子中，标记集由标记`station=LianYunGang`组成。 
   当在标记集中使用引号时，行协议支持单引号和双引号，如下表所示:
 - `空格 I` - 将度量和字段集分开，或者，如果您在数据点中包含一个标记集，则使用空格将标记集和字段集分开。在行协议中需要空格。例如，没有tag set的有效行协议`air temperature=75 1642176360000000000`。
@@ -108,12 +108,12 @@ CnosDB支持用类型符号指定的字段值。
   ```
 ### 引号
 
-- 不要对时间戳使用双引号或单引号，这不是有效的线路协议。例如：
+- 不要对时间戳使用双引号或单引号，这不是有效的行协议。例如：
   ```
   > INSERT air,station=LianYunGang temperature=72 "1642176180000000000"
   ERR: {"error":"unable to parse 'air,station=LianYunGang temperature=72 \"1642176180000000000\"': bad timestamp"}
   ```
-- 永远不要给字段值(即使它们是字符串)加单引号，这也不是有效的线路协议。例如：
+- 永远不要给字段值(即使它们是字符串)加单引号，这也不是有效的行协议。例如：
   ```
   > INSERT air,station=LianYunGang temperature='72' 1642176180000000000
   ERR: {"error":"unable to parse 'air,station=LianYunGang temperature='72'': invalid boolean"} 

@@ -1,9 +1,6 @@
 # Golang
 
-- ##  摘要
-
   学习使用CnosDB Golang SDK 操作CnosDB
-
 
 - ## 使用`/ping`查看cnosdb状态
 
