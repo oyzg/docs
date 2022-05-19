@@ -28,7 +28,9 @@
   - [连续查询](./content/cnosdb/latest/cnosql/continuous_queries.md)
   - [数学运算符](./content/cnosdb/latest/cnosql/math_operators.md)
   - [语法约定](./content/cnosdb/latest/cnosql/cnosql_spect.md)
-
+- [其他](./content/cnosdb/latest/other/index.md)
+  - [发行版本说明](./content/cnosdb/latest/other/version_manager.md)
+ 
 [comment]: <> (  - [其他]&#40;./content/cnosdb/latest/cnosql/other.md&#41;)
 
 [comment]: <> (- [常见问题]&#40;./content/cnosdb/latest/frequently_asked_questions.md&#41;)
