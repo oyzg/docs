@@ -91,7 +91,7 @@
 
   `COUNT(*)`返回在`measurement`中每个`field key`对应的`field value`的个数。
 
-  `COUNT()`支持所有数据类型的`field value`。cnosQL支持将[`DISTINCT()`](#distinct)函数嵌套在`COUNT()`函数里。
+  `COUNT()`支持所有数据类型的`field value`。CnosQL支持将[`DISTINCT()`](#distinct)函数嵌套在`COUNT()`函数里。
 
   #### 示例
 
@@ -105,7 +105,7 @@
   1970-01-01T00:00:00Z 3334
   ```
 
-  该查询返回`measurement``air`中的`temperature`的非空field value的数量。
+  该查询返回measurement`air`中的`temperature`的非空field value的数量。
 
   - #### 计数measurement中每个field key关联的field value的数量
 
@@ -160,13 +160,13 @@
     1970-01-01T00:00:00Z 7
     ```
 
-  该查询返回measurement为`air`field`为`pressure 的唯一field value的数量。
+  该查询返回measurement为`air`field为`pressure` 的唯一field value的数量。
 
 #### `COUNT()`的常见问题
 
 - #### `COUNT()`和`fill()`
 
-大多数cnosQL函数对于没有数据的时间间隔返回`null`值，`fill(<fill_option>)`将该`null`值替换为`fill_option`。 `COUNT()`针对没有数据的时间间隔返回`0`，`fill(<fill_option>)`用`fill_option`替换0值。
+大多数CnosQL函数对于没有数据的时间间隔返回`null`值，`fill(<fill_option>)`将该`null`值替换为`fill_option`。 `COUNT()`针对没有数据的时间间隔返回`0`，`fill(<fill_option>)`用`fill_option`替换0值。
 
 *示例*
 
@@ -220,7 +220,7 @@
 
   `DISTINCT(field_key)` 返回`field key`对应的不同`field values`。
 
-  `DISTINCT()` 支持所有数据类型的`field value`，cnosQL支持[`COUNT()`](#count)嵌套`DISTINCT()`。
+  `DISTINCT()` 支持所有数据类型的`field value`，CnosQL支持[`COUNT()`](#count)嵌套`DISTINCT()`。
 
   #### 示例
 
@@ -957,7 +957,7 @@
   **注意：**
 
   * 如果最小值有两个或多个相等的值，`BOTTOM()`返回具有最早时间戳的field value。
-  * 当`BOTTOM()`函数与`INTO`子句一起使用时，`BOTTOM()`与其它cnosQL函数不同。请查看`BOTTOM()`的常见问题章节获得更多信息。
+  * 当`BOTTOM()`函数与`INTO`子句一起使用时，`BOTTOM()`与其它CnosQL函数不同。请查看`BOTTOM()`的常见问题章节获得更多信息。
 
   #### 示例
 
@@ -1064,7 +1064,7 @@
 
   - #### `BOTTOM()`、tag和`INTO`子句
 
-  当使用`INTO`子句但没有使用`GROUP BY tag`子句时，大多数cnosQL函数将原始数据中的tag转换为新写入数据中的field。这种行为同样适用于`BOTTOM()`函数除非`BOTTOM()`中包含tag key作为参数：`BOTTOM(field_key,tag_key(s),N)`。在这些情况下，系统会将指定的tag保留为新写入数据中的tag。
+  当使用`INTO`子句但没有使用`GROUP BY tag`子句时，大多数CnosQL函数将原始数据中的tag转换为新写入数据中的field。这种行为同样适用于`BOTTOM()`函数除非`BOTTOM()`中包含tag key作为参数：`BOTTOM(field_key,tag_key(s),N)`。在这些情况下，系统会将指定的tag保留为新写入数据中的tag。
 
   下面代码块中的第一个查询返回tag key `station`的两个tag value对应的field key `temperature`的最小值，并且，它这些结果写入measurement `bottom_temperatures`中。第二个查询展示了CnosDB将tag `station`保留为measurement `bottom_temperatures`中的tag。
 
@@ -1531,7 +1531,7 @@
 
   #### `PERCENTILE()`的常见问题
 
-  - #### `PERCENTILE()` vs 其它cnosQL函数
+  - #### `PERCENTILE()` vs 其它CnosQL函数
 
   * `PERCENTILE(<field_key>,100)`相当于`MAX(<field_key>)`。
   * `PERCENTILE(<field_key>, 50)`近似于`MEDIAN(<field_key>)`，除非field key包含的field value有偶数个，那么这时候`MEDIAN()`将返回两个中间值的平均数。
@@ -1781,7 +1781,7 @@
 
   - #### `TOP()`、tag和`INTO`子句
 
-  当使用`INTO`子句但没有使用`GROUP BY tag`子句时，大多数cnosQL函数将原始数据中的tag转换为新写入数据中的field。这种行为同样适用于`TOP()`函数，除非`TOP()`中包含tag key作为参数：`TOP(field_key,tag_key(s),N)`。在这些情况下，系统会将指定的tag保留为新写入数据中的tag。
+  当使用`INTO`子句但没有使用`GROUP BY tag`子句时，大多数CnosQL函数将原始数据中的tag转换为新写入数据中的field。这种行为同样适用于`TOP()`函数，除非`TOP()`中包含tag key作为参数：`TOP(field_key,tag_key(s),N)`。在这些情况下，系统会将指定的tag保留为新写入数据中的tag。
 
   下面代码块中的第一个查询返回tag key `station`的两个tag value对应的field key `temperature`的最大值，并且，它这些结果写入measurement `top_temperatures`中。第二个查询展示了CnosDB将tag `station`保留为measurement `top_temperatures`中的tag。
 
@@ -1882,7 +1882,7 @@
   SELECT ABS(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的绝对值。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的绝对值。
 
   `ABS()`支持以下嵌套函数：
 
@@ -2063,7 +2063,7 @@
   SELECT ACOS(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的反余弦。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的反余弦。
 
   ACOS()支持以下嵌套函数：
 
@@ -2305,7 +2305,7 @@
   SELECT ASIN(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的反正弦。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的反正弦。
 
   ASIN()支持以下嵌套函数：
 
@@ -2550,7 +2550,7 @@
   SELECT ATAN(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的反正切。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的反正切。
 
   `ATAN()`支持以下嵌套函数：
 
@@ -2723,7 +2723,7 @@
   SELECT ATAN2(<function()>, <function()>) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的反正切(`ATAN2()`)。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的反正切(`ATAN2()`)。
 
   ATAN2()支持以下嵌套函数：
 
@@ -2889,7 +2889,7 @@
   SELECT CEIL(<function>( [ * | <field_key> | /<regular_expression>/ ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后将`CEIL()`应用于这些结果。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后将`CEIL()`应用于这些结果。
 
   `CEIL()`支持以下嵌套函数：
 
@@ -3039,7 +3039,7 @@
   SELECT COS(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的余弦值。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的余弦值。
 
   `COS()`支持以下嵌套函数：
 
@@ -3212,7 +3212,7 @@
   SELECT CUMULATIVE_SUM(<function>( [ * | <field_key> | /<regular_expression>/ ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的累积总和。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的累积总和。
 
   `CUMULATIVE_SUM()`支持以下嵌套函数：
 
@@ -3429,7 +3429,7 @@
   SELECT DERIVATIVE(<function> ([ * | <field_key> | /<regular_expression>/ ]) [ , <unit> ] ) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的导数。
+高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的导数。
 
 参数`unit`的值是一个整数，后跟一个时间单位。这个参数是可选的，不是必须要有的。如果查询没有指定`unit`的值，那么`unit`默认为`GROUP BY time()`的时间间隔。请注意，这里`unit`的默认值跟基本语法中`unit`的默认值不一样。
 
@@ -3645,7 +3645,7 @@
   SELECT DIFFERENCE(<function>( [ * | <field_key> | /<regular_expression>/ ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果之间的差值。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果之间的差值。
 
   DIFFERENCE()支持以下嵌套函数：
   [`COUNT()`](#count),
@@ -3821,7 +3821,7 @@
 
   - #### `ELAPSED()`和`GROUP BY time()`子句同时使用
 
-  `ELAPSED()`函数支持`GROUP BY time()`子句，但是查询结果不是特别有用。目前，如果`ELAPSED()`查询包含一个嵌套的cnosQL函数和一个`GROUP BY time()`子句，那么只会返回指定`GROUP BY time()`子句中的时间间隔。
+  `ELAPSED()`函数支持`GROUP BY time()`子句，但是查询结果不是特别有用。目前，如果`ELAPSED()`查询包含一个嵌套的CnosQL函数和一个`GROUP BY time()`子句，那么只会返回指定`GROUP BY time()`子句中的时间间隔。
 
   `GROUP BY time()`子句决定了查询结果中的时间戳：每个时间戳表示时间间隔的开始时间。该行为也适用于嵌套的selector函数(例如`FIRST()`或`MAX()`)，而在其它的所有情况下，这些函数返回的是原始数据的特定时间戳。因为`GROUP BY time()`子句会覆盖原始时间戳，所以`ELAPSED()`始终返回与`GROUP BY time()`的时间间隔相同的时间戳。
 
@@ -3950,7 +3950,7 @@
   SELECT EXP(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的指数。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的指数。
 
   EXP()支持以下嵌套函数：
 
@@ -4100,7 +4100,7 @@
   SELECT FLOOR(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后将`FLOOR()`应用于这些结果。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后将`FLOOR()`应用于这些结果。
 
   `FLOOR()`支持以下嵌套函数：
 
@@ -4250,7 +4250,7 @@
   SELECT LN(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个 GROUP BY time() ` 和一个嵌套的cnosQL 函数.
+  高级语法需要一个 GROUP BY time() ` 和一个嵌套的CnosQL 函数.
   该查询受限以指定 `GROUP BY time()`间隔计算嵌套函数的结果 `LN()` .
 
   LN()支持以下嵌套函数：
@@ -4401,7 +4401,7 @@
   SELECT LOG(<function>( [ * | <field_key> ] ), <b>) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的对数。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的对数。
 
   `LOG()`支持以下嵌套函数：
 
@@ -4551,7 +4551,7 @@
   SELECT LOG2(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的以2为底数的对数。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的以2为底数的对数。
 
   `LOG2()`支持以下嵌套函数：
 
@@ -4701,7 +4701,7 @@
   SELECT LOG10(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的以10为底数的对数。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的以10为底数的对数。
 
   `LOG10()`支持以下嵌套函数：
 
@@ -4870,7 +4870,7 @@
   SELECT MOVING_AVERAGE(<function> ([ * | <field_key> | /<regular_expression>/ ]) , N ) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果之间的滚动平均值。
+高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果之间的滚动平均值。
 
 `MOVING_AVERAGE()`支持以下嵌套函数：
 
@@ -4947,7 +4947,7 @@
   SELECT NON_NEGATIVE_DERIVATIVE(<function> ([ * | <field_key> | /<regular_expression>/ ]) [ , <unit> ] ) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的非负导数。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的非负导数。
 
   参数`unit`的值是一个整数，后跟一个时间单位。这个参数是可选的，不是必须要有的。如果查询没有指定`unit`的值，那么`unit`默认为`GROUP BY time()`的时间间隔。请注意，这里`unit`的默认值跟基本语法中`unit`的默认值不一样。`NON_NEGATIVE_DERIVATIVE()`只返回正的变化率和等于0的变化率。
 
@@ -4997,7 +4997,7 @@
   SELECT NON_NEGATIVE_DIFFERENCE(<function>( [ * | <field_key> | /<regular_expression>/ ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果之间的非负差值。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果之间的非负差值。
 
   `NON_NEGATIVE_DIFFERENCE()支持以下嵌套函数：
 
@@ -5121,7 +5121,7 @@
   SELECT POW(<function>( [ * | <field_key> ] ), <x>) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的`x`次方。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的`x`次方。
 
   `POW()`支持以下嵌套函数：
 
@@ -5269,7 +5269,7 @@
   SELECT ROUND(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果四舍五入后的整数。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果四舍五入后的整数。
 
   `ROUND()`支持以下嵌套函数：
 
@@ -5419,7 +5419,7 @@
   SELECT SIN(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的正弦值。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的正弦值。
 
   `SIN()`支持以下嵌套函数：
 
@@ -5569,7 +5569,7 @@
   SELECT SQRT(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的平方根。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的平方根。
 
   `SQRT()`支持以下嵌套函数：
 
@@ -5719,7 +5719,7 @@
   SELECT TAN(<function>( [ * | <field_key> ] )) [INTO_clause] FROM_clause [WHERE_clause] GROUP_BY_clause [ORDER_BY_clause] [LIMIT_clause] [OFFSET_clause] [SLIMIT_clause] [SOFFSET_clause]
   ```
 
-  高级语法需要一个`GROUP BY time()`子句和一个嵌套的cnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的正切值。
+  高级语法需要一个`GROUP BY time()`子句和一个嵌套的CnosQL函数。查询首先计算在指定的`GROUP BY time()`间隔内嵌套函数的结果，然后计算这些结果的正切值。
 
   `TAN()`支持以下嵌套函数：
 
@@ -5789,7 +5789,7 @@
 
   `HOLT_WINTERS_WITH_FIT(function(field_key),N,S)`除了返回field key对应的`N`个季节性调整的预测field value，还返回拟合值。
 
-  `HOLT_WINTERS()`和`HOLT_WINTERS_WITH_FIT()`处理以相同的时间间隔出现的数据；嵌套的cnosQL函数和`GROUP BY time()`子句确保Holt-Winters函数能够对常规数据进行操作。
+  `HOLT_WINTERS()`和`HOLT_WINTERS_WITH_FIT()`处理以相同的时间间隔出现的数据；嵌套的CnosQL函数和`GROUP BY time()`子句确保Holt-Winters函数能够对常规数据进行操作。
 
   `HOLT_WINTERS()`和`HOLT_WINTERS_WITH_FIT()`支持数据类型为int64和float64的field value。
 
@@ -6184,7 +6184,7 @@ ER跟Chande Momentum Oscillator (CMO)非常类似。不同的是，CMO将市场�
   SELECT <function>(),<function>() FROM_clause [...]
   ```
 
-  使用逗号(`,`)将`SELECT`语句中的多个函数分开。该语法适用于除`TOP()`和`BOTTOM()`之外的所有cnosQL函数。`SELECT`子句不支持`TOP()`或`BOTTOM()`和其它函数同时使用。
+  使用逗号(`,`)将`SELECT`语句中的多个函数分开。该语法适用于除`TOP()`和`BOTTOM()`之外的所有CnosQL函数。`SELECT`子句不支持`TOP()`或`BOTTOM()`和其它函数同时使用。
 
   ####示例
 
@@ -6294,7 +6294,7 @@ ER跟Chande Momentum Oscillator (CMO)非常类似。不同的是，CMO将市场�
 
   #### 改变不含数据的时间间隔的返回值
 
-  默认情况下，包含cnosQL函数和`GROUP BY time()`子句的查询对不包含数据的时间间隔返回空值。在`GROUP BY`子句后面加上`fill()`可以更改这个值。关于`fill()`的详细讨论，请查看数据探索。
+  默认情况下，包含CnosQL函数和`GROUP BY time()`子句的查询对不包含数据的时间间隔返回空值。在`GROUP BY`子句后面加上`fill()`可以更改这个值。关于`fill()`的详细讨论，请查看数据探索。
 
   #### 函数的常见问题
 
@@ -6313,7 +6313,7 @@ ER跟Chande Momentum Oscillator (CMO)非常类似。不同的是，CMO将市场�
   - #### 嵌套函数
 
 
-某些cnosQL 函数支持 [`SELECT` clause](/cnosdb/v1.8/query_language/explore-data/#select-clause)中嵌套:
+某些CnosQL 函数支持 [`SELECT` clause](/cnosdb/v1.8/query_language/explore-data/#select-clause)中嵌套:
 * [`COUNT()`](#count) with [`DISTINCT()`](#distinct)
 * [`CUMULATIVE_SUM()`](#cumulative-sum)
 * [`DERIVATIVE()`](#derivative)
@@ -6325,9 +6325,9 @@ ER跟Chande Momentum Oscillator (CMO)非常类似。不同的是，CMO将市场�
 
 - #### 查询在now()之后的时间范围
 
-大多数`SELECT`语句的默认时间范围在`1677-09-21 00:12:43.145224194` UTC和`2262-04-11T23:47:16.854775806Z` UTC之间。对于包含cnosQL函数和`GROUP BY time()`子句的`SELECT`查询，默认的时间范围在`1677-09-21 00:12:43.145224194`和`now()`之间。
+大多数`SELECT`语句的默认时间范围在`1677-09-21 00:12:43.145224194` UTC和`2262-04-11T23:47:16.854775806Z` UTC之间。对于包含CnosQL函数和`GROUP BY time()`子句的`SELECT`查询，默认的时间范围在`1677-09-21 00:12:43.145224194`和`now()`之间。
 
-如果要查询时间戳发生在`now()`之后的数据，那么包含cnosQL函数和`GROUP BY time()`子句的`SELECT`查询必须在`WHERE`子句中提供一个时间上限。请查看常见问题。
+如果要查询时间戳发生在`now()`之后的数据，那么包含CnosQL函数和`GROUP BY time()`子句的`SELECT`查询必须在`WHERE`子句中提供一个时间上限。请查看常见问题。
 
 #### 聚合函数
 

@@ -158,7 +158,7 @@
   }
   ```
 
-- ## 创建一个查询请求并指定数据库
+- ## 创建数据库
 
   ```
   func ExampleClient_createDatabase() {

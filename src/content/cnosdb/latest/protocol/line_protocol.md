@@ -20,7 +20,7 @@ CnosDB行协议是一种基于文本格式将点写入CnosDB的行协议。
 
 - `timestamp` - 可选。如果时间戳没有包含在点中，则CnosDB将在UTC中使用服务器的本地纳秒时间戳。
 
-### 性能小提示
+### 性能优化小提示
 
 - 将数据发送到CnosDB之前，请使用[Go bytes.Compare function](https://pkg.go.dev/bytes#Compare)对数据根据tag key排序。
 - 要显著改善压缩，请对时间戳使用尽可能粗糙的精度。
@@ -34,7 +34,7 @@ CnosDB行协议是一种基于文本格式将点写入CnosDB的行协议。
     INSERT mydb value=-1.234456e+78
     ```
 
-CnosDB支持用科学符号指定的字段值。
+CnosDB支持用类型符号指定的字段值。
 
 - 将field值`1.0`作为浮点数写入CnosDB
 
@@ -108,7 +108,7 @@ CnosDB支持用科学符号指定的字段值。
   ```
 ### 引号
 
-- 不要对时间戳使用双引号或单引号。这不是有效的行协议。例如：
+- 不要对时间戳使用双引号或单引号，这不是有效的行协议。例如：
   ```
   > INSERT air,station=LianYunGang temperature=72 "1642176180000000000"
   ERR: {"error":"unable to parse 'air,station=LianYunGang temperature=72 \"1642176180000000000\"': bad timestamp"}
@@ -177,4 +177,4 @@ CnosDB支持用科学符号指定的字段值。
     2022-04-14T03:50:01.705037Z LianYunGang 23
 
     ```  
-  - 关键字:行协议接受CnosQL关键字作为标识符名称。通常，我们建议避免在模式中使用CnosQL关键字，因为它可能会在查询数据时造成混乱。 关键字`time`是一种特殊情况。`time`可以是连续查询名称、数据库名称、measurement名称、保留策略名称和用户名称。在这些情况下，`time`不需要在查询中使用双引号。`time`不能是字段键或标记键;CnosDB拒绝以`time`作为字段键或标记键的写操作，并返回错误。
+  - 关键字:行协议接受CnosQL关键字作为标识符名称。我们一般建议避免在模式中使用CnosQL关键字，因为它可能会在查询数据时造成混乱。 但关键字`time`是一种特殊情况。`time`可以是连续查询名称、数据库名称、measurement名称、保留策略名称和用户名称。在这些情况下，`time`不需要在查询中使用双引号。`time`不能是字段键或标记键;CnosDB拒绝以`time`作为字段键或标记键的写操作，并返回错误。

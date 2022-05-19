@@ -15,7 +15,7 @@ CnosQL的定义和详细信息
 - [其他](#其他)
 ### 符号
 
-使用Extended Backus-Naur Form(" EBNF ")指定语法。EBNF与Go编程语言规范中使用的符号相同。并非巧合的是，CnosDB是用Go编写的。
+使用[Extended Backus-Naur Form(" EBNF ")](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form)指定语法。EBNF与Go编程语言规范中使用的符号相同。并非巧合的是，CnosDB是用Go编写的。
 ```
 Production  = production_name "=" [ Expression ] "." .
 Expression  = Alternative { "|" Alternative } .

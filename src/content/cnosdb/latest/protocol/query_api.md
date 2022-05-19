@@ -49,7 +49,7 @@ CnosDB返回JSON，查询的结果会在`results`数组中，如果发生错误�
  ```
 
 ## 时间精度
-CnosDB中的所有内容都以UTC存储和输出。默认情况下，时间戳以RFC3339格式返回，例如 2015-08-04T19:05:00Z，如果想要Unix纪元格式的时间戳，则需要在请求中包含字符串参数：epoch=[h, m, s, ms, u, ns]
+CnosDB中的所有内容都以UTC存储和输出。默认情况下，时间戳以RFC3339格式返回，例如 2015-08-04T19:05:00Z；如果想要Unix纪元格式的时间戳，则需要在请求中添加字符串参数：epoch=[h, m, s, ms, u, ns]
   ```shell
   curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=oceanic_station" --data-urlencode "epoch=s" --data-urlencode "q=SELECT temperature FROM air WHERE station = 'XiaoMaiDao'"
   ```

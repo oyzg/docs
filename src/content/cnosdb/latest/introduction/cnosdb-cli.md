@@ -1,12 +1,12 @@
 # cnosdb-cli
 
-> 使用cnosdb-cli交互式命令行工具操作CnosDB
+> 使用cnosdb-cli交互式命令行工具操作CnosDB。
 
-- [开始cnosdb-cli](#开始cnosdb-cli)
+- [开始使用cnosdb-cli](#开始cnosdb-cli)
 - [cnosdb-cli参数](#cnosdb-cli参数)
 - [cnosdb-cli命令](#cnosdb-cli命令)
 
-## 开始cnosdb-cli
+## 开始使用cnosdb-cli
 
 如果使用cnosdb-cli，则需要先启动cnosdb进程，然后在终端启动cnosdb-cli，如果成功连接，您将看到以下输出：
 
