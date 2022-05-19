@@ -12,13 +12,13 @@ CnosDB行协议是一种基于文本格式将点写入CnosDB的行协议。
 
 > 注意：行协议不支持在标签值或字段值中使用换行符`\n`。
 ### 语法描述
-- `measurement`- 必须。是measurement项的名字。CnosDB接受每一个点的measurement值。为string类型。
 
-- `tag set` - 可选。为该点所有的标记键值对。tag keys和tag values都是string类型。
-
-- `field set` - 必须。每一个点必须要有一个field。是该点所有的字段键值对。可以是任何类型。
-
-- `timestamp` - 可选。如果时间戳没有包含在点中，则CnosDB将在UTC中使用服务器的本地纳秒时间戳。
+| 参数        | 描述                                                         |
+| ----------- | ------------------------------------------------------------ |
+| measurement | 必须。是measurement项的名字。CnosDB接受每一个点的measurement值。为string类型。 |
+| tag set     | 可选。为该点所有的标记键值对。tag keys和tag values都是string类型。 |
+| field set   | 必须。每一个点必须要有一个field。是该点所有的字段键值对。可以是任何类型。 |
+| timestamp   | 可选。如果时间戳没有包含在点中，则CnosDB将在UTC中使用服务器的本地纳秒时间戳。 |
 
 ### 性能优化小提示
 

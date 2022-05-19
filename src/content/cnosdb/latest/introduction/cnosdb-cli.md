@@ -16,7 +16,7 @@ CnosDB shell version: v0.10.3
 >
 ```
 
-您可以在终端输入`help`命令，查询有效的命令。CnosQL的语法请查看[TOOD]()
+您可以在终端输入`help`命令，查询有效的命令。CnosQL的语法请查看[语法参考手册](../cnosql/index.md)
 
 ## cnosdb-cli参数
 |Flag	|Description|
@@ -28,6 +28,3 @@ CnosDB shell version: v0.10.3
 |--ssl	|连接时使用 HTTPS 协议|
 |--format	|指定打印 cnosdb 服务的响应内容的格式: json, csv, or column|
 |--precision	|指定时间戳的格式: rfc3339, h, m, s, ms, u or ns|
-
-## cnosdb-cli命令
-[语法参考手册](../cnosql/index.md)
