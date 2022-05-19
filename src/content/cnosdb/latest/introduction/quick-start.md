@@ -67,8 +67,9 @@ CnosDB通过insert语句写入数据，现在向数据库中写入一条语句�
 > insert test_air,station=XiaoMaiDao visibility=78,temperature=77,pressure=75 
 > 
 ```
-CnosDB中的数据预先是不需要建立Schema的，`test_air`会自动变成`measurement`，具体的定义请查看[CnosDB Line Protocol](../protocol/line_protocol.md)
 我们新建了test_air这个measurement，并插入了7条数据，每条数据包含1个tag，3个field
+
+CnosDB中的数据预先是不需要建立Schema的，`test_air`会自动变成`measurement`，具体的定义请查看[CnosDB Line Protocol](../protocol/line_protocol.md)
 
 ## 查询数据
 
