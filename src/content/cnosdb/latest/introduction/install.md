@@ -7,14 +7,14 @@
 
 ## Ubuntu & Debian
 
-1. 使用`wget`命令从官网下载获得deb安装包`cnosdb_0.10.3_amd64.deb`
+1. 使用`wget`命令从官网下载获得deb安装包`cnosdb_1.0.1_amd64.deb`
    ```shell
-   wget https://github.com/cnosdb/cnosdb/releases/download/v0.10.3/cnosdb_0.10.3_amd64.deb
+   wget https://github.com/cnosdb/cnosdb/releases/download/v1.0.1/cnosdb_1.0.1_amd64.deb
    ```
    
-2. 进入`cnosdb_0.10.3_amd64.deb`所在目录，使用`dpkg`命令进行安装
+2. 进入`cnosdb_1.0.1_amd64.deb`所在目录，使用`dpkg`命令进行安装
    ```shell
-   sudo dpkg -i cnosdb_0.10.3_amd64.deb
+   sudo dpkg -i cnosdb_1.0.1_amd64.deb
    ```
 
 3. 安装成功后即可启动，执行以下命令进行启动
@@ -41,14 +41,14 @@
 
 ## Red Hat & CentOS
 
-1. 使用`wget`命令从官网下载获得rpm安装包`cnosdb-0.10.3.x86_64.rpm`
+1. 使用`wget`命令从官网下载获得rpm安装包`cnosdb-1.0.1.x86_64.rpm`
    ```shell
-   wget https://github.com/cnosdb/cnosdb/releases/download/v0.10.3/cnosdb-0.10.3.x86_64.rpm
+   wget https://github.com/cnosdb/cnosdb/releases/download/v1.0.1/cnosdb-1.0.1.x86_64.rpm
    ```
 
-2. 进入`cnosdb-0.10.3.x86_64.rpm`所在目录，使用`yum`命令进行安装
+2. 进入`cnosdb-1.0.1.x86_64.rpm`所在目录，使用`yum`命令进行安装
    ```shell
-   sudo yum localinstall cnosdb-0.10.3.x86_64.rpm
+   sudo yum localinstall cnosdb-1.0.1.x86_64.rpm
    ```
 
 
@@ -156,13 +156,13 @@
    2. 通过在URL上添加`.asc`来下载指定版本的签名文件
 
    ```shell
-    wget https://github.com/cnosdb/cnosdb/releases/download/v0.10.3/cnosdb-0.10.3_linux_amd64.tar.gz
+    wget https://github.com/cnosdb/cnosdb/releases/download/v1.0.1/cnosdb-1.0.1_linux_amd64.tar.gz
    ```
 
    3. 验证签名 `gpg --verify`
 
    ```shell
-    gpg --verify cnosdb-0.10.3_linux_amd64.tar.gz.asc cnosdb-0.10.3_linux_amd64.tar.gz
+    gpg --verify cnosdb-1.0.1_linux_amd64.tar.gz.asc cnosdb-1.0.1_linux_amd64.tar.gz
    ```
 
   此命令应该输出：
