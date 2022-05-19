@@ -102,7 +102,7 @@
    setx PATH "%PATH%;C:\Program Files\cnosdb\cnosdb-1.0.1-1\"
    ```
 
-5. 打开Windows中的命令提示符程序，执行以下命令(这里不再PowerShell中执行)
+5. 打开Windows中的命令提示符程序，执行以下命令(这里不在PowerShell中执行)
    ```shell
    cnosdb
    ```
