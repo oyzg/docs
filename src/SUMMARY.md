@@ -10,7 +10,6 @@
   - [CnosDB Write API](./content/cnosdb/latest/protocol/write_api.md)
   - [CnosDB Query API](./content/cnosdb/latest/protocol/query_api.md)
   - [Prometheus](./content/cnosdb/latest/protocol/prometheus.md)
-  - [Telegraf](./content/cnosdb/latest/protocol/telegraf.md)
   - [Golang](./content/cnosdb/latest/protocol/goland.md)
 - [运维管理](./content/cnosdb/latest/managerment/index.md)
   - [导入和导出](./content/cnosdb/latest/managerment/export_import.md)
