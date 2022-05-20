@@ -30,6 +30,7 @@
   - [语法约定](./content/cnosdb/latest/cnosql/cnosql_spect.md)
 - [其他](./content/cnosdb/latest/other/index.md)
   - [发行版本说明](./content/cnosdb/latest/other/version_manager.md)
+  - [CnosDB性能比较](./content/cnosdb/latest/other/tsdb-comparisions.md)
  
 [comment]: <> (  - [其他]&#40;./content/cnosdb/latest/cnosql/other.md&#41;)
 
