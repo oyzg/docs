@@ -7,6 +7,7 @@
 1. 数据写入
 2. 磁盘占用
 3. 查询效率
+
 测试工具使用[时序数据库专用测试工具](https://github.com/cnosdb/tsdb-comparisons)进行测试
 
 ## 运行环境
