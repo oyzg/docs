@@ -1,0 +1,814 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>语法约定 - CnosDB</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../../../favicon.svg">
+        <link rel="shortcut icon" href="../../../../favicon.png">
+        <link rel="stylesheet" href="../../../../css/variables.css">
+        <link rel="stylesheet" href="../../../../css/general.css">
+        <link rel="stylesheet" href="../../../../css/chrome.css">
+        <link rel="stylesheet" href="../../../../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../../../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../../../highlight.css">
+        <link rel="stylesheet" href="../../../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/about.html"><strong aria-hidden="true">1.</strong> 关于CnosDB</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/index.html"><strong aria-hidden="true">2.</strong> 快速上手</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/install.html"><strong aria-hidden="true">2.1.</strong> 下载与安装</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/cnosdb-cli.html"><strong aria-hidden="true">2.2.</strong> 命令行终端</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/quick-start.html"><strong aria-hidden="true">2.3.</strong> 快速开始</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/index.html"><strong aria-hidden="true">3.</strong> 应用编程接口</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/line_protocol.html"><strong aria-hidden="true">3.1.</strong> CnosDB Line Protocol</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/write_api.html"><strong aria-hidden="true">3.2.</strong> CnosDB Write API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/query_api.html"><strong aria-hidden="true">3.3.</strong> CnosDB Query API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/prometheus.html"><strong aria-hidden="true">3.4.</strong> Prometheus</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/goland.html"><strong aria-hidden="true">3.5.</strong> Golang</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/index.html"><strong aria-hidden="true">4.</strong> 运维管理</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/export_import.html"><strong aria-hidden="true">4.1.</strong> 导入和导出</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/backup_restore.html"><strong aria-hidden="true">4.2.</strong> 备份和还原</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/configuration.html"><strong aria-hidden="true">4.3.</strong> CnosDB配置</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/sandboxmanagement.html"><strong aria-hidden="true">4.4.</strong> 集群管理</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/index.html"><strong aria-hidden="true">4.5.</strong> 运维工具介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb.html"><strong aria-hidden="true">4.5.1.</strong> cnosdb</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-cli.html"><strong aria-hidden="true">4.5.2.</strong> cnosdb-cli</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-inspect.html"><strong aria-hidden="true">4.5.3.</strong> cnosdb-inspect</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/index.html"><strong aria-hidden="true">5.</strong> 语法参考手册</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_sample.html"><strong aria-hidden="true">5.1.</strong> 示例数据</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_syntax.html"><strong aria-hidden="true">5.2.</strong> 数据查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_management.html"><strong aria-hidden="true">5.3.</strong> 数据库管理和模式查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_function.html"><strong aria-hidden="true">5.4.</strong> 函数</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/continuous_queries.html"><strong aria-hidden="true">5.5.</strong> 连续查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/math_operators.html"><strong aria-hidden="true">5.6.</strong> 数学运算符</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_spect.html" class="active"><strong aria-hidden="true">5.7.</strong> 语法约定</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/other/index.html"><strong aria-hidden="true">6.</strong> 其他</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/other/version_manager.html"><strong aria-hidden="true">6.1.</strong> 发行版本说明</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/other/tsdb-comparisions.html"><strong aria-hidden="true">6.2.</strong> CnosDB性能比较</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CnosDB</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="cnosql参考"><a class="header" href="#cnosql参考">CnosQL参考</a></h1>
+<h2 id="介绍"><a class="header" href="#介绍">介绍</a></h2>
+<p>CnosQL的定义和详细信息</p>
+<ul>
+<li><a href="#%E7%AC%A6%E5%8F%B7">符号</a></li>
+<li><a href="#%E6%9F%A5%E8%AF%A2%E8%A1%A8%E7%A4%BA">查询表示</a></li>
+<li><a href="#%E5%AD%97%E6%AF%8D%E5%92%8C%E6%95%B0%E5%AD%97">字母和数字</a></li>
+<li><a href="#%E6%A0%87%E8%AF%86%E7%AC%A6">标识符</a></li>
+<li><a href="#%E5%85%B3%E9%94%AE%E5%AD%97">关键字</a></li>
+<li><a href="#%E6%96%87%E5%AD%97">文字</a></li>
+<li><a href="#%E6%9F%A5%E8%AF%A2">查询</a></li>
+<li><a href="#%E8%AF%AD%E5%8F%A5">语句</a></li>
+<li><a href="#%E6%9D%A1%E6%AC%BE">条款</a></li>
+<li><a href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F">表达式</a></li>
+<li><a href="#%E5%85%B6%E4%BB%96">其他</a></li>
+</ul>
+<h3 id="符号"><a class="header" href="#符号">符号</a></h3>
+<p>使用<a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">Extended Backus-Naur Form(&quot; EBNF &quot;)</a>指定语法。EBNF与Go编程语言规范中使用的符号相同。并非巧合的是，CnosDB是用Go编写的。</p>
+<pre><code>Production  = production_name &quot;=&quot; [ Expression ] &quot;.&quot; .
+Expression  = Alternative { &quot;|&quot; Alternative } .
+Alternative = Term { Term } .
+Term        = production_name | token [ &quot;…&quot; token ] | Group | Option | Repetition .
+Group       = &quot;(&quot; Expression &quot;)&quot; .
+Option      = &quot;[&quot; Expression &quot;]&quot; .
+Repetition  = &quot;{&quot; Expression &quot;}&quot; .
+</code></pre>
+<p>按优先级递增的顺序表示操作符:</p>
+<pre><code>|   alternation
+()  grouping
+[]  option (0 or 1 times)
+{}  repetition (0 to n times)
+</code></pre>
+<h3 id="查询表示"><a class="header" href="#查询表示">查询表示</a></h3>
+<ul>
+<li>
+<h4 id="字符"><a class="header" href="#字符">字符</a></h4>
+</li>
+</ul>
+<p>CnosQL是使用UTF-8编码的Unicode文本。</p>
+<pre><code>newline             = /* the Unicode code point U+000A */ .
+unicode_char        = /* an arbitrary Unicode code point except newline */ .
+</code></pre>
+<h3 id="字母和数字"><a class="header" href="#字母和数字">字母和数字</a></h3>
+<p>字母是ASCII字符的集合，加上下划线_ (U+005F)也被认为是字母。只支持十进制数字。</p>
+<pre><code>letter              = ascii_letter | &quot;_&quot; .
+ascii_letter        = &quot;A&quot; … &quot;Z&quot; | &quot;a&quot; … &quot;z&quot; .
+digit               = &quot;0&quot; … &quot;9&quot; .
+</code></pre>
+<h3 id="标识符"><a class="header" href="#标识符">标识符</a></h3>
+<p>标识符包括数据库名、保留策略名、用户名、度量名、标记键以及字段键。</p>
+<p>标识符使用规则如下；</p>
+<ul>
+<li>双引号标识符可以包含除新行以外的任何unicode字符。</li>
+<li>双引号标识符可以包括转义的<code>&quot;</code>字符。例如；<code>\&quot;</code> 。</li>
+<li>双引号标识符中可以包括CnosQL的关键字。</li>
+<li>未加引号的标识符必须以大写或小写ASCII字符或者&quot;_&quot;开头。</li>
+<li>未加引号的标识符只能包括ASCII字母、十进制数字或者&quot;_&quot;。</li>
+</ul>
+<pre><code>identifier          = unquoted_identifier | quoted_identifier .
+unquoted_identifier = ( letter ) { letter | digit } .
+quoted_identifier   = `&quot;` unicode_char { unicode_char } `&quot;` .
+</code></pre>
+<p>例如：</p>
+<pre><code>air
+_air_temperature
+&quot;1h&quot;
+&quot;anything really&quot;
+&quot;1_Crazy-1337.identifier&gt;NAME👍&quot;
+</code></pre>
+<h3 id="关键字"><a class="header" href="#关键字">关键字</a></h3>
+<pre><code>ALL           ALTER         ANY           AS            ASC           BEGIN
+BY            CREATE        CONTINUOUS    DATABASE      DATABASES     DEFAULT
+DELETE        DESC          DESTINATIONS  DIAGNOSTICS   DISTINCT      DROP
+DURATION      END           EVERY         EXPLAIN       FIELD         FOR
+FROM          GRANT         GRANTS        GROUP         GROUPS        IN
+INF           INSERT        INTO          KEY           KEYS          KILL
+LIMIT         SHOW          MEASUREMENT   MEASUREMENTS  NAME          OFFSET
+ON            ORDER         PASSWORD      POLICY        POLICIES      PRIVILEGES
+QUERIES       QUERY         READ          REPLICATION   RESAMPLE      RETENTION
+REVOKE        SELECT        SERIES        SET           SHARD         SHARDS
+SLIMIT        SOFFSET       STATS         SUBSCRIPTION  SUBSCRIPTIONS TAG
+TO            USER          USERS         VALUES        WHERE         WITH
+WRITE
+</code></pre>
+<p>如果使用了CnosQL的关键字作为标识符，则需要在每次查询中对该标识符加双引号。</p>
+<p>关键字<code>time</code>是一种特殊情况。<code>time</code>可以是连续查询名称、数据库名称、测量名称、保留策略名称、订阅名称和用户名称。在这些情况下，查询中的<code>time</code>不需要双引号。<code>time</code>不能是字段键或标签键；CnosQL拒绝将<code>time</code>作为字段键或标记键的写入，并返回错误。</p>
+<h3 id="文字"><a class="header" href="#文字">文字</a></h3>
+<ul>
+<li>
+<h4 id="整数"><a class="header" href="#整数">整数</a></h4>
+</li>
+</ul>
+<p>CnosQL目前只支持十进制数字，并不支持其他进制数字。</p>
+<pre><code>int_lit             = ( &quot;1&quot; … &quot;9&quot; ) { digit } .
+</code></pre>
+<ul>
+<li>
+<h4 id="浮点数"><a class="header" href="#浮点数">浮点数</a></h4>
+</li>
+</ul>
+<p>CnosQL目前只支持浮点数，并不支持指数。</p>
+<pre><code>float_lit           = int_lit &quot;.&quot; int_lit .
+</code></pre>
+<ul>
+<li>
+<h4 id="字符串"><a class="header" href="#字符串">字符串</a></h4>
+</li>
+</ul>
+<p>字符串必须和单引号搭配使用。如果加上转义字符，那么字符串中可以包含单引号。</p>
+<pre><code>string_lit          = `'` { unicode_char } `'` .
+</code></pre>
+<ul>
+<li>
+<h4 id="持续时间"><a class="header" href="#持续时间">持续时间</a></h4>
+</li>
+</ul>
+<p>持续时间的字面值指定时间长度。整数字面值紧跟着(没有空格)下面列出的持续时间单位被称为持续时间字面值。可以使用混合单元指定持续时间。</p>
+<pre><code>duration_lit        = int_lit duration_unit .
+duration_unit       = &quot;ns&quot; | &quot;u&quot; | &quot;µ&quot; | &quot;ms&quot; | &quot;s&quot; | &quot;m&quot; | &quot;h&quot; | &quot;d&quot; | &quot;w&quot; .
+</code></pre>
+<ul>
+<li>
+<h4 id="日期和时间"><a class="header" href="#日期和时间">日期和时间</a></h4>
+</li>
+</ul>
+<p>与本文档的其余部分一样，EBNF中没有指定日期和时间文本格式。它是使用Go的日期/时间解析格式指定的，它是按照CnosQL要求的格式编写的引用日期。</p>
+<p>参考日期时间为:January 2nd, 2006 at 3:04:05 PM</p>
+<pre><code>time_lit            = &quot;2006-01-02 15:04:05.999999&quot; | &quot;2006-01-02&quot; .
+</code></pre>
+<ul>
+<li>
+<h4 id="布尔值"><a class="header" href="#布尔值">布尔值</a></h4>
+</li>
+</ul>
+<pre><code>bool_lit            = TRUE | FALSE .
+</code></pre>
+<ul>
+<li>
+<h4 id="正则表达式"><a class="header" href="#正则表达式">正则表达式</a></h4>
+</li>
+</ul>
+<pre><code>regex_lit           = &quot;/&quot; { unicode_char } &quot;/&quot; .
+</code></pre>
+<h3 id="查询"><a class="header" href="#查询">查询</a></h3>
+<p>查询由一个或多个以分号分隔的语句组成。</p>
+<pre><code>query               = statement { &quot;;&quot; statement } .
+
+statement           = alter_retention_policy_stmt |
+                      create_continuous_query_stmt |
+                      create_database_stmt |
+                      create_retention_policy_stmt |
+                      create_subscription_stmt |
+                      create_user_stmt |
+                      delete_stmt |
+                      drop_continuous_query_stmt |
+                      drop_database_stmt |
+                      drop_measurement_stmt |
+                      drop_retention_policy_stmt |
+                      drop_series_stmt |
+                      drop_shard_stmt |
+                      drop_subscription_stmt |
+                      drop_user_stmt |
+                      explain_stmt |
+                      explain_analyze_stmt |
+                      grant_stmt |
+                      kill_query_statement |
+                      revoke_stmt |
+                      select_stmt |
+                      show_continuous_queries_stmt |
+                      show_databases_stmt |
+                      show_diagnostics_stmt |
+                      show_field_key_cardinality_stmt |
+                      show_field_keys_stmt |
+                      show_grants_stmt |
+                      show_measurement_cardinality_stmt |
+                      show_measurement_exact_cardinality_stmt |
+                      show_measurements_stmt |
+                      show_queries_stmt |
+                      show_retention_policies_stmt |
+                      show_series_cardinality_stmt |
+                      show_series_exact_cardinality_stmt |
+                      show_series_stmt |
+                      show_shard_groups_stmt |
+                      show_shards_stmt |
+                      show_stats_stmt |
+                      show_subscriptions_stmt |
+                      show_tag_key_cardinality_stmt |
+                      show_tag_key_exact_cardinality_stmt |
+                      show_tag_keys_stmt |
+                      show_tag_values_stmt |
+                      show_tag_values_cardinality_stmt |
+                      show_users_stmt .
+</code></pre>
+<h3 id="语句"><a class="header" href="#语句">语句</a></h3>
+<ul>
+<li>
+<h4 id="改变保留策略"><a class="header" href="#改变保留策略">改变保留策略</a></h4>
+</li>
+</ul>
+<pre><code>alter_retention_policy_stmt  = &quot;ALTER RETENTION POLICY&quot; policy_name on_clause
+                               retention_policy_option
+                               [ retention_policy_option ]
+                               [ retention_policy_option ]
+                               [ retention_policy_option ] .
+</code></pre>
+<ul>
+<li>
+<h4 id="创建连续查询"><a class="header" href="#创建连续查询">创建连续查询</a></h4>
+</li>
+</ul>
+<pre><code>create_continuous_query_stmt = &quot;CREATE CONTINUOUS QUERY&quot; query_name on_clause
+[ &quot;RESAMPLE&quot; resample_opts ]
+&quot;BEGIN&quot; select_stmt &quot;END&quot; .
+
+query_name                   = identifier .
+
+resample_opts                = (every_stmt for_stmt | every_stmt | for_stmt) .
+every_stmt                   = &quot;EVERY&quot; duration_lit
+for_stmt                     = &quot;FOR&quot; duration_lit
+</code></pre>
+<ul>
+<li>
+<h4 id="创建数据库"><a class="header" href="#创建数据库">创建数据库</a></h4>
+</li>
+</ul>
+<pre><code>create_database_stmt = &quot;CREATE DATABASE&quot; db_name
+                       [ WITH
+                           [ retention_policy_duration ]
+                           [ retention_policy_replication ]
+                           [ retention_policy_shard_group_duration ]
+                           [ retention_policy_name ]
+                        ] .
+</code></pre>
+<ul>
+<li>
+<h4 id="创建保留策略"><a class="header" href="#创建保留策略">创建保留策略</a></h4>
+</li>
+</ul>
+<pre><code>create_retention_policy_stmt = &quot;CREATE RETENTION POLICY&quot; policy_name on_clause
+                               retention_policy_duration
+                               retention_policy_replication
+                               [ retention_policy_shard_group_duration ]
+                               [ &quot;DEFAULT&quot; ] .
+</code></pre>
+<ul>
+<li>
+<h4 id="创建用户"><a class="header" href="#创建用户">创建用户</a></h4>
+</li>
+</ul>
+<pre><code>create_user_stmt = &quot;CREATE USER&quot; user_name &quot;WITH PASSWORD&quot; password
+                   [ &quot;WITH ALL PRIVILEGES&quot; ] .
+</code></pre>
+<ul>
+<li>
+<h4 id="删除"><a class="header" href="#删除">删除</a></h4>
+</li>
+</ul>
+<pre><code>e_stmt = &quot;DELETE&quot; ( from_clause | where_clause | from_clause where_clause ) .
+</code></pre>
+<ul>
+<li>
+<h4 id="抛弃连续查询"><a class="header" href="#抛弃连续查询">抛弃连续查询</a></h4>
+</li>
+</ul>
+<pre><code>drop_continuous_query_stmt = &quot;DROP CONTINUOUS QUERY&quot; query_name on_clause .
+</code></pre>
+<ul>
+<li>
+<h4 id="抛弃数据库"><a class="header" href="#抛弃数据库">抛弃数据库</a></h4>
+</li>
+</ul>
+<pre><code>drop_database_stmt = &quot;DROP DATABASE&quot; db_name .
+</code></pre>
+<ul>
+<li>
+<h4 id="抛弃度量"><a class="header" href="#抛弃度量">抛弃度量</a></h4>
+</li>
+</ul>
+<pre><code>drop_measurement_stmt = &quot;DROP MEASUREMENT&quot; measurement .
+</code></pre>
+<ul>
+<li>
+<h4 id="抛弃保留策略"><a class="header" href="#抛弃保留策略">抛弃保留策略</a></h4>
+</li>
+</ul>
+<pre><code>drop_retention_policy_stmt = &quot;DROP RETENTION POLICY&quot; policy_name on_clause .
+</code></pre>
+<ul>
+<li>
+<h4 id="抛弃序列"><a class="header" href="#抛弃序列">抛弃序列</a></h4>
+</li>
+</ul>
+<pre><code>drop_series_stmt = &quot;DROP SERIES&quot; ( from_clause | where_clause | from_clause where_clause ) .
+</code></pre>
+<ul>
+<li>
+<h4 id="抛弃分片"><a class="header" href="#抛弃分片">抛弃分片</a></h4>
+</li>
+</ul>
+<pre><code>drop_shard_stmt = &quot;DROP SHARD&quot; ( shard_id ) .
+</code></pre>
+<ul>
+<li>
+<h4 id="抛弃用户"><a class="header" href="#抛弃用户">抛弃用户</a></h4>
+</li>
+</ul>
+<pre><code>drop_user_stmt = &quot;DROP USER&quot; user_name .
+</code></pre>
+<ul>
+<li>
+<h4 id="explain"><a class="header" href="#explain">EXPLAIN</a></h4>
+</li>
+</ul>
+<pre><code>explain_stmt = &quot;EXPLAIN&quot; select_stmt .
+</code></pre>
+<ul>
+<li>
+<h4 id="explain-analyze"><a class="header" href="#explain-analyze">EXPLAIN ANALYZE</a></h4>
+</li>
+</ul>
+<p>例如</p>
+<pre><code>&gt; explain analyze select mean(temperature) from air where time &gt;= '2018-02-22T00:00:00Z' and time &lt; '2018-02-22T12:00:00Z'
+EXPLAIN ANALYZE
+----    -----------
+ .
+ └── select
+   ├── execution_time: 279.292µs
+   ├── planning_time: 952.75µs
+   ├── total_time: 1.232042ms
+   └── build_cursor
+    ├── labels
+     │   └── statement: SELECT mean(temperature) FROM data.autogen.air
+     └── iterator_scanner
+      └── labels
+       └── expr: mean(temperature)
+</code></pre>
+<p>execution_time: 执行查询所花费的时间，包括读取时间序列数据、在数据流经迭代器时执行操作，以及从迭代器中提取已处理的数据。执行时间不包括将输出序列化为JSON或其他格式所花费的时间。
+planning_time: 显示计划查询所花费的时间量。在CnosDB中规划查询需要许多步骤。根据查询的复杂性，与执行查询相比，计划可能需要更多的工作并消耗更多的CPU和内存资源。例如，执行查询所需的系列键的数量会影响计划查询的速度和所需的内存。
+create_iterator: 表示本地CnosDB实例所做的工作──一组复杂的嵌套迭代器组合在一起，以产生最终的查询输出。
+cursor type：EXPLAIN ANALYZE区分3种游标类型。虽然游标类型具有相同的数据结构和相同的CPU和I/O成本，但每种游标类型的构造原因不同，并在最终输出中分开。
+block types：EXPLAIN ANALYZE分离存储块类型，并报告被解码的块的总数和它们在磁盘上的大小(以字节为单位)。</p>
+<ul>
+<li>
+<h4 id="授权"><a class="header" href="#授权">授权</a></h4>
+</li>
+</ul>
+<pre><code>grant_stmt = &quot;GRANT&quot; privilege [ on_clause ] to_clause .
+</code></pre>
+<ul>
+<li>
+<h4 id="关闭查询"><a class="header" href="#关闭查询">关闭查询</a></h4>
+</li>
+</ul>
+<pre><code>kill_query_statement = &quot;KILL QUERY&quot; query_id .
+</code></pre>
+<ul>
+<li>
+<h4 id="撤销"><a class="header" href="#撤销">撤销</a></h4>
+</li>
+</ul>
+<pre><code>revoke_stmt = &quot;REVOKE&quot; privilege [ on_clause ] &quot;FROM&quot; user_name .
+</code></pre>
+<ul>
+<li>
+<h4 id="选择"><a class="header" href="#选择">选择</a></h4>
+</li>
+</ul>
+<pre><code>select_stmt = &quot;SELECT&quot; fields [ into_clause ] from_clause [ where_clause ]
+         [ group_by_clause ] [ order_by_clause ] [ limit_clause ]
+         [ offset_clause ] [ slimit_clause ] [ soffset_clause ] [ timezone_clause ] .
+</code></pre>
+<ul>
+<li>
+<h4 id="展示基数"><a class="header" href="#展示基数">展示基数</a></h4>
+</li>
+</ul>
+<p>指用于精确估计或计数测量值、序列、标记键、标记键值和字段键的基数的一组命令。SHOW CARDINALITY命令有两种变体:估计的和精确的。估计值使用草图计算，是所有基数大小的安全默认值。准确的值是直接从TSM(时间结构合并树)数据中计算的，但是对于高基数的数据来说，运行这些值是非常昂贵的。除非必要，使用估计的品种。仅当在数据库上启用了时间序列索引(TSI)时，才支持按时间过滤。</p>
+<ul>
+<li>
+<h4 id="show-continuous-queries"><a class="header" href="#show-continuous-queries">SHOW CONTINUOUS QUERIES</a></h4>
+</li>
+</ul>
+<pre><code>show_continuous_queries_stmt = &quot;SHOW CONTINUOUS QUERIES&quot; .
+</code></pre>
+<ul>
+<li>
+<h4 id="show-databases"><a class="header" href="#show-databases">SHOW DATABASES</a></h4>
+</li>
+</ul>
+<pre><code>show_databases_stmt = &quot;SHOW DATABASES&quot; .
+</code></pre>
+<ul>
+<li>
+<h4 id="show-diagnostics"><a class="header" href="#show-diagnostics">SHOW DIAGNOSTICS</a></h4>
+</li>
+</ul>
+<p>示节点信息，如构建信息、正常运行时间、主机名、服务器配置、内存使用和运行时诊断。</p>
+<pre><code>show_diagnostics_stmt = &quot;SHOW DIAGNOSTICS&quot;
+</code></pre>
+<ul>
+<li>
+<h4 id="show-field-key-cardinality"><a class="header" href="#show-field-key-cardinality">SHOW FIELD KEY CARDINALITY</a></h4>
+</li>
+</ul>
+<pre><code>show_field_key_cardinality_stmt = &quot;SHOW FIELD KEY CARDINALITY&quot; [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ]
+
+show_field_key_exact_cardinality_stmt = &quot;SHOW FIELD KEY EXACT CARDINALITY&quot; [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ]
+</code></pre>
+<ul>
+<li>
+<h4 id="show-field-keys"><a class="header" href="#show-field-keys">SHOW FIELD KEYS</a></h4>
+</li>
+</ul>
+<pre><code>show_field_keys_stmt = &quot;SHOW FIELD KEYS&quot; [on_clause] [ from_clause ] .
+</code></pre>
+<ul>
+<li>
+<h4 id="show-grants"><a class="header" href="#show-grants">SHOW GRANTS</a></h4>
+</li>
+</ul>
+<pre><code>show_grants_stmt = &quot;SHOW GRANTS FOR&quot; user_name .
+</code></pre>
+<ul>
+<li>
+<h4 id="show-measurements"><a class="header" href="#show-measurements">SHOW MEASUREMENTS</a></h4>
+</li>
+</ul>
+<pre><code>show_measurements_stmt = &quot;SHOW MEASUREMENTS&quot; [on_clause] [ with_measurement_clause ] [ where_clause ] [ limit_clause ] [ offset_clause ] .
+</code></pre>
+<ul>
+<li>
+<h4 id="show-queries"><a class="header" href="#show-queries">SHOW QUERIES</a></h4>
+</li>
+</ul>
+<pre><code>show_queries_stmt = &quot;SHOW QUERIES&quot; .
+</code></pre>
+<ul>
+<li>
+<h4 id="show-retention-policies"><a class="header" href="#show-retention-policies">SHOW RETENTION POLICIES</a></h4>
+</li>
+</ul>
+<pre><code>show_retention_policies_stmt = &quot;SHOW RETENTION POLICIES&quot; [on_clause] .
+</code></pre>
+<ul>
+<li>
+<h4 id="show-series"><a class="header" href="#show-series">SHOW SERIES</a></h4>
+</li>
+</ul>
+<pre><code>show_series_stmt = &quot;SHOW SERIES&quot; [on_clause] [ from_clause ] [ where_clause ] [ limit_clause ] [ offset_clause ] .
+</code></pre>
+<ul>
+<li>
+<h4 id="show-series-cardinality"><a class="header" href="#show-series-cardinality">SHOW SERIES CARDINALITY</a></h4>
+</li>
+</ul>
+<pre><code>show_series_cardinality_stmt = &quot;SHOW SERIES CARDINALITY&quot; [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ]
+
+show_series_exact_cardinality_stmt = &quot;SHOW SERIES EXACT CARDINALITY&quot; [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ]
+
+</code></pre>
+<ul>
+<li>
+<h4 id="show-shard-groups"><a class="header" href="#show-shard-groups">SHOW SHARD GROUPS</a></h4>
+</li>
+</ul>
+<pre><code>show_shard_groups_stmt = &quot;SHOW SHARD GROUPS&quot; .
+</code></pre>
+<ul>
+<li>
+<h4 id="show-shards"><a class="header" href="#show-shards">SHOW SHARDS</a></h4>
+</li>
+</ul>
+<pre><code>show_shards_stmt = &quot;SHOW SHARDS&quot; .
+</code></pre>
+<ul>
+<li>
+<h4 id="show-stats"><a class="header" href="#show-stats">SHOW STATS</a></h4>
+</li>
+</ul>
+<pre><code>show_stats_stmt = &quot;SHOW STATS [ FOR '&lt;component&gt;' | 'indexes' ]&quot;
+</code></pre>
+<ul>
+<li>
+<h4 id="show-tag-keys"><a class="header" href="#show-tag-keys">SHOW TAG KEYS</a></h4>
+</li>
+</ul>
+<pre><code>show_tag_keys_stmt = &quot;SHOW TAG KEYS&quot; [on_clause] [ from_clause ] [ where_clause ]
+                [ limit_clause ] [ offset_clause ] .
+</code></pre>
+<ul>
+<li>
+<h4 id="show-tag-values"><a class="header" href="#show-tag-values">SHOW TAG VALUES</a></h4>
+</li>
+</ul>
+<pre><code>show_tag_values_stmt = &quot;SHOW TAG VALUES&quot; [on_clause] [ from_clause ] with_tag_clause [ where_clause ]
+                  [ limit_clause ] [ offset_clause ] .
+</code></pre>
+<ul>
+<li>
+<h4 id="show-tag-values-cardinality"><a class="header" href="#show-tag-values-cardinality">SHOW TAG VALUES CARDINALITY</a></h4>
+</li>
+</ul>
+<pre><code>show_tag_values_cardinality_stmt = &quot;SHOW TAG VALUES CARDINALITY&quot; [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ] with_key_clause
+
+show_tag_values_exact_cardinality_stmt = &quot;SHOW TAG VALUES EXACT CARDINALITY&quot; [ on_clause ] [ from_clause ] [ where_clause ] [ group_by_clause ] [ limit_clause ] [ offset_clause ] with_key_clause
+</code></pre>
+<ul>
+<li>
+<h4 id="show-users"><a class="header" href="#show-users">SHOW USERS</a></h4>
+</li>
+</ul>
+<pre><code>show_users_stmt = &quot;SHOW USERS&quot; .
+</code></pre>
+<h3 id="条款"><a class="header" href="#条款">条款</a></h3>
+<pre><code>from_clause     = &quot;FROM&quot; measurements .
+
+group_by_clause = &quot;GROUP BY&quot; dimensions fill(fill_option).
+
+into_clause     = &quot;INTO&quot; ( measurement | back_ref ).
+
+limit_clause    = &quot;LIMIT&quot; int_lit .
+
+offset_clause   = &quot;OFFSET&quot; int_lit .
+
+slimit_clause   = &quot;SLIMIT&quot; int_lit .
+
+soffset_clause  = &quot;SOFFSET&quot; int_lit .
+
+timezone_clause = tz(string_lit) .
+
+on_clause       = &quot;ON&quot; db_name .
+
+order_by_clause = &quot;ORDER BY&quot; sort_fields .
+
+to_clause       = &quot;TO&quot; user_name .
+
+where_clause    = &quot;WHERE&quot; expr .
+
+with_measurement_clause = &quot;WITH MEASUREMENT&quot; ( &quot;=&quot; measurement | &quot;=~&quot; regex_lit ) .
+
+with_tag_clause = &quot;WITH KEY&quot; ( &quot;=&quot; tag_key | &quot;!=&quot; tag_key | &quot;=~&quot; regex_lit | &quot;IN (&quot; tag_keys &quot;)&quot;  ) .
+</code></pre>
+<h3 id="表达式"><a class="header" href="#表达式">表达式</a></h3>
+<pre><code class="language-SQL">binary_op        = &quot;+&quot; | &quot;-&quot; | &quot;*&quot; | &quot;/&quot; | &quot;%&quot; | &quot;&amp;&quot; | &quot;|&quot; | &quot;^&quot; | &quot;AND&quot; |
+                &quot;OR&quot; | &quot;=&quot; | &quot;!=&quot; | &quot;&lt;&gt;&quot; | &quot;&lt;&quot; | &quot;&lt;=&quot; | &quot;&gt;&quot; | &quot;&gt;=&quot; .
+
+expr             = unary_expr { binary_op unary_expr } .
+
+unary_expr       = &quot;(&quot; expr &quot;)&quot; | var_ref | time_lit | string_lit | int_lit |
+float_lit | bool_lit | duration_lit | regex_lit .
+</code></pre>
+<h3 id="其他"><a class="header" href="#其他">其他</a></h3>
+<pre><code>alias            = &quot;AS&quot; identifier .
+
+back_ref         = ( policy_name &quot;.:MEASUREMENT&quot; ) |
+( db_name &quot;.&quot; [ policy_name ] &quot;.:MEASUREMENT&quot; ) .
+
+db_name          = identifier .
+
+dimension        = expr .
+
+dimensions       = dimension { &quot;,&quot; dimension } .
+
+field_key        = identifier .
+
+field            = expr [ alias ] .
+
+fields           = field { &quot;,&quot; field } .
+
+fill_option      = &quot;null&quot; | &quot;none&quot; | &quot;previous&quot; | int_lit | float_lit | &quot;linear&quot; .
+
+host             = string_lit .
+
+measurement      = measurement_name |
+( policy_name &quot;.&quot; measurement_name ) |
+( db_name &quot;.&quot; [ policy_name ] &quot;.&quot; measurement_name ) .
+
+measurements     = measurement { &quot;,&quot; measurement } .
+
+measurement_name = identifier | regex_lit .
+
+password         = string_lit .
+
+policy_name      = identifier .
+
+privilege        = &quot;ALL&quot; [ &quot;PRIVILEGES&quot; ] | &quot;READ&quot; | &quot;WRITE&quot; .
+
+query_id         = int_lit .
+
+query_name       = identifier .
+
+retention_policy = identifier .
+
+retention_policy_option      = retention_policy_duration |
+retention_policy_replication |
+retention_policy_shard_group_duration |
+&quot;DEFAULT&quot; .
+
+retention_policy_duration    = &quot;DURATION&quot; duration_lit .
+
+retention_policy_replication = &quot;REPLICATION&quot; int_lit .
+
+retention_policy_shard_group_duration = &quot;SHARD DURATION&quot; duration_lit .
+
+retention_policy_name = &quot;NAME&quot; identifier .
+
+series_id        = int_lit .
+
+shard_id         = int_lit .
+
+sort_field       = field_key [ ASC | DESC ] .
+
+sort_fields      = sort_field { &quot;,&quot; sort_field } .
+
+subscription_name = identifier .
+
+tag_key          = identifier .
+
+tag_keys         = tag_key { &quot;,&quot; tag_key } .
+
+user_name        = identifier .
+
+var_ref          = measurement .
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../../../content/cnosdb/latest/cnosql/math_operators.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../../../../content/cnosdb/latest/other/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../../../content/cnosdb/latest/cnosql/math_operators.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../../../../content/cnosdb/latest/other/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../../../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

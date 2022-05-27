@@ -1,0 +1,394 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>CnosDB配置 - CnosDB</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../../../favicon.svg">
+        <link rel="shortcut icon" href="../../../../favicon.png">
+        <link rel="stylesheet" href="../../../../css/variables.css">
+        <link rel="stylesheet" href="../../../../css/general.css">
+        <link rel="stylesheet" href="../../../../css/chrome.css">
+        <link rel="stylesheet" href="../../../../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../../../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../../../highlight.css">
+        <link rel="stylesheet" href="../../../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/about.html"><strong aria-hidden="true">1.</strong> 关于CnosDB</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/index.html"><strong aria-hidden="true">2.</strong> 快速上手</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/install.html"><strong aria-hidden="true">2.1.</strong> 下载与安装</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/cnosdb-cli.html"><strong aria-hidden="true">2.2.</strong> 命令行终端</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/introduction/quick-start.html"><strong aria-hidden="true">2.3.</strong> 快速开始</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/index.html"><strong aria-hidden="true">3.</strong> 应用编程接口</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/line_protocol.html"><strong aria-hidden="true">3.1.</strong> CnosDB Line Protocol</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/write_api.html"><strong aria-hidden="true">3.2.</strong> CnosDB Write API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/query_api.html"><strong aria-hidden="true">3.3.</strong> CnosDB Query API</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/prometheus.html"><strong aria-hidden="true">3.4.</strong> Prometheus</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/protocol/goland.html"><strong aria-hidden="true">3.5.</strong> Golang</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/index.html"><strong aria-hidden="true">4.</strong> 运维管理</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/export_import.html"><strong aria-hidden="true">4.1.</strong> 导入和导出</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/backup_restore.html"><strong aria-hidden="true">4.2.</strong> 备份和还原</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/managerment/configuration.html" class="active"><strong aria-hidden="true">4.3.</strong> CnosDB配置</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/sandboxmanagement.html"><strong aria-hidden="true">4.4.</strong> 集群管理</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/index.html"><strong aria-hidden="true">4.5.</strong> 运维工具介绍</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb.html"><strong aria-hidden="true">4.5.1.</strong> cnosdb</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-cli.html"><strong aria-hidden="true">4.5.2.</strong> cnosdb-cli</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosdb_tools/cnosdb-inspect.html"><strong aria-hidden="true">4.5.3.</strong> cnosdb-inspect</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/index.html"><strong aria-hidden="true">5.</strong> 语法参考手册</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_sample.html"><strong aria-hidden="true">5.1.</strong> 示例数据</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_syntax.html"><strong aria-hidden="true">5.2.</strong> 数据查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_management.html"><strong aria-hidden="true">5.3.</strong> 数据库管理和模式查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_function.html"><strong aria-hidden="true">5.4.</strong> 函数</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/continuous_queries.html"><strong aria-hidden="true">5.5.</strong> 连续查询</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/math_operators.html"><strong aria-hidden="true">5.6.</strong> 数学运算符</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/cnosql/cnosql_spect.html"><strong aria-hidden="true">5.7.</strong> 语法约定</a></li></ol></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/other/index.html"><strong aria-hidden="true">6.</strong> 其他</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/other/version_manager.html"><strong aria-hidden="true">6.1.</strong> 发行版本说明</a></li><li class="chapter-item expanded "><a href="../../../../content/cnosdb/latest/other/tsdb-comparisions.html"><strong aria-hidden="true">6.2.</strong> CnosDB性能比较</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CnosDB</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="cnosdb配置"><a class="header" href="#cnosdb配置">CnosDB配置</a></h1>
+<h3 id="配置概述"><a class="header" href="#配置概述">配置概述</a></h3>
+<p>通过配置文件(<code>cnosdb.conf</code>)和环境变量配置CnosDB。如果不取消注释配置选项，系统将使用其默认设置。本文档中的配置均为系统默认配置。</p>
+<h3 id="环境变量"><a class="header" href="#环境变量">环境变量</a></h3>
+<p>配置文件中的所有配置设置可以在配置文件中指定，也可以在环境变量中指定。环境变量覆盖配置文件中的等效选项。如果配置文件或环境变量中没有指定配置选项，则CnosDB使用其内部默认配置。</p>
+<h3 id="使用配置文件"><a class="header" href="#使用配置文件">使用配置文件</a></h3>
+<p>CnosDB系统对配置文件中的所有设置都有内部默认值。如果需要查看默认配置，使用命令cnosdb config。</p>
+<p>本地CnosDB配置文件位于这里:
+- Linux: /etc/cnosdb/cnosdb.conf
+- macOS: /usr/local/etc/cnosdb.conf</p>
+<p>注释掉的设置设置为系统内部默认值。未加注释的设置覆盖内部默认值。注意，本地配置文件不需要包含每个配置设置。</p>
+<p>使用<code>--config</code>指令将配置文件导入CnosDB</p>
+<p><code>cnosdb --config /etc/cnosdb/cnosdb.conf</code></p>
+<p>将环境变量CNOSDB_CONFIG_PATH设置为配置文件的路径，并启动进程。例如:</p>
+<pre><code>echo $CNOSDB_CONFIG_PATH
+/etc/cnosdb/cnosdb.conf
+
+cnosdb
+</code></pre>
+<h3 id="全局配置"><a class="header" href="#全局配置">全局配置</a></h3>
+<h4 id="bind-address--1270018088"><a class="header" href="#bind-address--1270018088">bind-address = &quot;127.0.0.1:8088&quot;</a></h4>
+<p>用于备份和恢复的RPC服务的绑定地址。环境变量为：<code>CNOSDB_BIND_ADDRESS</code></p>
+<h4 id="cluster--true"><a class="header" href="#cluster--true">cluster = true</a></h4>
+<p>是否开启集群模式；true：开启，false：关闭 </p>
+<h3 id="port"><a class="header" href="#port">Port</a></h3>
+<h4 id="可用端口"><a class="header" href="#可用端口">可用端口：</a></h4>
+<p><code>8086</code>：提供cnosdb http服务的默认端口</p>
+<p><code>8088</code>：提供cnosdb 内部RPC服务以及备份恢复的默认端口</p>
+<h3 id="meta-元信息"><a class="header" href="#meta-元信息">[Meta]-元信息</a></h3>
+<h4 id="dir--varlibcnosdbmeta"><a class="header" href="#dir--varlibcnosdbmeta">dir = &quot;/var/lib/cnosdb/meta&quot;</a></h4>
+<p>元数据/raft数据库所在的目录。meta目录中的文件包括meta.db、CnosDB metastore文件。环境变量为:<code>CNOSDB_META_DIR</code></p>
+<h4 id="retention-autocreate--true"><a class="header" href="#retention-autocreate--true">retention-autocreate = true</a></h4>
+<p>启用此设置，在创建数据库时自动创建DEFAULT保留策略autogen。保留策略autogen具有无限的持续时间，也被设置为数据库的DEFAULT保留策略，当写入或查询没有指定保留策略时使用该保留策略。禁用此设置，可以防止在创建数据库时创建此保留策略。环境变量:<code>CNOSDB_META_RETENTION_AUTOCREATE</code></p>
+<h4 id="logging-enabled--true"><a class="header" href="#logging-enabled--true">logging-enabled = true</a></h4>
+<p>启用记录来自元服务的消息。 环境变量:<code>CNOSDB_META_LOGGING_ENABLED</code></p>
+<h3 id="data-数据相关"><a class="header" href="#data-数据相关">[Data]-数据相关</a></h3>
+<h4 id="dir--varlibcnosdbdata"><a class="header" href="#dir--varlibcnosdbdata">dir = &quot;/var/lib/cnosdb/data&quot;</a></h4>
+<p>TSM引擎存储TSM文件的CnosDB目录。该目录可以被修改。环境变量:CNOSDB_DATA_DIR</p>
+<h4 id="wal-dir--varlibcnosdbwal"><a class="header" href="#wal-dir--varlibcnosdbwal">wal-dir = &quot;/var/lib/cnosdb/wal&quot;</a></h4>
+<p>存放预写日志(WAL)文件的目录位置。 环境变量:CNOSDB_DATA_WAL_DIR</p>
+<h4 id="wal-fsync-delay--0s"><a class="header" href="#wal-fsync-delay--0s">wal-fsync-delay = &quot;0s&quot;</a></h4>
+<p>同步之前写操作等待的时间。使用大于0的持续时间批量处理多个fsync调用。这对于较慢的磁盘或遇到WAL写争用时非常有用。0的默认值为每次写入WAL时同步。环境变量:<code>CNOSDB_DATA_WAL_FSYNC_DELAY</code></p>
+<h4 id="index-version--inmem"><a class="header" href="#index-version--inmem">index-version = &quot;inmem&quot;</a></h4>
+<p><code>tsi1. </code>用于新分片的分片索引类型。默认的(<code>inmem</code>)索引是在启动时重新创建的内存索引。如果需要启用基于磁盘的TSI (Time Series Index)索引，请将该值设置为<code>tsi1</code>。环境变量:<code>CNOSDB_DATA_INDEX_VERSION</code></p>
+<h4 id="trace-logging-enabled--false"><a class="header" href="#trace-logging-enabled--false">trace-logging-enabled = false</a></h4>
+<p>在TSM引擎和WAL中启用附加调试信息的详细日志记录。跟踪日志为调试TSM引擎问题提供了更有用的输出。 环境变量:<code>CNOSDB_DATA_TRACE_LOGGING_ENABLED</code></p>
+<h4 id="query-log-enabled--true"><a class="header" href="#query-log-enabled--true">query-log-enabled = true</a></h4>
+<p>在执行之前启用解析查询的日志记录。查询日志对于故障排除很有用，但会记录查询中包含的任何敏感数据。 环境变量:<code>CNOSDB_DATA_QUERY_LOG_ENABLED</code></p>
+<h4 id="validate-keys--false"><a class="header" href="#validate-keys--false">validate-keys = false</a></h4>
+<p>验证传入的写入以确保键只有有效的Unicode字符。这个设置将产生一个小开销，因为必须检查每个键。</p>
+<h4 id="cache-max-memory-size--1g"><a class="header" href="#cache-max-memory-size--1g">cache-max-memory-size = &quot;1g&quot;</a></h4>
+<p>分片缓存在开始拒绝写操作之前所能达到的最大大小。有效的内存大小后缀是:k、m或g。没有大小后缀的值以字节为单位。环境变量:<code>CNOSDB_DATA_CACHE_MAX_MEMORY_SIZE</code></p>
+<h4 id="cache-snapshot-memory-size--25m"><a class="header" href="#cache-snapshot-memory-size--25m">cache-snapshot-memory-size = &quot;25m&quot;</a></h4>
+<p>引擎快照缓存并将其写入TSM文件的大小，以释放内存。有效的内存大小后缀是:k、m或g。没有大小后缀的值以字节为单位。环境变量:<code>CNOSDB_DATA_CACHE_SNAPSHOT_MEMORY_SIZE</code></p>
+<h4 id="cache-snapshot-write-cold-duration--10m"><a class="header" href="#cache-snapshot-write-cold-duration--10m">cache-snapshot-write-cold-duration = &quot;10m&quot;</a></h4>
+<p>如果分片还没有收到写或删除，引擎将快照缓存并将其写入新的TSM文件的时间间隔。环境变量:<code>CNOSDB_DATA_CACHE_SNAPSHOT_WRITE_COLD_DURATION</code></p>
+<h4 id="compact-full-write-cold-duration--4h"><a class="header" href="#compact-full-write-cold-duration--4h">compact-full-write-cold-duration = &quot;4h&quot;</a></h4>
+<p>如果没有收到写或删除，TSM引擎将在一个分片中压缩所有TSM文件的时间间隔。环境变量:<code>CNOSDB_DATA_COMPACT_FULL_WRITE_COLD_DURATION</code></p>
+<h4 id="max-concurrent-compactions--0"><a class="header" href="#max-concurrent-compactions--0">max-concurrent-compactions = 0</a></h4>
+<p>一次可以运行的并发全量和级别压缩的最大数目。默认值0会导致运行时将50%的CPU内核用于压缩。如果显式设置，则用于压缩的内核数量将被限制为指定的值。该设置不适用于缓存快照。环境变量:<code>CNOSDB_DATA_MAX_CONCURRENT_COMPACTIONS</code></p>
+<h4 id="compact-throughput--48m"><a class="header" href="#compact-throughput--48m">compact-throughput = &quot;48m&quot;</a></h4>
+<p>允许TSM压缩写入磁盘的速率限制(以每秒字节为单位)。请注意，允许短突发以一个可能更大的值发生，该值由<code>compact-throughput-burst</code>设置。环境变量:<code>CNOSDB_DATA_COMPACT_THROUGHPUT</code></p>
+<h4 id="compact-throughput-burst--48m"><a class="header" href="#compact-throughput-burst--48m">compact-throughput-burst = &quot;48m&quot;</a></h4>
+<p>允许TSM压缩写入磁盘的速率限制(以每秒字节为单位)。环境变量:<code>CNOSDB_DATA_COMPACT_THROUGHPUT_BURST</code></p>
+<h4 id="tsm-use-madv-willneed--false"><a class="header" href="#tsm-use-madv-willneed--false">tsm-use-madv-willneed = false</a></h4>
+<p>如果为<code>true</code>，那么MMap Advise值<code>MADV_WILLNEED</code>就输入/输出分页方面向内核建议如何处理映射内存区域，以及如何期望在不久的将来访问映射内存区域(与TSM文件有关)。因为这个设置在一些内核(包括CentOS和RHEL)上有问题，所以默认值是<code>false</code>。在某些情况下，将该值更改为<code>true</code>可能对磁盘速度较慢的用户有所帮助。环境变量:<code>CNOSDB_DATA_TSM_USE_MADV_WILLNEED</code></p>
+<h4 id="max-series-per-database--1000000"><a class="header" href="#max-series-per-database--1000000">max-series-per-database = 1000000</a></h4>
+<p>在删除写操作之前，每个数据库允许的最大序列数。默认设置为1000000(100万)。将该设置更改为0，以允许每个数据库无限数量的序列。如果某个点导致数据库中序列的数量超过max-series-per-database，则CnosDB将不会写入该点，并返回500，并出现以下错误:</p>
+<p><code>{&quot;error&quot;:&quot;max series per database exceeded: &lt;series&gt;&quot;}</code></p>
+<p>环境变量:<code>CNOSDB_DATA_MAX_SERIES_PER_DATABASE</code></p>
+<h4 id="max-values-per-tag--100000"><a class="header" href="#max-values-per-tag--100000">max-values-per-tag = 100000</a></h4>
+<p>每个标记键允许的标记值的最大数目。缺省值为100000(100,000)。将设置更改为0，以允许每个标记键的标记值数量不限。如果标记值导致标记键的标记值数量超过<code>max-values-per-tag</code>，则CnosDB将不写入该点，并返回部分写入错误。</p>
+<p>任何标签值超过<code>max-values-per-tag</code>的现有标签键将继续接受写操作，但创建新标签值的写操作将失败。</p>
+<p>环境变量:<code>CNOSDB_DATA_MAX_VALUES_PER_TAG</code></p>
+<h4 id="max-index-log-file-size--1m"><a class="header" href="#max-index-log-file-size--1m">max-index-log-file-size = &quot;1m&quot;</a></h4>
+<p>当索引预写日志(WAL)文件压缩为索引文件时，以字节为单位的阈值。阈值较低将导致日志文件被更快地压缩，并以写吞吐量为代价减少堆的使用。阈值较高将导致日志文件更少地被压缩，在内存中存储更多的系列，并提供更高的写吞吐量。有效的大小后缀是k、m或g(不区分大小写，1024 = 1k)。没有大小后缀的值以字节为单位。环境变量:<code>CNOSDB_DATA_MAX_INDEX_LOG_FILE_SIZE</code></p>
+<h4 id="series-id-set-cache-size--100"><a class="header" href="#series-id-set-cache-size--100">series-id-set-cache-size = 100</a></h4>
+<p>指定要为TSI索引缓存的系列ID集的数量(默认为100)。集合中的系列id指的是在同一个索引谓词(标记过滤器)上匹配的序列。序列ID集是一个LRU缓存，所以一旦缓存满了，最近最少使用的集就会被驱逐。缓存的结果可以快速返回，因为当执行带有匹配标记过滤器的后续查询时，它们不需要重新计算。</p>
+<p>我们建议使用默认设置。将此值更改为0将禁用缓存，这可能会导致查询性能问题。只有当您知道数据库的所有度量的标记键值大于100时，才会增加这个值。增加缓存大小可能会导致堆使用的增加。</p>
+<p>环境变量:<code>CNOSDB_DATA_SERIES_ID_SET_CACHE_SIZE</code></p>
+<h3 id="coordinator-查询管理"><a class="header" href="#coordinator-查询管理">[Coordinator]-查询管理</a></h3>
+<h4 id="write-timeout--10s"><a class="header" href="#write-timeout--10s">write-timeout = &quot;10s&quot;</a></h4>
+<p>写请求等待的时间，直到一个“超时”错误返回给调用者。默认值是10秒。环境变量:<code>CNOSDB_COORDINATOR_WRITE_TIMEOUT</code></p>
+<h4 id="max-concurrent-queries--0"><a class="header" href="#max-concurrent-queries--0">max-concurrent-queries = 0</a></h4>
+<p>在您的实例上允许运行查询的最大数量。默认设置(0)允许无限次查询。环境变量:<code>CNOSDB_COORDINATOR_MAX_CONCURRENT_QUERIES</code></p>
+<h4 id="query-timeout--0s"><a class="header" href="#query-timeout--0s">query-timeout = &quot;0s&quot;</a></h4>
+<p>在CnosDB终止查询之前，允许执行查询的最大持续时间。默认设置(0)允许查询在没有时间限制的情况下运行。此设置是一个持续时间。环境变量:<code>CNOSDB_COORDINATOR_QUERY_TIMEOUT</code></p>
+<h4 id="log-queries-after--0s"><a class="header" href="#log-queries-after--0s">log-queries-after = &quot;0s&quot;</a></h4>
+<p>在CnosDB用检测到的慢速查询消息记录查询之前，查询所能持续的最长时间。默认设置(“0”)将永远不会告诉CnosDB记录查询。此设置是一个持续时间。环境变量:<code>CNOSDB_COORDINATOR_LOG_QUERIES_AFTER</code></p>
+<h4 id="max-select-point--0"><a class="header" href="#max-select-point--0">max-select-point = 0</a></h4>
+<p>一个SELECT语句可以处理的最大点数。默认设置(0)允许SELECT语句处理无限数量的点。环境变量:<code>CNOSDB_COORDINATOR_MAX_SELECT_POINT</code></p>
+<h3 id="max-select-series--0"><a class="header" href="#max-select-series--0">max-select-series = 0</a></h3>
+<p>一个SELECT语句可以处理的最大序列数。默认设置(0)允许SELECT语句处理无限数量的序列。环境变量:<code>CNOSDB_COORDINATOR_MAX_SELECT_SERIES</code></p>
+<h4 id="max-select-buckets--0"><a class="header" href="#max-select-buckets--0">max-select-buckets = 0</a></h4>
+<p>一个查询可以处理的GROUP BY time()桶的最大数量。默认设置(0)允许查询处理无限数量的桶。 环境变量:<code>CNOSDB_COORDINATOR_MAX_SELECT_BUCKETS</code></p>
+<h3 id="retentionpolicy-保留策略"><a class="header" href="#retentionpolicy-保留策略">[RetentionPolicy]-保留策略</a></h3>
+<h4 id="enabled--true"><a class="header" href="#enabled--true">enabled = true</a></h4>
+<p>设置为<code>false</code>可防止CnosDB强制执行保留策略。环境变量：<code>CNOSDB_RETENTION_ENABLED</code></p>
+<h4 id="check-interval--30m0s"><a class="header" href="#check-interval--30m0s">check-interval = &quot;30m0s&quot;</a></h4>
+<p>CnosDB检查以强制执行保留策略的时间间隔。环境变量:<code>CNOSDB_RETENTION_CHECK_INTERVAL</code></p>
+<h3 id="precreator-分片"><a class="header" href="#precreator-分片">[Precreator]-分片</a></h3>
+<h4 id="enabled--true-1"><a class="header" href="#enabled--true-1">enabled = true</a></h4>
+<p>判断是否开启分片预创建服务。环境变量:<code>CNOSDB_SHARD_PRECREATION_ENABLED</code></p>
+<h4 id="check-interval--10m"><a class="header" href="#check-interval--10m">check-interval = &quot;10m&quot;</a></h4>
+<p>运行预创建新分片检查的时间间隔。环境变量:<code>CNOSDB_SHARD_PRECREATION_CHECK_INTERVAL</code></p>
+<h4 id="advance-period--30m"><a class="header" href="#advance-period--30m">advance-period = &quot;30m&quot;</a></h4>
+<p>未来CnosDB预先创建分片的最长时间。30m的默认值应该适用于大多数系统。在未来将此设置增加得太久可能会导致效率低下。环境变量:<code>CNOSDB_SHARD_PRECREATION_ADVANCE_PERIOD</code></p>
+<h3 id="monitor-监控"><a class="header" href="#monitor-监控">[Monitor]-监控</a></h3>
+<p>默认情况下，CnosDB将数据写入_internal数据库。如果该数据库不存在，则CnosDB自动创建它。_internal数据库的默认保留策略是7天。如果需要使用7天保留策略以外的其他策略，必须先创建该策略。</p>
+<h4 id="store-enabled--true"><a class="header" href="#store-enabled--true">store-enabled = true</a></h4>
+<p>设置为<code>false</code>在内部禁用记录统计。如果设置为<code>false</code>，它将大大增加诊断安装问题的难度。环境变量:<code>CNOSDB_MONITOR_STORE_ENABLED</code></p>
+<h4 id="store-database--_internal"><a class="header" href="#store-database--_internal">store-database = &quot;_internal&quot;</a></h4>
+<p>用于记录统计信息的目标数据库。环境变量:<code>CNOSDB_MONITOR_STORE_DATABASE</code></p>
+<h4 id="store-interval--10s"><a class="header" href="#store-interval--10s">store-interval = &quot;10s&quot;</a></h4>
+<p>CnosDB记录统计信息的时间间隔。默认值是每10秒一次。环境变量:<code>CNOSDB_MONITOR_STORE_INTERVAL</code></p>
+<h3 id="httpd-http端点"><a class="header" href="#httpd-http端点">[HTTPD]-HTTP端点</a></h3>
+<p>[http]部分设置控制CnosDB如何配置http端点。这些是进出CnosDB的主要机制。编辑此部分中的设置以启用HTTPS和身份验证。</p>
+<h4 id="enabled--true-2"><a class="header" href="#enabled--true-2">enabled = true</a></h4>
+<p>确定是否启用HTTP端点。如果要禁用对HTTP端点的访问，请将该值设置为false。请注意，CnosDB命令行接口(CLI)使用CnosDB API连接到数据库。环境变量:<code>CNOSDB_HTTP_ENABLED</code></p>
+<h4 id="bind-address--8086"><a class="header" href="#bind-address--8086">bind-address = &quot;:8086&quot;</a></h4>
+<p>HTTP服务使用的绑定地址(端口)。环境变量:<code>CNOSDB_HTTP_BIND_ADDRESS</code></p>
+<h4 id="auth-enabled--false"><a class="header" href="#auth-enabled--false">auth-enabled = false</a></h4>
+<p>确定是否通过HTTP和HTTPS启用用户认证。如果需要身份验证，请将该值设置为<code>true</code>。环境变量:<code>CNOSDB_HTTP_AUTH_ENABLED</code></p>
+<h4 id="log-enabled--true"><a class="header" href="#log-enabled--true">log-enabled = true</a></h4>
+<p>确定是否启用HTTP请求日志记录。若要禁用日志记录，请将该值设置为<code>false</code>。环境变量:<code>CNOSDB_HTTP_LOG_ENABLED</code></p>
+<h4 id="suppress-write-log--false"><a class="header" href="#suppress-write-log--false">suppress-write-log = false</a></h4>
+<p>确定启用日志时是否应该抑制HTTP写请求日志。</p>
+<h4 id="access-log-path-"><a class="header" href="#access-log-path-">access-log-path = &quot;&quot;</a></h4>
+<p>访问日志的路径，它决定是否使用<code>log-enabled = true</code>启用详细的写日志记录。指定启用时是否将HTTP请求日志写入指定的路径。如果cnosdb无法访问指定的路径，它将记录错误并退回到stderr。当启用HTTP请求日志记录时，此选项指定应该写入日志条目的路径。如果未指定，默认值是写入stderr，这会将HTTP日志与内部的CnosDB日志混合在一起。如果cnosdb无法访问指定的路径，它将记录一个错误，并退回到将请求日志写入stderr。环境变量:<code>CNOSDB_HTTP_ACCESS_LOG_PATH</code></p>
+<h4 id="access-log-status-filters--"><a class="header" href="#access-log-status-filters--">access-log-status-filters = []</a></h4>
+<p>筛选应该记录的请求。每个过滤器的模式为nnn、nnx或nxx，其中n是一个数字，x是任何数字的通配符。要过滤所有5xx响应，请使用字符串5xx。如果使用多个过滤器，则只需要匹配一个。默认值是没有过滤器，每个请求都会被打印出来。环境变量:<code>CNOSDB_HTTP_ACCESS_LOG_STATUS_FILTERS_x</code></p>
+<h4 id="write-tracing--false"><a class="header" href="#write-tracing--false">write-tracing = false</a></h4>
+<p>确定是否启用详细的写日志记录。设置为<code>true</code>为写负载启用日志记录。如果设置为<code>true</code>，这将复制日志中的每个写语句，因此不建议在一般情况下使用。环境变量:<code>CNOSDB_HTTP_WRITE_TRACING</code></p>
+<h4 id="pprof-enabled--true"><a class="header" href="#pprof-enabled--true">pprof-enabled = true</a></h4>
+<p>确定是否启用/net/http/pprof HTTP端点。用于故障排除和监视。环境变量:<code>CNOSDB_HTTP_PPROF_ENABLED</code></p>
+<h4 id="pprof-auth-enabled--false"><a class="header" href="#pprof-auth-enabled--false">pprof-auth-enabled = false</a></h4>
+<pre><code>- /debug/pprof
+- /debug/requests
+- /debug/vars
+</code></pre>
+<p>如果<code>auth-enabled</code>或<code>pprofessor -enabled</code>设置为<code>false</code>，则此设置无效。环境变量:<code>CNOSDB_HTTP_PPROF_AUTH_ENABLED</code></p>
+<h4 id="debug-pprof-enabled--false"><a class="header" href="#debug-pprof-enabled--false">debug-pprof-enabled = false</a></h4>
+<p>启用默认<code>/pprof</code>端点并绑定到<code>localhost:6060</code>。用于调试启动性能问题。环境变量:<code>CNOSDB_HTTP_DEBUG_PPROF_ENABLED</code></p>
+<h4 id="ping-auth-enabled--false"><a class="header" href="#ping-auth-enabled--false">ping-auth-enabled = false</a></h4>
+<p>启用<code>/ping</code>、<code>/metrics</code>和<code>/status</code>端点的身份验证。如果<code>auth-enabled</code>设置为<code>false</code>，则此设置无效。环境变量:<code>CNOSDB_HTTP_PING_AUTH_ENABLED</code></p>
+<h4 id="https-enabled--false"><a class="header" href="#https-enabled--false">https-enabled = false</a></h4>
+<p>HTTPS是否启用。如果启用HTTPS协议，请将该值设置为<code>true</code>。环境变量:<code>CNOSDB_HTTP_HTTPS_ENABLED</code></p>
+<h4 id="https-certificate--etcsslcnosdbpem"><a class="header" href="#https-certificate--etcsslcnosdbpem">https-certificate = &quot;/etc/ssl/cnosdb.pem&quot;</a></h4>
+<p>启用HTTPS时使用的SSL证书文件的路径。环境变量:<code>CNOSDB_HTTP_HTTPS_CERTIFICATE</code></p>
+<h4 id="https-private-key-"><a class="header" href="#https-private-key-">https-private-key = &quot;&quot;</a></h4>
+<p>使用单独的私钥位置。如果只指定了<code>https-certificate</code>, httpd服务将尝试从<code>https-certificate</code>文件中加载私钥。如果指定了一个单独的<code>https-private-key</code>文件，httpd服务将从<code>https-private-key</code>文件加载私钥。环境变量:<code>CNOSDB_HTTP_HTTPS_PRIVATE_KEY</code></p>
+<h4 id="shared-secret-"><a class="header" href="#shared-secret-">shared-secret = &quot;&quot;</a></h4>
+<p>用于使用JWT令牌验证公共API请求的共享秘密。环境变量:<code>CNOSDB_HTTP_SHARED_SECRET</code></p>
+<h4 id="max-row-limit--0"><a class="header" href="#max-row-limit--0">max-row-limit = 0</a></h4>
+<p>系统在非分块查询中可以返回的最大行数。默认设置(0)允许无限的行数。如果查询结果超过指定值，则CnosDB在响应体中包含一个“partial”:true标记。环境变量:<code>CNOSDB_HTTP_MAX_ROW_LIMIT</code></p>
+<h4 id="max-connection-limit--0"><a class="header" href="#max-connection-limit--0">max-connection-limit = 0</a></h4>
+<p>可以同时打开的最大连接数。超过限制的新连接将被删除。默认值<code>0</code>禁用限制。环境变量:<code>CNOSDB_HTTP_MAX_CONNECTION_LIMIT</code></p>
+<h4 id="unix-socket-enabled--false"><a class="header" href="#unix-socket-enabled--false">unix-socket-enabled = false</a></h4>
+<p>通过UNIX域套接字启用HTTP服务。如果需要通过UNIX域套接字开启HTTP服务，请将该值设置为true。环境变量:<code>CNOSDB_HTTP_UNIX_SOCKET_ENABLED</code></p>
+<h4 id="bind-socket--varruncnosdbsock"><a class="header" href="#bind-socket--varruncnosdbsock">bind-socket = &quot;/var/run/cnosdb.sock&quot;</a></h4>
+<p>UNIX域套接字的路径。环境变量:<code>CNOSDB_HTTP_UNIX_BIND_SOCKET</code></p>
+<h4 id="max-body-size--25000000"><a class="header" href="#max-body-size--25000000">max-body-size = 25000000</a></h4>
+<p>客户端请求体的最大大小(以字节为单位)。当HTTP客户端发送的数据超过配置的最大大小时，会返回<code>413 Request Entity Too Large HTTP</code>响应。若要禁用该限制，请将该值设置为0。环境变量:<code>CNOSDB_HTTP_MAX_BODY_SIZE</code></p>
+<h4 id="max-concurrent-write-limit--0"><a class="header" href="#max-concurrent-write-limit--0">max-concurrent-write-limit = 0</a></h4>
+<p>并发处理的最大写操作数。若要禁用该限制，请将该值设置为0。环境变量:<code>CNOSDB_HTTP_MAX_CONCURRENT_WRITE_LIMIT</code></p>
+<h4 id="max-enqueued-write-limit--0"><a class="header" href="#max-enqueued-write-limit--0">max-enqueued-write-limit = 0</a></h4>
+<p>排队等待处理的最大写操作数。若要禁用该限制，请将该值设置为0。环境变量:<code>CNOSDB_HTTP_MAX_ENQUEUED_WRITE_LIMIT</code></p>
+<h4 id="enqueued-write-timeout--0"><a class="header" href="#enqueued-write-timeout--0">enqueued-write-timeout = 0</a></h4>
+<p>在等待处理的队列中等待写操作的最大持续时间。如果要禁用该限制，请将该值设置为0或将<code>max-concurrent-write-limit</code>值设置为0。环境变量:<code>CNOSDB_HTTP_ENQUEUED_WRITE_TIMEOUT</code></p>
+<h3 id="log-日志"><a class="header" href="#log-日志">[Log]-日志</a></h3>
+<h4 id="format--auto"><a class="header" href="#format--auto">format = &quot;auto&quot;</a></h4>
+<p>确定要为日志使用哪个日志编码器。有效值为<code>auto</code>(默认值)、<code>logfmt</code>和<code>json</code>。使用默认的自动选项，如果输出到TTY设备(例如，终端)，则使用更友好的控制台编码。如果输出是<code>files</code>，则<code>auto</code>选项使用<code>logfmt</code>编码。<code>logfmt</code>和<code>json</code>选项对于与外部工具集成非常有用。环境变量:<code>CNOSDB_LOGGING_FORMAT</code></p>
+<h4 id="level--info"><a class="header" href="#level--info">level = &quot;info&quot;</a></h4>
+<p>要发出的日志级别。有效值为<code>error</code>、<code>warn</code>、<code>info</code>(默认值)和<code>debug</code>。等于或高于指定级别的日志将被触发。环境变量:<code>CNOSDB_LOGGING_LEVEL</code></p>
+<h4 id="suppress-logo--false"><a class="header" href="#suppress-logo--false">suppress-logo = false</a></h4>
+<p>抑制程序启动时打印的标志输出。如果STDOUT不是TTY，则标识总是被抑制的。环境变量:<code>CNOSDB_LOGGING_SUPPRESS_LOGO</code></p>
+<h3 id="subscriber-订阅"><a class="header" href="#subscriber-订阅">[Subscriber]-订阅</a></h3>
+<h4 id="enabled--true-3"><a class="header" href="#enabled--true-3">enabled = true</a></h4>
+<p>确定是否启用用户服务。如果需要关闭用户服务，请将该值设置为<code>false</code>。环境变量:<code>CNOSDB_SUBSCRIBER_ENABLED</code></p>
+<h4 id="http-timeout--30s"><a class="header" href="#http-timeout--30s">http-timeout = &quot;30s&quot;</a></h4>
+<p>HTTP写入到订阅服务器直至超时的持续时间。环境变量:<code>CNOSDB_SUBSCRIBER_HTTP_TIMEOUT</code></p>
+<h4 id="insecure-skip-verify--false"><a class="header" href="#insecure-skip-verify--false">insecure-skip-verify = false</a></h4>
+<p>确定是否允许到订阅者的不安全的HTTPS连接。这在测试自签名证书时非常有用。环境变量:<code>CNOSDB_SUBSCRIBER_INSECURE_SKIP_VERIFY</code></p>
+<h4 id="ca-certs-"><a class="header" href="#ca-certs-">ca-certs = &quot;&quot;</a></h4>
+<p>pem编码的CA certs文件的路径。如果为空字符串<code>“”</code>，则使用系统默认证书。环境变量:<code>CNOSDB_SUBSCRIBER_CA_CERTS</code></p>
+<h4 id="write-concurrency--40"><a class="header" href="#write-concurrency--40">write-concurrency = 40</a></h4>
+<p>处理写通道的写入程序的数量。环境变量:<code>CNOSDB_SUBSCRIBER_WRITE_CONCURRENCY</code></p>
+<h4 id="write-buffer-size--1000"><a class="header" href="#write-buffer-size--1000">write-buffer-size = 1000</a></h4>
+<p>写通道中缓冲的正在写的次数。环境变量:<code>CNOSDB_SUBSCRIBER_WRITE_BUFFER_SIZE</code></p>
+<h3 id="continuousquery-连续查询"><a class="header" href="#continuousquery-连续查询">[ContinuousQuery]-连续查询</a></h3>
+<h4 id="enabled--true-4"><a class="header" href="#enabled--true-4">enabled = true</a></h4>
+<p>设置为<code>false</code>，禁用CQs。环境变量:<code>CNOSDB_CONTINUOUS_QUERIES_ENABLED</code></p>
+<h4 id="log-enabled--true-1"><a class="header" href="#log-enabled--true-1">log-enabled = true</a></h4>
+<p>设置为<code>false</code>，禁用CQ事件的日志记录。环境变量:<code>CNOSDB_CONTINUOUS_QUERIES_LOG_ENABLED</code></p>
+<h4 id="query-stats-enabled--false"><a class="header" href="#query-stats-enabled--false">query-stats-enabled = false</a></h4>
+<p>当设置为<code>true</code>时，连续查询执行统计信息将被写入默认监视存储区。环境变量:<code>CNOSDB_CONTINUOUS_QUERIES_QUERY_STATS_ENABLED</code></p>
+<h4 id="run-interval--1s"><a class="header" href="#run-interval--1s">run-interval = &quot;1s&quot;</a></h4>
+<p>CnosDB检查CQ是否需要运行的时间间隔。将此选项设置为CQs运行的最低时间间隔。例如，如果你最频繁的CQ每分钟运行，设置运行间隔为1米。环境变量:<code>CNOSDB_CONTINUOUS_QUERIES_RUN_INTERVAL</code></p>
+<h3 id="tls-传输层安全"><a class="header" href="#tls-传输层安全">[TLS]-传输层安全</a></h3>
+<p>如果没有指定TLS配置设置，则根据用于构建CnosDB的Go<code>crypto/tls</code>包文档中的常量部分，CnosDB支持列出的所有加密套件id和实现的所有TLS版本。使用<code>SHOW DIAGNOSTICS</code>命令查看用于构建CnosDB的Go版本。</p>
+<h4 id="min-version--tls10"><a class="header" href="#min-version--tls10">min-version = &quot;tls1.0&quot;</a></h4>
+<p>即将协商的TLS协议的最小版本。有效值包括:<code>tls1.0</code>、<code>tls1.1</code>、<code>tls1.2</code>。如果不指定，则<code>min-version</code>为Go<code>crypto/TLS</code>包中指定的TLS最小版本。在本例中，<code>tls1.0</code>将最小版本指定为<code>tls1.0</code>。环境变量:<code>CNOSDB_TLS_MIN_VERSION</code></p>
+<h4 id="max-version--tls12"><a class="header" href="#max-version--tls12">max-version = &quot;tls1.2&quot;</a></h4>
+<p>即将协商的TLS协议的最大版本。有效值包括:<code>tls1.0</code>、<code>tls1.1</code>、<code>tls1.2</code>。<code>max-version</code>为Go<code>crypto/TLS</code>包中指定的最大TLS版本号。在本例中，tls1.2将最大版本指定为TLS 1.2。环境变量:<code>CNOSDB_TLS_MAX_VERSION</code></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../../../content/cnosdb/latest/managerment/backup_restore.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../../../../content/cnosdb/latest/sandboxmanagement.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../../../content/cnosdb/latest/managerment/backup_restore.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../../../../content/cnosdb/latest/sandboxmanagement.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../../../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

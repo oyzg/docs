@@ -16,123 +16,123 @@ CnosDB由两组软件组成，`data`节点和`meta`节点，集群内的通讯�
 
 配置文件可以通过`cnosdb-meta config > config_path`获得。
 
-- ### 启动`meta`节点
+### 启动`meta`节点
 
-    ```
-    ./cnosdb-meta --config [cnosdb_meta_config_path]
-    ```
+  ```
+  ./cnosdb-meta --config [cnosdb_meta_config_path]
+  ```
 
-- ### 将`meta`加入到集群
+### 将`meta`加入到集群
 
-    > 添加完后会提示：Added meta node x at cnosdb-meta-0x:8091
-    
-    ```
-    cnosdb-ctl --bind cnosdb-meta-01:8091 add-meta cnosdb-meta-01:8091
-    cnosdb-ctl --bind cnosdb-meta-01:8091 add-meta cnosdb-meta-02:8091
-    cnosdb-ctl --bind cnosdb-meta-01:8091 add-meta cnosdb-meta-03:8091
-    ```
-    
-    3个节点都添加完输入`cnosdb-ctl show`查看集群状态
-    
-    ```
-    Data Nodes:
-    ==========
-    
-    
-    Meta Nodes:
-    ==========
-    
-    1      cnosdb-meta-01:8091
-    2      cnosdb-meta-02:8091
-    3      cnosdb-meta-03:8091
-    ```
-    
-    请注意，一但没有出现3个节点，不要进行下一步。
+  > 添加完后会提示：Added meta node x at cnosdb-meta-0x:8091
+  
+  ```
+  cnosdb-ctl --bind cnosdb-meta-01:8091 add-meta cnosdb-meta-01:8091
+  cnosdb-ctl --bind cnosdb-meta-01:8091 add-meta cnosdb-meta-02:8091
+  cnosdb-ctl --bind cnosdb-meta-01:8091 add-meta cnosdb-meta-03:8091
+  ```
+  
+  3个节点都添加完输入`cnosdb-ctl show`查看集群状态
+  
+  ```
+  Data Nodes:
+  ==========
+  
+  
+  Meta Nodes:
+  ==========
+  
+  1      cnosdb-meta-01:8091
+  2      cnosdb-meta-02:8091
+  3      cnosdb-meta-03:8091
+  ```
+  
+  请注意，一但没有出现3个节点，不要进行下一步。
 
-- ### 启动`data`节点
+### 启动`data`节点
 
-    > 启动前将配置文件中的`cluster`改为`true`
-    
-    ```
-     cnosdb --config [cnosdb_config_path]
-    ```
+  > 启动前将配置文件中的`cluster`改为`true`
+  
+  ```
+   cnosdb --config [cnosdb_config_path]
+  ```
 
-- ### 将`data`节点加入到集群
-    
-    > 添加完后会提示：Added data node x at cnosdb-data-0x:8088
-    
-    ```
-    cnosdb-ctl --bind cnosdb-data-01:8091 add-data cnosdb-data-01:8088
-    cnosdb-ctl --bind cnosdb-data-01:8091 add-data cnosdb-data-02:8088
-    ```
-    
-    2个节点都添加完输入`cnosdb-ctl show`查看集群状态
-    
-    ```
-    Data Nodes:
-    ==========
-    
-    4      cnosdb-data-01:8088
-    5      cnosdb-data-02:8088
-    Meta Nodes:
-    ==========
-    
-    1      cnosdb-meta-01:8091
-    2      cnosdb-meta-02:8091
-    3      cnosdb-meta-03:8091
-    ```
+### 将`data`节点加入到集群
+  
+  > 添加完后会提示：Added data node x at cnosdb-data-0x:8088
+  
+  ```
+  cnosdb-ctl --bind cnosdb-data-01:8091 add-data cnosdb-data-01:8088
+  cnosdb-ctl --bind cnosdb-data-01:8091 add-data cnosdb-data-02:8088
+  ```
+  
+  2个节点都添加完输入`cnosdb-ctl show`查看集群状态
+  
+  ```
+  Data Nodes:
+  ==========
+  
+  4      cnosdb-data-01:8088
+  5      cnosdb-data-02:8088
+  Meta Nodes:
+  ==========
+  
+  1      cnosdb-meta-01:8091
+  2      cnosdb-meta-02:8091
+  3      cnosdb-meta-03:8091
+  ```
 ## Distributed-sandbox
 
 可以使用`Distributed-sandbox`工具快速生产分布式集群
 
-- ### 要求
+### 要求
 
-  本地上要有`Docker`
+本地上要有`Docker`
 
 
-- ### 克隆项目
+### 克隆项目
 
-    ```
-    git clone https://github.com/IvanGao01/distributed-sandbox.git
-    ```
-- ### 运行
+  ```
+  git clone https://github.com/cnosdb/distributed-sandbox.git
+  ```
+### 运行
 
-    ```
-    docker-compose up -d
-    chmod 777 cluster.sh
-    ./cluster.sh
-    ```
-    
-    运行成功后可看到如下结果
-    
-    ```
-    Joining meta nodes to cluster...
-    Added meta node 1 at cnosdb-meta-01:8091
-    Added meta node 2 at cnosdb-meta-02:8091
-    Added meta node 3 at cnosdb-meta-03:8091
-    Data Nodes:
-    ==========
-    4      cnosdb-data-01:8088
-    5      cnosdb-data-02:8088
-    
-    Meta Nodes:
-    ==========
-    1      cnosdb-meta-01:8091
-    2      cnosdb-meta-02:8091
-    3      cnosdb-meta-03:8091
-    
-    Joining data nodes to cluster...
-    EOF
-    EOF
-    Cluster successfully created
-    Data Nodes:
-    ==========
-    4      cnosdb-data-01:8088
-    5      cnosdb-data-02:8088
-    
-    Meta Nodes:
-    ==========
-    1      cnosdb-meta-01:8091
-    2      cnosdb-meta-02:8091
-    3      cnosdb-meta-03:8091
-    ```
+  ```
+  docker-compose up -d
+  chmod 777 cluster.sh
+  ./cluster.sh
+  ```
+  
+  运行成功后可看到如下结果
+  
+  ```
+  Joining meta nodes to cluster...
+  Added meta node 1 at cnosdb-meta-01:8091
+  Added meta node 2 at cnosdb-meta-02:8091
+  Added meta node 3 at cnosdb-meta-03:8091
+  Data Nodes:
+  ==========
+  4      cnosdb-data-01:8088
+  5      cnosdb-data-02:8088
+  
+  Meta Nodes:
+  ==========
+  1      cnosdb-meta-01:8091
+  2      cnosdb-meta-02:8091
+  3      cnosdb-meta-03:8091
+  
+  Joining data nodes to cluster...
+  EOF
+  EOF
+  Cluster successfully created
+  Data Nodes:
+  ==========
+  4      cnosdb-data-01:8088
+  5      cnosdb-data-02:8088
+  
+  Meta Nodes:
+  ==========
+  1      cnosdb-meta-01:8091
+  2      cnosdb-meta-02:8091
+  3      cnosdb-meta-03:8091
+  ```
