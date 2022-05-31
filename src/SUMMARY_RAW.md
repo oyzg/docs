@@ -21,6 +21,7 @@
   - [cnosdb](./content/cnosdb/latest/cnosdb_tools/cnosdb.md)
   - [cnosdb-cli](./content/cnosdb/latest/cnosdb_tools/cnosdb-cli.md)
   - [cnosdb-inspect](./content/cnosdb/latest/cnosdb_tools/cnosdb-inspect.md)
+  - [cnosdb-ctl](./content/cnosdb/latest/cnosdb_tools/cnosdb-ctl.md)
 - [CnosQL]()
   - [CnosQL入门 TODO](./content/cnosdb/latest/cnosql/cnosql_sample.md)
   - [CnosQL语法 TODO](./content/cnosdb/latest/cnosql/cnosql_syntax.md)
