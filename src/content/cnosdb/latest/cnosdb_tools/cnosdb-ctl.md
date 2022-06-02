@@ -22,6 +22,7 @@ cnosdb_ctl [ [ command ] [ options ] ]
 - [add-data](#add-data)
 - [add-meta](#add-meta)
 - [copy-shard](#copy-shard)
+- [copy-shard-status](#copy-shard-status)
 - [kill-copy-shard](#kill-copy-shard)
 - [print-meta](#print-meta)
 - [remove-data](#remove-data)
@@ -87,6 +88,27 @@ cnosdb_ctl add-data <data-node>
 ```
 ./cnosdb_ctl copy-shard 127.0.0.1:8088 127.0.0.2:8088 1234
 ```
+
+## `copy-shard-status`
+
+### `cnosdb_ctl copy-shard`
+
+查看当前正在执行的copy-shard命令及其进度
+
+### 语法
+
+`cnosdb_ctl copy-shard-status`
+
+### 例子
+
+查看当前正在执行的copy-shard命令及其进度，结果显示当前正在执行从数据节点`127.0.0.1:8088`复制ID为26的shard到数据节点`127.0.0.2:8088`，当前已经复制1327KB
+
+```
+./cnosdb_ctl copy-shard-status
+Source                   Dest                    Database                Policy          ShardID         Status          CopiedSize      StartedAt
+127.0.0.1:8088           127.0.0.2:8088          oceanic_station         autogen         26              copying         1327KB            2022-06-02 10:24:10.6594651 +0800 CST
+```
+
 
 ## `kill-copy-shard`
 
