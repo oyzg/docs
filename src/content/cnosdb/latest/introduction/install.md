@@ -7,14 +7,14 @@
 
 ## Ubuntu & Debian
 
-1. 使用`wget`命令从官网下载获得deb安装包`cnosdb_1.0.1_amd64.deb`
+1. 使用`wget`命令从官网下载获得deb安装包`cnosdb_1.0.2_amd64.deb`
    ```shell
-   wget https://github.com/cnosdb/cnosdb/releases/download/v1.0.1/cnosdb_1.0.1_amd64.deb
+   wget https://cnosdb-fastdl-cn-sz.oss-cn-shenzhen.aliyuncs.com/releases/v1.0.2/linux/cnosdb_1.0.2_amd64.deb
    ```
    
-2. 进入`cnosdb_1.0.1_amd64.deb`所在目录，使用`dpkg`命令进行安装
+2. 进入`cnosdb_1.0.2_amd64.deb`所在目录，使用`dpkg`命令进行安装
    ```shell
-   sudo dpkg -i cnosdb_1.0.1_amd64.deb
+   sudo dpkg -i cnosdb_1.0.2_amd64.deb
    ```
 
 3. 安装成功后即可启动，执行以下命令进行启动
@@ -41,14 +41,14 @@
 
 ## Red Hat & CentOS
 
-1. 使用`wget`命令从官网下载获得rpm安装包`cnosdb-1.0.1.x86_64.rpm`
+1. 使用`wget`命令从官网下载获得rpm安装包`cnosdb-1.0.2.x86_64.rpm`
    ```shell
-   wget https://github.com/cnosdb/cnosdb/releases/download/v1.0.1/cnosdb-1.0.1.x86_64.rpm
+   wget https://cnosdb-fastdl-cn-sz.oss-cn-shenzhen.aliyuncs.com/releases/v1.0.2/linux/cnosdb-1.0.2.x86_64.rpm
    ```
 
-2. 进入`cnosdb-1.0.1.x86_64.rpm`所在目录，使用`yum`命令进行安装
+2. 进入`cnosdb-1.0.2.x86_64.rpm`所在目录，使用`yum`命令进行安装
    ```shell
-   sudo yum localinstall cnosdb-1.0.1.x86_64.rpm
+   sudo yum localinstall cnosdb-1.0.2.x86_64.rpm
    ```
 
 
@@ -76,11 +76,11 @@
 > 以下命令请使用Windows PowerShell执行
 1. 下载安装包
    ```shell
-   wget https://github.com/cnosdb/cnosdb/releases/download/v1.0.1/cnosdb-1.0.1_windows_amd64.zip -UseBasicParsing -OutFile cnosdb-1.0.1_windows_amd64.zip
+   wget https://cnosdb-fastdl-cn-sz.oss-cn-shenzhen.aliyuncs.com/releases/v1.0.2/windows/amd64/cnosdb-1.0.2_windows_amd64.zip -UseBasicParsing -OutFile cnosdb-1.0.2_windows_amd64.zip
    ```
 2. 解压并安装
    ```shell
-   Expand-Archive .\cnosdb-1.0.1_windows_amd64.zip -DestinationPath 'C:\Program Files\cnosdb\'
+   Expand-Archive .\cnosdb-1.0.2_windows_amd64.zip -DestinationPath 'C:\Program Files\cnosdb\'
    ```
 
 3. 将配置到环境变量
@@ -94,12 +94,12 @@
 
    Mode                 LastWriteTime         Length Name
    ----                 -------------         ------ ----
-   d-----         2022/5/19     15:58                cnosdb-1.0.1-1
+   d-----         2022/5/19     15:58                cnosdb-1.0.2-1
    ```
 4. 将安装目录配置到环境变量
    
    ```shell
-   setx PATH "%PATH%;C:\Program Files\cnosdb\cnosdb-1.0.1-1\"
+   setx PATH "%PATH%;C:\Program Files\cnosdb\cnosdb-1.0.2-1\"
    ```
 
 5. 打开Windows中的命令提示符程序，执行以下命令(这里不在PowerShell中执行)
@@ -156,13 +156,13 @@
    2. 通过在URL上添加`.asc`来下载指定版本的签名文件
 
    ```shell
-    wget https://github.com/cnosdb/cnosdb/releases/download/v1.0.1/cnosdb-1.0.1_linux_amd64.tar.gz
+    wget https://cnosdb-fastdl-cn-sz.oss-cn-shenzhen.aliyuncs.com/releases/v1.0.2/linux/cnosdb-1.0.2_linux_amd64.tar.gz
    ```
 
    3. 验证签名 `gpg --verify`
 
    ```shell
-    gpg --verify cnosdb-1.0.1_linux_amd64.tar.gz.asc cnosdb-1.0.1_linux_amd64.tar.gz
+    gpg --verify cnosdb-1.0.2_linux_amd64.tar.gz.asc cnosdb-1.0.2_linux_amd64.tar.gz
    ```
 
   此命令应该输出：

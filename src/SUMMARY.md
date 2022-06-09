@@ -15,7 +15,7 @@
   - [导入和导出](./content/cnosdb/latest/managerment/export_import.md)
   - [备份和还原](./content/cnosdb/latest/managerment/backup_restore.md)
   - [CnosDB配置](./content/cnosdb/latest/managerment/configuration.md)
-  - [集群管理](./content/cnosdb/latest/sandboxmanagement.md)
+  - [集群管理](./content/cnosdb/latest/managerment/sandboxmanagement.md)
   - [运维工具介绍](./content/cnosdb/latest/cnosdb_tools/index.md)
     - [cnosdb](./content/cnosdb/latest/cnosdb_tools/cnosdb.md)
     - [cnosdb-cli](./content/cnosdb/latest/cnosdb_tools/cnosdb-cli.md)
@@ -31,7 +31,3 @@
 - [其他](./content/cnosdb/latest/other/index.md)
   - [发行版本说明](./content/cnosdb/latest/other/version_manager.md)
   - [CnosDB性能比较](./content/cnosdb/latest/other/tsdb-comparisions.md)
- 
-[comment]: <> (  - [其他]&#40;./content/cnosdb/latest/cnosql/other.md&#41;)
-
-[comment]: <> (- [常见问题]&#40;./content/cnosdb/latest/frequently_asked_questions.md&#41;)

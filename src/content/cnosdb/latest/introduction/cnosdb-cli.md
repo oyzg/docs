@@ -12,7 +12,7 @@
 
 ```
 $ cnosdb-cli
-CnosDB shell version: v1.0.1
+CnosDB shell version: v1.0.2
 >
 ```
 
