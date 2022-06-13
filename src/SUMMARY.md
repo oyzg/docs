@@ -20,6 +20,7 @@
     - [cnosdb](./content/cnosdb/latest/cnosdb_tools/cnosdb.md)
     - [cnosdb-cli](./content/cnosdb/latest/cnosdb_tools/cnosdb-cli.md)
     - [cnosdb-inspect](./content/cnosdb/latest/cnosdb_tools/cnosdb-inspect.md)
+    - [cnosdb-ctl](./content/cnosdb/latest/cnosdb_tools/cnosdb-ctl.md)
 - [语法参考手册](./content/cnosdb/latest/cnosql/index.md)
   - [示例数据](./content/cnosdb/latest/cnosql/cnosql_sample.md)
   - [数据查询](./content/cnosdb/latest/cnosql/cnosql_syntax.md)

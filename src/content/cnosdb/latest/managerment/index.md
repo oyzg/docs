@@ -7,3 +7,4 @@
   - [cnosdb](../cnosdb_tools/cnosdb.md)
   - [cnosdb-cli](../cnosdb_tools/cnosdb-cli.md)
   - [cnosdb-inspect](../cnosdb_tools/cnosdb-inspect.md)
+  - [cnosdb-ctl](../cnosdb_tools/cnosdb-ctl.md)

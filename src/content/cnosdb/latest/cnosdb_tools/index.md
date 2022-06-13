@@ -2,3 +2,4 @@
 - [cnosdb](./cnosdb.md)
 - [cnosdb-cli](./cnosdb-cli.md)
 - [cnosdb-inspect](./cnosdb-inspect.md)
+- [cnosdb-ctl](./cnosdb-ctl.md)

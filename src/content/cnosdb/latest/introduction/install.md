@@ -156,7 +156,11 @@
    2. 通过在URL上添加`.asc`来下载指定版本的签名文件
 
    ```shell
+<<<<<<< HEAD
     wget https://cnosdb-fastdl-cn-sz.oss-cn-shenzhen.aliyuncs.com/releases/v1.0.2/linux/cnosdb-1.0.2_linux_amd64.tar.gz
+=======
+    wget https://github.com/cnosdb/cnosdb/releases/download/v1.0.1/cnosdb-1.0.1_linux_amd64.tar.gz
+>>>>>>> origin/latest
    ```
 
    3. 验证签名 `gpg --verify`
