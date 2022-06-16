@@ -41,7 +41,7 @@ cnosdb_ctl [ [ command ] [ options ] ]
 ### 语法
 
 ```
-cnosdb_ctl add-data <data-node>
+cnosdb_ctl --bind <meta-node> add-data <data-node>
 ```
 
 ### 例子
@@ -49,7 +49,7 @@ cnosdb_ctl add-data <data-node>
 添加一个数据节点`localhost:8088`到集群中
 
 ```
-./cnosdb_ctl add-data localhost:8088
+./cnosdb_ctl --bind localhost:8091 add-data localhost:8088
 ```
 
 ## `add-meta`
@@ -60,14 +60,14 @@ cnosdb_ctl add-data <data-node>
 
 ### 语法
 
-`cnosdb_ctl add-meta <meta-node>`
+`cnosdb_ctl --bind <meta-node> add-meta <meta-node>`
 
 ### 例子
 
 添加一个元节点`localhost:8091`到集群中
 
 ```
-./cnosdb_ctl add-meta localhost:8091
+./cnosdb_ctl --bind localhost:8091 add-meta localhost:8091
 ```
 
 ## `copy-shard`
@@ -78,14 +78,14 @@ cnosdb_ctl add-data <data-node>
 
 ### 语法
 
-`cnosdb_ctl copy-shard <source-data-node> <dest-data-node> <shard-id>`
+`cnosdb_ctl --bind <meta-node> copy-shard <source-data-node> <dest-data-node> <shard-id>`
 
 ### 例子
 
 从`127.0.0.1:8088`拷贝id为`1234`的shard到`127.0.0.2:8088`
 
 ```
-./cnosdb_ctl copy-shard 127.0.0.1:8088 127.0.0.2:8088 1234
+./cnosdb_ctl --bind localhost:8091 copy-shard 127.0.0.1:8088 127.0.0.2:8088 1234
 ```
 
 ## `kill-copy-shard`
@@ -97,7 +97,7 @@ cnosdb_ctl add-data <data-node>
 ### 语法
 
 ```
-cnosdb-ctl kill-copy-shard <source-data-node> <dest-data-node> <shard-id>
+cnosdb-ctl --bind <meta-node> kill-copy-shard <source-data-node> <dest-data-node> <shard-id>
 ```
 
 ### 例子
@@ -105,7 +105,7 @@ cnosdb-ctl kill-copy-shard <source-data-node> <dest-data-node> <shard-id>
 中止正在进行的从`127.0.0.1:8088`拷贝id为`1234`的shard到`127.0.0.2:8088`的命令
 
 ```
-./cnosdb_ctl kill-copy-shard 127.0.0.1:8088 127.0.0.2:8088 1234
+./cnosdb_ctl --bind localhost:8091 kill-copy-shard 127.0.0.1:8088 127.0.0.2:8088 1234
 ```
 
 ## `print-meta`
@@ -117,7 +117,7 @@ cnosdb-ctl kill-copy-shard <source-data-node> <dest-data-node> <shard-id>
 ### 语法
 
 ```
-cnosdb_ctl print-meta
+cnosdb_ctl --bind <meta-node> print-meta
 ```
 
 ## `remove-data`
@@ -128,14 +128,14 @@ cnosdb_ctl print-meta
 
 ### 语法
 
-`cnosdb_ctl remove-data <data-node>`
+`cnosdb_ctl --bind <meta-node> remove-data <data-node>`
 
 ### 例子
 
 从集群中删除一个数据节点`localhost:8088`
 
 ```
-./cnosdb_ctl remove-data localhost:8088
+./cnosdb_ctl --bind localhost:8091 remove-data localhost:8088
 ```
 
 ## `remove-meta`
@@ -146,14 +146,14 @@ cnosdb_ctl print-meta
 
 ### 语法
 
-`cnosdb_ctl remove-meta <meta-node>`
+`cnosdb_ctl --bind <meta-node> remove-meta <meta-node>`
 
 ### 例子
 
 从集群中删除一个元节点`localhost:8091`
 
 ```
-./cnosdb_ctl remove-meta localhost:8091
+./cnosdb_ctl --bind localhost:8091 remove-meta localhost:8091
 ```
 
 ## `remove-shard`
@@ -164,14 +164,14 @@ cnosdb_ctl print-meta
 
 ### 语法
 
-`cnosdb_ctl remove-shard <data-node> <shard-id>`
+`cnosdb_ctl --bind <meta-node> remove-shard <data-node> <shard-id>`
 
 ### 例子
 
 删除数据节点`127.0.0.1:8088`中id为`1234`的shard
 
 ```
-./cnosdb_ctl remove-shard 127.0.0.1:8088 1234
+./cnosdb_ctl --bind localhost:8091 remove-shard 127.0.0.1:8088 1234
 ```
 
 ## `show`
@@ -182,7 +182,7 @@ cnosdb_ctl print-meta
 
 ### 语法
 
-`cnosdb_ctl show`
+`cnosdb_ctl --bind <meta-node> show`
 
 ## `truncate-shards`
 
@@ -192,7 +192,7 @@ cnosdb_ctl print-meta
 
 ### 语法
 
-`cnosdb_ctl truncate-shards <data-node> [<delay-minutes>]`
+`cnosdb_ctl --bind <meta-node> truncate-shards <data-node> [<delay-minutes>]`
 
 ### 选项
 
@@ -207,7 +207,7 @@ cnosdb_ctl print-meta
 5分钟后截断分片
 
 ```
-./cnosdb_ctl truncate-shards 127.0.0.1:8088 5
+./cnosdb_ctl --bind localhost:8091 truncate-shards 127.0.0.1:8088 5
 ```
 
 
@@ -221,14 +221,14 @@ cnosdb_ctl print-meta
 
 ### 语法
 
-`cnosdb_ctl update-data <old-data-node> <new-data-node>`
+`cnosdb_ctl --bind <meta-node> update-data <old-data-node> <new-data-node>`
 
 ### 例子
 
 使用新的数据节点`127.0.0.2:8088`代替旧的数据节点`127.0.0.1:8088`
 
 ```
-./cnosdb_ctl update-data 127.0.0.1:8088 127.0.0.2:8088
+./cnosdb_ctl --bind localhost:8091 update-data 127.0.0.1:8088 127.0.0.2:8088
 ```
 
 ## `replace-data`
@@ -239,14 +239,14 @@ cnosdb_ctl print-meta
 
 ### 语法
 
-`cnosdb_ctl replace-data <old-data-node> <new-data-node>`
+`cnosdb_ctl --bind <meta-node> replace-data <old-data-node> <new-data-node>`
 
 ### 例子
 
 使用新的数据节点`127.0.0.2:8088`代替旧的数据节点`127.0.0.1:8088`
 
 ```
-./cnosdb_ctl replace-data 127.0.0.1:8088 127.0.0.2:8088
+./cnosdb_ctl --bind localhost:8091 replace-data 127.0.0.1:8088 127.0.0.2:8088
 ```
 
 
@@ -258,4 +258,4 @@ cnosdb_ctl print-meta
 
 ### 语法
 
-`cnosdb_ctl version`
+`cnosdb_ctl --bind <meta-node> version`
