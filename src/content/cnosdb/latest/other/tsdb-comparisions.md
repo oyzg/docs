@@ -25,7 +25,7 @@
 
    | 数据库             | 版本          |
    |-------------|---------|
-   | CnosDB          | v1.0.2 |
+   | CnosDB          | v1.0.3 |
    | InfluxDB          | v1.8.10     |
    | TimescaleDB         | v2.6.1-pg14 |
    |  TDengine       | v2.4.0.18   |
