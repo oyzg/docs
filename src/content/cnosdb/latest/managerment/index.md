@@ -8,3 +8,4 @@
   - [cnosdb-cli](../cnosdb_tools/cnosdb-cli.md)
   - [cnosdb-inspect](../cnosdb_tools/cnosdb-inspect.md)
   - [cnosdb-ctl](../cnosdb_tools/cnosdb-ctl.md)
+- [用户权限管理](./user-permission.md)
